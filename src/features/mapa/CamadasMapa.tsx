@@ -14,6 +14,8 @@ import FolhaAvaliacao, { type AlvoAvaliacao } from './FolhaAvaliacao'
 interface Props {
   /** Retorna true se consumiu o toque (modo escolher origem/destino). */
   onToqueMapa?: (coord: LatLng) => boolean
+  /** Atenua trechos/áreas de contexto (ex.: rota exibida). */
+  atenuar?: boolean
 }
 
 const RAIO_TRECHO_M = 60
@@ -40,7 +42,7 @@ function alvoDoPonto(coord: LatLng): AlvoAvaliacao {
   return { alvoId: alvoIdParaCoord(coord), titulo: area ? `Ponto no mapa · ${area.bairro}` : 'Ponto no mapa', coord }
 }
 
-export default function CamadasMapa({ onToqueMapa }: Props) {
+export default function CamadasMapa({ onToqueMapa, atenuar }: Props) {
   const { camadasVisiveis } = useAppEstado()
   const [alvo, setAlvo] = useState<AlvoAvaliacao | null>(null)
 
@@ -57,11 +59,16 @@ export default function CamadasMapa({ onToqueMapa }: Props) {
     setAlvo({ alvoId: t.id, titulo: `${t.nome} · ${t.bairro}`, coord: meio, trecho: t })
   }, [])
 
+  const aoSelecionarAvaliacao = useCallback((alvoId: string, coord: LatLng) => {
+    const area = cenario.areas.find((a) => distanciaM(coord, a.centro) <= a.raioM)
+    setAlvo({ alvoId, titulo: area ? `Ponto no mapa · ${area.bairro}` : 'Ponto no mapa', coord })
+  }, [])
+
   return (
     <>
-      {camadasVisiveis.areas && <CamadaAreas />}
-      {camadasVisiveis.trechos && <CamadaTrechos onSelecionar={aoSelecionarTrecho} />}
-      {camadasVisiveis.trechos && <CamadaAvaliacoes />}
+      {camadasVisiveis.areas && <CamadaAreas atenuar={atenuar} />}
+      {camadasVisiveis.trechos && <CamadaTrechos onSelecionar={aoSelecionarTrecho} atenuar={atenuar} />}
+      {camadasVisiveis.trechos && <CamadaAvaliacoes onSelecionar={aoSelecionarAvaliacao} />}
       {camadasVisiveis.apoio && <CamadaApoio />}
       {alvo && <FolhaAvaliacao key={alvo.alvoId} alvo={alvo} onFechar={() => setAlvo(null)} />}
     </>

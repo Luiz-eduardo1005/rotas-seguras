@@ -38,7 +38,11 @@ function criarIcone(tipo: TipoAvaliacao, total: number): L.DivIcon {
 }
 
 /** Dentro do MapContainer: 1 pin por alvo de célula (`cel:`) com avaliações da comunidade. */
-function CamadaAvaliacoes() {
+interface Props {
+  onSelecionar?: (alvoId: string, coord: LatLng) => void
+}
+
+function CamadaAvaliacoes({ onSelecionar }: Props) {
   const { avaliacoes } = useAppEstado()
   const grupos = useMemo(() => {
     const m = new Map<string, Grupo & { cont: Record<TipoAvaliacao, number> }>()
@@ -64,7 +68,15 @@ function CamadaAvaliacoes() {
   return (
     <>
       {grupos.map((g) => (
-        <Marker key={`${g.alvoId}-${g.tipo}-${g.total}`} position={[g.coord.lat, g.coord.lng]} icon={criarIcone(g.tipo, g.total)}>
+        <Marker key={`${g.alvoId}-${g.tipo}-${g.total}`} position={[g.coord.lat, g.coord.lng]} icon={criarIcone(g.tipo, g.total)}
+          bubblingMouseEvents={false}
+          eventHandlers={{
+            click: (e) => {
+              L.DomEvent.stopPropagation(e)
+              onSelecionar?.(g.alvoId, g.coord)
+            },
+          }}
+        >
           <Tooltip direction="top" offset={[0, -14]}>
             {g.total} {g.total === 1 ? 'avaliação' : 'avaliações'} da comunidade
           </Tooltip>
