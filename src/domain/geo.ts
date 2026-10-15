@@ -61,3 +61,21 @@ export function amostrarPolilinha(coords: LatLng[], passoM = 50): LatLng[] {
   if (fim.lat !== ultimo.lat || fim.lng !== ultimo.lng) saida.push(ultimo)
   return saida
 }
+
+/** Área coberta nesta versão (Manaus). Fonte única do limite. */
+export const BBOX_MANAUS = { latMin: -3.25, latMax: -2.9, lngMin: -60.2, lngMax: -59.8 } as const
+export const TRAJETO_MAX_M = 25000
+export const TRAJETO_MIN_M = 30
+
+export function dentroDeManaus(c: LatLng): boolean {
+  return c.lat >= BBOX_MANAUS.latMin && c.lat <= BBOX_MANAUS.latMax && c.lng >= BBOX_MANAUS.lngMin && c.lng <= BBOX_MANAUS.lngMax
+}
+
+/** Valida um trajeto antes de buscar; retorna mensagem de erro ou null. */
+export function validarTrajeto(o: LatLng, d: LatLng): string | null {
+  if (!dentroDeManaus(o) || !dentroDeManaus(d)) return 'Rotas Seguras cobre apenas Manaus nesta versão.'
+  const dist = distanciaM(o, d)
+  if (dist > TRAJETO_MAX_M) return 'Trajeto longo demais para ir a pé (máx. 25 km).'
+  if (dist < TRAJETO_MIN_M) return 'Origem e destino são o mesmo lugar.'
+  return null
+}

@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { ResultadoRota } from '../../domain/tipos'
+import { validarTrajeto } from '../../domain/geo'
+import { gerarId } from '../../lib/gerarId'
 import { ordenarRotas, pontuarRota } from '../../domain/pontuacao'
 import { buscarRotaPregravada, cenario, lugares, rotasModelo } from '../../data'
 import { buscarRotasAPe, ErroRotasApi, type RotaBruta } from '../../services/rotasApi'
@@ -49,8 +51,15 @@ interface RotasValor {
 
 const Ctx = createContext<RotasValor | null>(null)
 
-const MSG_ERRO =
-  'Não foi possível buscar a rota: sem conexão com o serviço e sem rota pré-gravada para este trajeto. Tente um dos trajetos de exemplo.'
+const SUFIXO = ' Tente um dos trajetos de exemplo.'
+const MSG_POR_MOTIVO: Record<string, string> = {
+  timeout: 'O serviço de rotas demorou demais para responder e não há rota pré-gravada para este trajeto.',
+  rede: 'Sem conexão com o serviço de rotas e sem rota pré-gravada para este trajeto.',
+  http: 'O serviço de rotas está indisponível no momento e não há rota pré-gravada para este trajeto.',
+  'sem-rota': 'Não há caminho a pé entre esses pontos.',
+}
+const msgErro = (e: unknown) =>
+  (e instanceof ErroRotasApi ? MSG_POR_MOTIVO[e.motivo] : undefined) ?? MSG_POR_MOTIVO.rede + SUFIXO
 
 export function RotasProvider({ children }: { children: ReactNode }) {
   const { periodo, setPeriodo, agregado } = useAppEstado()
@@ -74,6 +83,14 @@ export function RotasProvider({ children }: { children: ReactNode }) {
 
   const executar = useCallback(async (o: PontoRota, d: PontoRota) => {
     ctrl.current?.abort()
+    const invalido = validarTrajeto(o.coord, d.coord)
+    if (invalido) {
+      setBrutas([])
+      setOrigemDados(null)
+      setCarregando(false)
+      setErro(invalido)
+      return
+    }
     const c = new AbortController()
     ctrl.current = c
     setCarregando(true)
@@ -95,7 +112,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
       else {
         setBrutas([])
         setOrigemDados(null)
-        setErro(MSG_ERRO)
+        setErro(msgErro(e))
       }
     } finally {
       if (ctrl.current === c) setCarregando(false)
@@ -181,7 +198,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
     if (!origem || !destino) return false
     const nome = `${origem.nome} → ${destino.nome}`
     if (rotasSalvas.some((r) => r.nome === nome)) return true
-    persistir([{ id: crypto.randomUUID(), nome, origem, destino }, ...rotasSalvas])
+    persistir([{ id: gerarId(), nome, origem, destino }, ...rotasSalvas])
     return true
   }, [origem, destino, rotasSalvas, persistir])
 

@@ -26,3 +26,15 @@ describe('link de rota', () => {
     expect(r?.periodo).toBeUndefined()
   })
 })
+
+describe('limites do deep link', () => {
+  it('rejeita coordenadas fora de Manaus', () => {
+    expect(lerLinkRota('?o=0,0&d=-3.13,-60.02')).toBeNull()
+    expect(lerLinkRota('?o=-3.10,-60.05&d=-23.5,-46.6')).toBeNull()
+  })
+  it('remove caracteres de controle dos nomes', () => {
+    const r = lerLinkRota('?o=-3.10,-60.05&on=A%00B%1F&d=-3.13,-60.02&dn=C%0AD')
+    expect(r?.origem.nome).toBe('AB')
+    expect(r?.destino.nome).toBe('CD')
+  })
+})
