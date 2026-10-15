@@ -25,6 +25,9 @@ body {
   overscroll-behavior: none;
 }
 .leaflet-container { background: var(--color-night); font: inherit; }
+/* filtro só no tile pane (className do TileLayer); marcadores/polylines ficam intactos */
+.tiles-noite { filter: invert(1) hue-rotate(185deg) brightness(0.82) contrast(0.92) saturate(0.35); }
+.tiles-dia { filter: saturate(0.6) brightness(0.95); }
 .leaflet-control-attribution { background: rgb(6 11 22 / 0.7) !important; color: var(--color-ink-dim) !important; }
 .leaflet-control-attribution a { color: var(--color-ink-dim) !important; }
 

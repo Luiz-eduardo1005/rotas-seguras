@@ -74,16 +74,17 @@ function PainelAba() {
 }
 
 function Casca() {
-  const { abaAtiva } = useAppEstado()
+  const { abaAtiva, periodo } = useAppEstado()
   const { escolherPontoNoMapa, resultados } = useRotas()
   return (
     <div className="relative h-full w-full overflow-hidden">
       <MapContainer center={MANAUS} zoom={12} zoomControl={false} className="absolute inset-0 z-0">
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          subdomains="abcd"
+          key={periodo}
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          className={periodo === 'dia' ? 'tiles-dia' : 'tiles-noite'}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
         <CamadasMapa onToqueMapa={escolherPontoNoMapa} />
         <CamadaRotas />
