@@ -1,4 +1,4 @@
-// DADOS SIMULADOS para demonstração acadêmica — ver docs/pesquisa/manaus.md
+// DADOS SIMULADOS para demonstração acadêmica — ver docs/pesquisa/manaus-v2.md
 // Gerado por scripts/gerar-dados.mjs — não editar à mão.
 import type { LatLng } from '../domain/tipos'
 

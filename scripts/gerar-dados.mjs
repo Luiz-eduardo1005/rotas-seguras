@@ -1,178 +1,68 @@
-// gera geometrias reais via OSRM/Nominatim; níveis de risco são simulados com base em docs/pesquisa/manaus.md
-// Uso: node scripts/gerar-dados.mjs   (grava src/data/{areas,trechos,apoio,lugares,rotasPregravadas}.ts)
-// Coordenadas fixas abaixo foram obtidas no Nominatim/Overpass em 2026-10-15 (1 req/s, User-Agent "RotasSeguras-faculdade").
-// Rotas: https://routing.openstreetmap.de/routed-foot (perfil a pé). Respostas ficam em cache em os.tmpdir()/rotas-cache.
-import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+// gera geometrias reais via OSRM; níveis simulados com base em docs/pesquisa/manaus-v2.json
+// Uso: node scripts/gerar-dados.mjs  (grava src/data/{areas,trechos,apoio,lugares,rotasPregravadas,comunidadeSemente}.ts)
+// Rotas: https://routing.openstreetmap.de/routed-foot (a pé). Respostas em cache em os.tmpdir()/rotas-cache.
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { createHash } from 'node:crypto'
+import { dist, distPoli, comprimento, desloca, simplificar, osrm, osrmOuNulo, geom, jit, cl, linhas, slug, ll } from './lib/util.mjs'
+import { gerarRelatos, REFERENCIA } from './lib/relatos.mjs'
+import { APOIO_ATUAL, LUGARES_FIXOS, MODELOS, VIA, VIAS, EXTRA, FCRIT } from './lib/base.mjs'
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SAIDA = join(RAIZ, 'src', 'data')
-const CACHE = join(tmpdir(), 'rotas-cache')
 mkdirSync(SAIDA, { recursive: true })
-mkdirSync(CACHE, { recursive: true })
-const CAB = '// DADOS SIMULADOS para demonstração acadêmica — ver docs/pesquisa/manaus.md\n// Gerado por scripts/gerar-dados.mjs — não editar à mão.\n'
-const imp = (t) => `import type { ${t} } from '../domain/tipos'
-`
+const J = JSON.parse(readFileSync(join(RAIZ, 'docs', 'pesquisa', 'manaus-v2.json'), 'utf8'))
+const CAB = '// DADOS SIMULADOS para demonstração acadêmica — ver docs/pesquisa/manaus-v2.md\n// Gerado por scripts/gerar-dados.mjs — não editar à mão.\n'
+const imp = (t) => `import type { ${t} } from '../domain/tipos'\n`
+const ehUrl = (f) => /^https?:/.test(f)
 
-// ---------- utilitários ----------
-const R = 6371000
-const rad = (g) => (g * Math.PI) / 180
-const ll = ([lat, lng]) => ({ lat, lng })
-const r5 = (n) => Math.round(n * 1e5) / 1e5
-function dist(a, b) {
-  const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng)
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2
-  return 2 * R * Math.asin(Math.sqrt(h))
+// ---------- áreas (1 por bairro do JSON v2) ----------
+const ALIAS = { 'Parque 10 de Novembro': 'parque-dez' } // preserva id antigo
+const B = {
+  risco: { alto: [0.785, 0.065], medio: [0.485, 0.065], baixo: [0.215, 0.065] },
+  luz: { boa: [0.8, 0.05], regular: [0.5, 0.05], ruim: [0.25, 0.05] },
+  mov: { alto: [0.8, 0.05], medio: [0.5, 0.05], baixo: [0.25, 0.05] },
 }
-function distSeg(p, a, b) {
-  const k = Math.cos(rad(p.lat))
-  const X = (q) => ({ x: rad(q.lng) * k * R, y: rad(q.lat) * R })
-  const P = X(p), A = X(a), B = X(b)
-  const dx = B.x - A.x, dy = B.y - A.y, l2 = dx * dx + dy * dy
-  const t = l2 ? Math.max(0, Math.min(1, ((P.x - A.x) * dx + (P.y - A.y) * dy) / l2)) : 0
-  return Math.hypot(P.x - (A.x + t * dx), P.y - (A.y + t * dy))
-}
-const distPoli = (p, poli) => Math.min(...poli.slice(1).map((q, i) => distSeg(p, poli[i], q)))
-function dp(c, tol) {
-  if (c.length < 3) return c
-  let maxD = 0, idx = 0
-  for (let i = 1; i < c.length - 1; i++) {
-    const d = distSeg(c[i], c[0], c[c.length - 1])
-    if (d > maxD) { maxD = d; idx = i }
+const fat = (tab, k, id, c) => cl(tab[k][0] + jit(id, c, tab[k][1]))
+const areas = J.bairros.map((b) => {
+  const id = ALIAS[b.nome] ?? slug(b.nome)
+  return {
+    id: 'area-' + id, bairro: b.nome, zona: b.zona, centro: { lat: b.lat, lng: b.lng },
+    raioM: Math.max(400, Math.min(2500, b.raioM)),
+    luz: fat(B.luz, b.iluminacao, id, 'l'), fluxo: fat(B.mov, b.movimento, id, 'f'), risco: fat(B.risco, b.risco, id, 'r'),
+    fonte: ehUrl(b.fonte) ? 'pesquisa' : 'estimativa',
   }
-  if (maxD <= tol) return [c[0], c[c.length - 1]]
-  return [...dp(c.slice(0, idx + 1), tol).slice(0, -1), ...dp(c.slice(idx), tol)]
-}
-function simplificar(c, max) {
-  let tol = 2, out = dp(c, tol)
-  while (out.length > max) { tol *= 1.4; out = dp(c, tol) }
-  return out.map((p) => ({ lat: r5(p.lat), lng: r5(p.lng) }))
-}
-const espera = (ms) => new Promise((r) => setTimeout(r, ms))
-async function osrm(pts, alternativas = false) {
-  const path = pts.map((p) => `${p.lng},${p.lat}`).join(';')
-  const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${path}?overview=full&geometries=geojson${alternativas ? '&alternatives=3' : ''}`
-  const f = join(CACHE, createHash('md5').update(url).digest('hex') + '.json')
-  if (existsSync(f)) return JSON.parse(readFileSync(f, 'utf8'))
-  for (let t = 0; t < 4; t++) {
-    try {
-      const r = await fetch(url, { headers: { 'User-Agent': 'RotasSeguras-faculdade' } })
-      const j = await r.json()
-      if (j.code === 'Ok') { writeFileSync(f, JSON.stringify(j)); await espera(400); return j }
-    } catch { /* tenta de novo */ }
-    await espera(1500)
-  }
-  throw new Error('OSRM falhou: ' + url)
-}
-const geom = (rt) => rt.geometry.coordinates.map(([lng, lat]) => ({ lat, lng }))
-const hash = (s) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7)
-const jit = (id, k, amp = 0.05) => ((hash(id + k) % 1000) / 1000) * 2 * amp - amp
-const cl = (v) => Math.round(Math.max(0.02, Math.min(0.98, v)) * 100) / 100
-const N = { risco: { alto: 0.8, medio: 0.5, baixo: 0.2 }, luz: { boa: 0.8, regular: 0.5, ruim: 0.25 }, mov: { alto: 0.8, medio: 0.5, baixo: 0.25 } }
-const linhas = (arr) => arr.map((x) => '  ' + JSON.stringify(x)).join(',\n')
-const slug = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+})
+const areaDe = (p) => areas.reduce((b, a) => (dist(p, a.centro) < dist(p, b.centro) ? a : b))
+const bairroDe = (p) => areaDe(p).bairro
+const bairroOuProximo = (nome, p) => (areas.some((a) => a.bairro === nome) ? nome : bairroDe(p))
 
-// ---------- áreas (17 bairros) ----------
-// [id, bairro, zona, lat, lng, raioM, risco, luz, mov, fonte]
-const BAIRROS = [
-  ['zumbi-dos-palmares', 'Zumbi dos Palmares', 'Leste', -3.0750, -59.9463, 1000, 'alto', 'regular', 'medio', 'pesquisa'],
-  ['jorge-teixeira', 'Jorge Teixeira', 'Leste', -3.0270, -59.9182, 1500, 'alto', 'regular', 'medio', 'pesquisa'],
-  ['tancredo-neves', 'Tancredo Neves', 'Leste', -3.0532, -59.9389, 900, 'alto', 'ruim', 'baixo', 'pesquisa'],
-  ['sao-jose-operario', 'São José Operário', 'Leste', -3.0665, -59.9458, 1000, 'medio', 'regular', 'medio', 'estimativa'],
-  ['compensa', 'Compensa', 'Oeste', -3.1052, -60.0537, 1300, 'medio', 'regular', 'medio', 'pesquisa'],
-  ['ponta-negra', 'Ponta Negra', 'Oeste', -3.0509, -60.0962, 1400, 'medio', 'regular', 'baixo', 'pesquisa'],
-  ['centro', 'Centro', 'Centro-Sul', -3.1321, -60.0216, 800, 'medio', 'boa', 'alto', 'pesquisa'],
-  ['adrianopolis', 'Adrianópolis', 'Centro-Sul', -3.1017, -60.0090, 800, 'medio', 'regular', 'alto', 'pesquisa'],
-  ['parque-dez', 'Parque Dez', 'Centro-Sul', -3.0890, -60.0189, 1000, 'medio', 'regular', 'medio', 'pesquisa'],
-  ['educandos', 'Educandos', 'Sul', -3.1421, -60.0110, 700, 'medio', 'regular', 'medio', 'estimativa'],
-  ['cidade-nova', 'Cidade Nova', 'Norte', -3.0299, -59.9926, 1500, 'medio', 'regular', 'medio', 'pesquisa'],
-  ['cidade-de-deus', 'Cidade de Deus', 'Norte', -3.0187, -59.9504, 1000, 'alto', 'regular', 'medio', 'pesquisa'],
-  ['novo-aleixo', 'Novo Aleixo', 'Norte', -3.0549, -59.9647, 1200, 'alto', 'regular', 'medio', 'pesquisa'],
-  ['taruma', 'Tarumã', 'Centro-Oeste', -3.0247, -60.0513, 1500, 'medio', 'regular', 'baixo', 'pesquisa'],
-  ['alvorada', 'Alvorada', 'Centro-Oeste', -3.0759, -60.0491, 1100, 'medio', 'regular', 'medio', 'estimativa'],
-  ['petropolis', 'Petrópolis', 'Sul', -3.1119, -59.9948, 900, 'medio', 'regular', 'medio', 'estimativa'],
-  ['flores', 'Flores', 'Centro-Sul', -3.0728, -60.0212, 1000, 'medio', 'regular', 'medio', 'estimativa'],
-]
-const areas = BAIRROS.map(([id, bairro, zona, lat, lng, raioM, r, l, m, fonte]) => ({
-  id: 'area-' + id, bairro, zona, centro: { lat, lng }, raioM,
-  luz: cl(N.luz[l] + jit(id, 'l')), fluxo: cl(N.mov[m] + jit(id, 'f')), risco: cl(N.risco[r] + jit(id, 'r')), fonte,
+// ---------- pontos de apoio (atuais + 35 do JSON, dedupe por nome/80 m) ----------
+const apoioBruto = APOIO_ATUAL.map(([nome, tipo, lat, lng, bairro]) => ({ nome, tipo, coord: { lat, lng }, bairro }))
+for (const a of J.apoio) {
+  const novo = { nome: a.nome, tipo: a.tipo, coord: { lat: a.lat, lng: a.lng }, bairro: a.bairro }
+  const dup = apoioBruto.some((x) => slug(x.nome) === slug(novo.nome) || (x.tipo === novo.tipo && dist(x.coord, novo.coord) <= 80))
+  if (!dup) apoioBruto.push(novo)
+}
+const pontosApoio = apoioBruto.map((a) => ({
+  id: 'apoio-' + slug(a.nome),
+  nome: a.tipo === 'comercio24h' && /shopping/i.test(a.nome) ? a.nome + ' (até ~22h)' : a.nome,
+  tipo: a.tipo, coord: a.coord, bairro: a.bairro,
 }))
-const bairroDe = (p) => areas.reduce((b, a) => (dist(p, a.centro) < dist(p, b.centro) ? a : b)).bairro
-
-// ---------- pontos de apoio ----------
-// [nome, tipo, lat, lng, bairro]; fora: Hemoam (fecha 18h) e PRF (fecha 17h) por não servirem à noite.
-const APOIO = [
-  ['1º Distrito Integrado de Polícia', 'delegacia', -3.1185, -60.0116, 'Centro-Sul'],
-  ['12º Distrito Integrado de Polícia', 'delegacia', -3.0709, -60.0227, 'Flores'],
-  ['10º Distrito Integrado de Polícia', 'delegacia', -3.0719, -60.0457, 'Alvorada'],
-  ['23ª Delegacia Integrada de Polícia', 'delegacia', -3.0707, -59.9962, 'Parque Dez'],
-  ['27º Distrito Integrado de Polícia', 'delegacia', -3.0446, -59.9592, 'Novo Aleixo'],
-  ['Comando de Policiamento de Área Oeste', 'delegacia', -3.1034, -60.0635, 'Compensa'],
-  ['Comando de Policiamento de Área Norte', 'delegacia', -3.0444, -59.9589, 'Novo Aleixo'],
-  ['Hospital e PS Delphina Rinaldi Abdel Aziz', 'saude', -2.9979, -60.0295, 'Tarumã'],
-  ['Hospital Universitário Getúlio Vargas', 'saude', -3.1164, -60.0189, 'Centro'],
-  ['Hospital Adriano Jorge', 'saude', -3.1189, -60.0056, 'Petrópolis'],
-  ['Hospital e PS da Criança Zona Leste', 'saude', -3.0735, -59.9614, 'Zumbi dos Palmares'],
-  ['SPA Galiléia', 'saude', -3.0139, -59.9909, 'Cidade Nova'],
-  ['Policlínica Gilberto Mestrinho', 'saude', -3.1324, -60.0209, 'Centro'],
-  ['Pronto Socorro Dr. Aristóteles Platão Araújo', 'saude', -3.03827, -59.94173, 'Jorge Teixeira'],
-  ['Terminal Cidade Nova (T3)', 'terminal', -3.0316, -59.9855, 'Cidade Nova'],
-  ['Terminal Embarque Metropolitano', 'terminal', -3.1035, -60.0668, 'Compensa'],
-  ['Terminal São José (T5)', 'terminal', -3.07486, -59.95466, 'São José Operário'],
-  ['Terminal 2 (Cachoeirinha)', 'terminal', -3.12718, -60.0055, 'Educandos'],
-  ['Terminal Matriz', 'terminal', -3.13561, -60.02633, 'Centro'],
-  ['Posto Equador', 'comercio24h', -3.0499, -59.9925, 'Cidade Nova'],
-  ['Posto Shell', 'comercio24h', -3.0891, -59.9953, 'Petrópolis'],
-  ['Farmabem', 'comercio24h', -3.1161, -60.0181, 'Centro'],
-  ['Drogaria Avenida', 'comercio24h', -3.1161, -60.0194, 'Centro'],
-  ['Shopping Manauara', 'comercio24h', -3.104, -60.0113, 'Adrianópolis'],
-  ['Shopping Ponta Negra', 'comercio24h', -3.0846, -60.0724, 'Ponta Negra'],
-  ['Área de lazer do Shopping T4', 'praca', -3.0354, -59.942, 'Cidade de Deus'],
-  ['Praça Osvaldo Cruz (Praça da Matriz)', 'praca', -3.1354, -60.0254, 'Centro'],
-  ['Teatro Amazonas', 'praca', -3.1303, -60.0234, 'Centro'],
-]
-const pontosApoio = APOIO.map(([nome, tipo, lat, lng, bairro]) => ({ id: 'apoio-' + slug(nome), nome, tipo, coord: { lat, lng }, bairro }))
 
 // ---------- lugares ----------
 const L = (nome, tipo, lat, lng, bairro) => ({ id: tipo + '-' + slug(nome), nome, tipo, coord: { lat, lng }, bairro })
 const lugares = [
-  L('E.E. Júlia Bittencourt', 'escola', -3.1086, -60.0516, 'Compensa'),
-  L('E.E. Balbina Mestrinho (coord. estimada)', 'escola', -3.12732, -60.00306, 'Educandos'),
-  L('E.E. Demóstenes Belduque Traves', 'escola', -3.0307, -59.9299, 'Jorge Teixeira'),
-  L('E.E. Prof. Cacilda Pinto', 'escola', -3.0315, -59.9269, 'Jorge Teixeira'),
-  L('Universidade Nilton Lins', 'escola', -3.0572, -60.0066, 'Flores'),
-  L('UNIP Parque Dez', 'escola', -3.0808, -60.0235, 'Parque Dez'),
-  L('UEA Escola Superior de Tecnologia', 'escola', -3.09192, -60.01794, 'Parque Dez'),
-  L('Terminal Cidade Nova (T3)', 'terminal', -3.0316, -59.9855, 'Cidade Nova'),
-  L('Terminal Embarque Metropolitano', 'terminal', -3.1035, -60.0668, 'Compensa'),
-  L('Terminal São José (T5)', 'terminal', -3.07486, -59.95466, 'São José Operário'),
-  L('Terminal 2 (Cachoeirinha)', 'terminal', -3.12718, -60.0055, 'Educandos'),
-  L('Terminal Matriz', 'terminal', -3.13561, -60.02633, 'Centro'),
+  ...LUGARES_FIXOS.slice(0, 7).map((x) => L(...x)),
+  ...pontosApoio.filter((p) => p.tipo === 'terminal').map((p) => L(p.nome, 'terminal', p.coord.lat, p.coord.lng, p.bairro)),
   ...areas.map((a) => L(a.bairro, 'bairro', a.centro.lat, a.centro.lng, a.bairro)),
-  L('Teatro Amazonas', 'referencia', -3.1303, -60.0234, 'Centro'),
-  L('Arena da Amazônia', 'referencia', -3.08311, -60.02801, 'Flores'),
-  L('Shopping Manauara', 'referencia', -3.104, -60.0113, 'Adrianópolis'),
-  L('Shopping Ponta Negra', 'referencia', -3.0846, -60.0724, 'Ponta Negra'),
-  L('Praia da Ponta Negra (calçadão)', 'referencia', -3.06247, -60.10375, 'Ponta Negra'),
-  L('UFAM', 'referencia', -3.09992, -59.9752, 'Coroado'),
-  L('Praça Osvaldo Cruz (Matriz)', 'referencia', -3.1354, -60.0254, 'Centro'),
-  L('Pronto Socorro Platão Araújo', 'apoio', -3.03827, -59.94173, 'Jorge Teixeira'),
-  L('1º DIP', 'apoio', -3.1185, -60.0116, 'Centro-Sul'),
+  ...LUGARES_FIXOS.slice(7).map((x) => L(...x)),
 ]
+for (const p of pontosApoio.filter((x) => x.tipo === 'saude')) {
+  if (lugares.some((l) => l.tipo === 'apoio' && dist(l.coord, p.coord) <= 80)) continue
+  lugares.push(L(p.nome, 'apoio', p.coord.lat, p.coord.lng, p.bairro))
+}
 const lug = (id) => lugares.find((l) => l.id === id).coord
-
-// [id, titulo, descricao, origem(nome), destino(nome), indice da alternativa 'segura']
-const MODELOS = [
-  ['julia-centro', 'Escola na Compensa até o Centro', 'Saída do turno noturno da E.E. Júlia Bittencourt rumo ao Centro', 'E.E. Júlia Bittencourt', 'Teatro Amazonas', 1],
-  ['cacilda-t5', 'Escola no Jorge Teixeira até o T5', 'Da E.E. Cacilda Pinto ao Terminal São José (Zona Leste)', 'E.E. Prof. Cacilda Pinto', 'Terminal São José (T5)', 1],
-  ['demostenes-t3', 'Escola no Jorge Teixeira até o T3', 'Da E.E. Demóstenes Belduque ao Terminal Cidade Nova', 'E.E. Demóstenes Belduque Traves', 'Terminal Cidade Nova (T3)', 0],
-  ['unip-compensa', 'UNIP até a Compensa', 'Da UNIP Parque Dez para casa, na Compensa', 'UNIP Parque Dez', 'Compensa', 0],
-  ['lins-zumbi', 'Nilton Lins até Zumbi dos Palmares', 'Da Universidade Nilton Lins para casa, em Zumbi dos Palmares', 'Universidade Nilton Lins', 'Zumbi dos Palmares', 1],
-  ['trabalho-centro-compensa', 'Trabalho no Centro até a Compensa', 'Do Teatro Amazonas (Centro) para casa, na Compensa', 'Teatro Amazonas', 'Compensa', 1],
-]
 const rotasModelo = MODELOS.map(([id, titulo, descricao, o, d]) => ({
   id, titulo, descricao,
   origemId: lugares.find((l) => l.nome === o).id,
@@ -180,12 +70,6 @@ const rotasModelo = MODELOS.map(([id, titulo, descricao, o, d]) => ({
 }))
 
 // ---------- rotas pré-gravadas ----------
-// Onde o OSRM devolve alternativas quase sobrepostas, a alternativa 'segura' é forçada por um waypoint
-// numa avenida principal iluminada (a direta continua sendo a mais curta, por ruas internas).
-const VIA = {
-  'julia-centro': [-3.1355, -60.0230],
-  'trabalho-centro-compensa': [-3.1355, -60.0230],
-}
 const rotasPregravadas = []
 const altsBrutas = {}
 for (const m of rotasModelo) {
@@ -196,46 +80,34 @@ for (const m of rotasModelo) {
     rts.splice(0, rts.length, j.routes[0], jv.routes[0])
   }
   altsBrutas[m.id] = rts.map((rt) => ({ coords: geom(rt), distanciaM: Math.round(rt.distance), duracaoS: Math.round(rt.duration) }))
-  rotasPregravadas.push({
-    rotaModeloId: m.id,
-    rotas: altsBrutas[m.id].map((a) => ({ coords: simplificar(a.coords, 120), distanciaM: a.distanciaM, duracaoS: a.duracaoS })),
-  })
+  rotasPregravadas.push({ rotaModeloId: m.id, rotas: altsBrutas[m.id].map((a) => ({ coords: simplificar(a.coords, 120), distanciaM: a.distanciaM, duracaoS: a.duracaoS })) })
 }
 
 // ---------- trechos ----------
 const trechos = []
-const addTrecho = (id, nome, coords, f, fonte = 'estimativa') => {
+const ids = new Set()
+const addTrecho = (id, nome, coords, f, fonte = 'estimativa', bairro) => {
   const c = simplificar(coords, 40)
+  let uid = id, n = 2
+  while (ids.has(uid)) uid = `${id}-${n++}`
+  ids.add(uid)
   trechos.push({
-    id, nome, bairro: bairroDe(c[Math.floor(c.length / 2)]), coords: c,
-    luz: cl(f[0] + jit(id, 'l', 0.04)), fluxo: cl(f[1] + jit(id, 'f', 0.04)), risco: cl(f[2] + jit(id, 'r', 0.04)), fonte,
+    id: uid, nome, bairro: bairro ?? bairroDe(c[Math.floor(c.length / 2)]), coords: c,
+    luz: cl(f[0] + jit(uid, 'l', 0.04)), fluxo: cl(f[1] + jit(uid, 'f', 0.04)), risco: cl(f[2] + jit(uid, 'r', 0.04)), fonte,
   })
 }
-// 1) as 11 vias da pesquisa [nome, início, fim, [luz, fluxo, risco]]. Vias curtas são prolongadas ~700 m no mesmo rumo e roteadas pela rua real.
-const VIAS = [
-  ['Av. Djalma Batista', [-3.0916, -60.0237], [-3.0910, -60.0242], [0.8, 0.8, 0.25]],
-  ['Av. Constantino Nery', [-3.0985, -60.0266], [-3.0978, -60.0261], [0.5, 0.5, 0.45]],
-  ['Av. Autaz Mirim', [-3.0980, -59.9471], [-3.0778, -59.9559], [0.55, 0.55, 0.55]],
-  ['Av. Brasil', [-3.1019, -60.0330], [-3.0896, -60.0610], [0.7, 0.7, 0.35]],
-  ['Av. Torquato Tapajós', [-2.9912, -60.0309], [-2.9898, -60.0302], [0.5, 0.45, 0.6]],
-  ['Av. Eduardo Ribeiro', [-3.1299, -60.0241], [-3.1290, -60.0241], [0.85, 0.85, 0.3]],
-  ['Av. Cosme Ferreira', [-3.0876, -59.9278], [-3.0873, -59.9282], [0.25, 0.8, 0.65]],
-  ['Av. Darcy Vargas', [-3.0936, -60.0266], [-3.0934, -60.0264], [0.5, 0.5, 0.45]],
-  ['Av. Mário Ypiranga', [-3.0869, -60.0193], [-3.0807, -60.0243], [0.55, 0.8, 0.4]],
-  ['Av. Coronel Teixeira', [-3.0893, -60.0598], [-3.0894, -60.0597], [0.45, 0.5, 0.5]],
-  ['Av. Manicoré (Leonardo Malcher no OSM)', [-3.1271, -60.0078], [-3.1263, -60.0110], [0.5, 0.5, 0.5]],
-]
-for (const [nome, a, b, f] of VIAS) {
+// prolonga vias curtas ~700 m no mesmo rumo para o OSRM achar a rua real
+function pontosVia(a, b) {
   const pts = [ll(a), ll(b)]
   if (dist(pts[0], pts[1]) < 300) {
     const k = 700 / (dist(pts[0], pts[1]) || 1)
     pts.push({ lat: pts[1].lat + (pts[1].lat - pts[0].lat) * k, lng: pts[1].lng + (pts[1].lng - pts[0].lng) * k })
   }
-  const j = await osrm(pts)
-  addTrecho('via-' + slug(nome), nome, geom(j.routes[0]), f)
+  return pts
 }
-// 2) ruas locais: trechos onde as alternativas de cada rota-modelo divergem (geometria real do OSRM).
-// A alternativa 'segura' recebe verde (via principal iluminada), a outra vermelho (ruas internas escuras).
+// 1) vias da pesquisa v1
+for (const [nome, a, b, f] of VIAS) addTrecho('via-' + slug(nome), nome, geom((await osrm(pontosVia(a, b))).routes[0]), f)
+// 2) ruas locais: onde as alternativas de cada rota-modelo divergem (geometria real do OSRM)
 function divergente(a, b, pad) {
   const flag = a.map((p) => distPoli(p, b) > 80)
   let melhor = [0, -1], ini = -1
@@ -245,39 +117,82 @@ function divergente(a, b, pad) {
   }
   return a.slice(Math.max(0, melhor[0] - pad), Math.min(a.length, melhor[1] + 1 + pad))
 }
-const PAD = {}
-// nos dois pares com alternativas parecidas, o contraste é reforçado (ruas internas bem piores, avenida bem melhor)
 const FORTE = { 'julia-centro': 1, 'trabalho-centro-compensa': 1 }
 for (const [id, , , , , seguraIdx] of MODELOS) {
   const alts = altsBrutas[id]
   if (alts.length < 2) continue
   const [iS, iP] = seguraIdx === 1 ? [1, 0] : [0, 1]
-  const nS = divergente(alts[iS].coords, alts[iP].coords, PAD[id] ?? 6)
-  const nP = divergente(alts[iP].coords, alts[iS].coords, PAD[id] ?? 6)
+  const nS = divergente(alts[iS].coords, alts[iP].coords, 6)
+  const nP = divergente(alts[iP].coords, alts[iS].coords, 6)
   addTrecho(`local-${id}-seguro`, `Via principal — ${bairroDe(nS[Math.floor(nS.length / 2)])}`, nS, FORTE[id] ? [0.92, 0.9, 0.1] : [0.8, 0.75, 0.2])
   addTrecho(`local-${id}-escuro`, `Ruas internas — ${bairroDe(nP[Math.floor(nP.length / 2)])}`, nP, FORTE[id] ? [0.1, 0.12, 0.95] : [0.22, 0.25, 0.82])
 }
-// 3) reforço por bairro de alto risco: sempre existe uma via principal verde e ruas internas ruins
-const EXTRA = [
-  ['Eixo comercial — Zumbi dos Palmares', [-3.0750, -59.9463], [-3.07486, -59.95466], [0.75, 0.75, 0.3]],
-  ['Ruas internas — Zumbi dos Palmares', [-3.0665, -59.9458], [-3.0750, -59.9463], [0.3, 0.3, 0.8]],
-  ['Eixo de ônibus — Cidade de Deus', [-3.0187, -59.9504], [-3.0354, -59.942], [0.7, 0.7, 0.35]],
-  ['Ruas internas — Cidade de Deus', [-3.0187, -59.9504], [-3.0270, -59.9420], [0.3, 0.3, 0.75]],
-  ['Eixo principal — Jorge Teixeira', [-3.0307, -59.9299], [-3.03827, -59.94173], [0.7, 0.7, 0.35]],
-  ['Ruas internas — São José Operário', [-3.0665, -59.9458], [-3.0620, -59.9400], [0.35, 0.4, 0.55]],
-  ['Ruas internas — Centro (becos)', [-3.1303, -60.0234], [-3.1340, -60.0200], [0.4, 0.3, 0.7]],
-  ['Eixo principal — Compensa', [-3.1086, -60.0516], [-3.1035, -60.0668], [0.7, 0.7, 0.3]],
-]
-for (const [nome, a, b, f] of EXTRA) {
-  const j = await osrm([ll(a), ll(b)])
-  addTrecho('extra-' + slug(nome), nome, geom(j.routes[0]), f)
+for (const [nome, a, b, f] of EXTRA) addTrecho('extra-' + slug(nome), nome, geom((await osrm([ll(a), ll(b)])).routes[0]), f)
+// 3) corredores v2: luz/movimento do JSON; risco derivado
+const RISCO_COR = { boa: { alto: 0.25, medio: 0.3 }, regular: { alto: 0.4, medio: 0.45 } }
+const NIV = { luz: { boa: 0.8, regular: 0.5 }, mov: { alto: 0.8, medio: 0.55 } }
+for (const c of J.corredores) {
+  const a = ll(c.inicio), b = ll(c.fim)
+  const j = await osrmOuNulo(pontosVia(c.inicio, c.fim))
+  let g = j ? geom(j.routes[0]) : [a, b]
+  if (comprimento(g) > 3 * Math.max(dist(a, b), 300) + 700) g = [a, b]
+  const f = [NIV.luz[c.iluminacao], NIV.mov[c.movimento], RISCO_COR[c.iluminacao][c.movimento]]
+  addTrecho('corr-' + slug(c.nome), c.nome, g, f, ehUrl(c.fonte) ? 'pesquisa' : 'estimativa', bairroOuProximo(c.bairro, g[Math.floor(g.length / 2)]))
 }
+// 4) pontos críticos: trechos de 250-600 m centrados no ponto (eixo provável = melhor de 4 direções via OSRM)
+function janela(g, p, meia) {
+  const ac = [0]
+  for (let i = 1; i < g.length; i++) ac.push(ac[i - 1] + dist(g[i - 1], g[i]))
+  let k = 0
+  g.forEach((q, i) => { if (dist(q, p) < dist(g[k], p)) k = i })
+  return g.filter((_, i) => Math.abs(ac[i] - ac[k]) <= meia)
+}
+let criticosDescartados = 0
+for (const pc of J.pontosCriticos) {
+  const p = { lat: pc.lat, lng: pc.lng }
+  let melhor = null
+  for (const ang of [0, 45, 90, 135]) {
+    const dx = Math.cos((ang * Math.PI) / 180) * 300, dy = Math.sin((ang * Math.PI) / 180) * 300
+    const j = await osrmOuNulo([desloca(p, -dx, -dy), desloca(p, dx, dy)])
+    if (!j) continue
+    const g = geom(j.routes[0])
+    const d = distPoli(p, g), len = comprimento(g)
+    if (len > 1800 || d > 90) continue
+    const custo = d + 0.05 * len
+    if (!melhor || custo < melhor.custo) melhor = { g, custo }
+  }
+  const w = melhor && janela(melhor.g, p, 300)
+  if (!w || w.length < 2 || comprimento(w) < 200) { criticosDescartados++; continue }
+  addTrecho('crit-' + slug(pc.nome), pc.nome, w, FCRIT[pc.tipo] ?? [0.35, 0.35, 0.75], ehUrl(pc.fonte) ? 'pesquisa' : 'estimativa', bairroOuProximo(pc.bairro, p))
+}
+// 5) bairros sem trecho: via principal (melhor) e ruas internas (pior), conforme os fatores do bairro
+for (const a of areas) {
+  if (trechos.some((t) => t.bairro === a.bairro)) continue
+  const esp = Math.min(350, a.raioM * 0.5)
+  const tracos = [
+    ['principal', 'Via principal', [-esp, 0], [esp, 0], [0.12, 0.12, -0.12]],
+    ['internas', 'Ruas internas', [-esp * 0.6, esp * 0.45], [esp * 0.6, esp * 0.5], [-0.15, -0.2, 0.15]],
+  ]
+  for (const [k, rotulo, o, d, dl] of tracos) {
+    const pa = desloca(a.centro, ...o), pb = desloca(a.centro, ...d)
+    const j = await osrmOuNulo([pa, pb])
+    let g = j ? geom(j.routes[0]) : [pa, pb]
+    if (comprimento(g) > 3 * dist(pa, pb)) g = [pa, pb]
+    addTrecho(`sint-${k}-${slug(a.bairro)}`, `${rotulo} — ${a.bairro}`, g, [a.luz + dl[0], a.fluxo + dl[1], a.risco + dl[2]], a.fonte, a.bairro)
+  }
+}
+
+// ---------- relatos semente ----------
+const { linhas: rel, autores } = gerarRelatos({ json: J, areas, trechos })
+const refMs = Date.parse(REFERENCIA)
+const tuplas = rel.map((r) => [r.alvoId, r.lat, r.lng, r.tipo, autores.indexOf(r.autor), Math.round((refMs - r.t) / 60000), r.comentario])
 
 // ---------- escrita ----------
 const w = (arq, src) => writeFileSync(join(SAIDA, arq), src)
-w('areas.ts', `${CAB}${imp('Area')}\nexport const areas: Area[] = [\n${linhas(areas)},\n]\n`)
-w('trechos.ts', `${CAB}${imp('Trecho')}\nexport const trechos: Trecho[] = [\n${linhas(trechos)},\n]\n`)
-w('apoio.ts', `${CAB}${imp('PontoApoio')}\nexport const pontosApoio: PontoApoio[] = [\n${linhas(pontosApoio)},\n]\n`)
+const lista = (tipo, nome, arr) => `${CAB}${imp(tipo)}\nexport const ${nome}: ${tipo}[] = [\n${linhas(arr)},\n]\n`
+w('areas.ts', lista('Area', 'areas', areas))
+w('trechos.ts', lista('Trecho', 'trechos', trechos))
+w('apoio.ts', lista('PontoApoio', 'pontosApoio', pontosApoio))
 w('lugares.ts', `${CAB}import type { LatLng } from '../domain/tipos'
 
 export interface Lugar {
@@ -315,4 +230,29 @@ export interface RotasPregravadasDe {
 
 export const rotasPregravadas: RotasPregravadasDe[] = [\n${linhas(rotasPregravadas)},\n]
 `)
-console.log('areas', areas.length, 'trechos', trechos.length, 'apoio', pontosApoio.length, 'lugares', lugares.length, 'modelos', rotasModelo.length)
+w('comunidadeSemente.ts', `${CAB}// Relatos fictícios: autores e comentários não são de pessoas reais. Datas relativas a REFERENCIA (fixa).
+import type { Avaliacao, TipoAvaliacao } from '../domain/tipos'
+
+export const REFERENCIA = '${REFERENCIA}'
+const AUTORES = ${JSON.stringify(autores)}
+type Linha = [alvoId: string, lat: number, lng: number, tipo: TipoAvaliacao, autor: number, minutosAtras: number, comentario: string]
+const LINHAS: Linha[] = [\n${linhas(tuplas)},\n]
+
+const refMs = Date.parse(REFERENCIA)
+export const avaliacoesSemente: Avaliacao[] = LINHAS.map(([alvoId, lat, lng, tipo, autor, min, comentario], i) => ({
+  id: \`semente-\${String(i + 1).padStart(4, '0')}\`,
+  alvoId,
+  tipo,
+  coord: { lat, lng },
+  criadoEm: new Date(refMs - min * 60_000).toISOString(),
+  ...(comentario ? { comentario } : {}),
+  autorId: \`semente-\${autor}\`,
+  autorNome: AUTORES[autor],
+  semente: true,
+}))
+`)
+const zonas = {}
+for (const t of trechos) { const z = areas.find((a) => a.bairro === t.bairro)?.zona; zonas[z] = (zonas[z] || 0) + 1 }
+const tp = {}
+rel.forEach((r) => (tp[r.tipo] = (tp[r.tipo] || 0) + 1))
+console.log(JSON.stringify({ areas: areas.length, trechos: trechos.length, zonas, apoio: pontosApoio.length, lugares: lugares.length, relatos: rel.length, tp, criticosDescartados }))
