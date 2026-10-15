@@ -125,7 +125,7 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
         </div>
         <p className="mt-1.5 text-xs text-ink-dim">
           {resumo.total} {resumo.total === 1 ? 'relato' : 'relatos'}{' '}
-          {usaBairro ? `no bairro ${area?.bairro}` : `em até ${RAIO_RELATOS_M} m`}
+          {usaBairro ? `no bairro ${area?.bairro}` : alvo.trecho ? 'neste trecho e arredores' : `em até ${RAIO_RELATOS_M} m`}
         </p>
 
         <h3 className="mb-1.5 mt-4 text-sm font-semibold">Relatos da comunidade</h3>
