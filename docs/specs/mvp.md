@@ -69,7 +69,7 @@ npx tsc -b && npx vitest run --reporter=dot && npm run build
 - [x] **T3** — Domínio: scoring + avaliações, com testes vitest (depende de T2)
 - [x] **T4** — Mapa + camadas + legenda (depende de T2, T3)
 - [x] **T5** — Busca/rotas/card/avaliação/compartilhar (depende de T3, T4)
-- [>] **T6** — PWA final + deploy + docs (Como funciona, fontes)
+- [x] **T6** — PWA final + deploy + docs (Como funciona, fontes) — nota: publicação na Vercel feita pelo usuário
 
 ## Arquivos esperados por tarefa
 
