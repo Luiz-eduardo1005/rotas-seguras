@@ -61,17 +61,24 @@ function PainelAba() {
   return null
 }
 
+const REDUZIR =
+  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+const ANIMACOES = REDUZIR ? { zoomAnimation: false, fadeAnimation: false, markerZoomAnimation: false } : {}
+
 function Casca() {
   const { abaAtiva, periodo } = useAppEstado()
   const { escolherPontoNoMapa, resultados } = useRotas()
   const { perfil } = usePerfil()
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <MapContainer center={MANAUS} zoom={12} zoomControl={false} className="absolute inset-0 z-0">
+      <MapContainer center={MANAUS} zoom={12} zoomControl={false} {...ANIMACOES} className="absolute inset-0 z-0">
         <TileLayer
           key={periodo}
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
+          updateWhenZooming={false}
+          updateWhenIdle
+          keepBuffer={4}
           className={periodo === 'dia' ? 'tiles-dia' : 'tiles-noite'}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
