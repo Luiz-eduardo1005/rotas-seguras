@@ -34,6 +34,10 @@ export default function BotaoLocalizar() {
       setErro('Este aparelho não oferece geolocalização.')
       return
     }
+    if (!window.isSecureContext) {
+      setErro('Localização precisa de conexão segura (https). Abra pelo link publicado.')
+      return
+    }
     setBuscando(true)
     setErro(null)
     navigator.geolocation.getCurrentPosition(
