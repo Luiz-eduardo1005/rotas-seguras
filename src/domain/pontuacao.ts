@@ -2,6 +2,7 @@ import { aplicarAvaliacoes, alvoIdParaCoord, type AgregadoAlvo } from './avaliac
 import { amostrarPolilinha, comprimentoM, distanciaM, distanciaPontoSegmentoM } from './geo'
 import type {
   AmostraPontuada,
+  Area,
   Cenario,
   Fatores,
   LatLng,
@@ -81,6 +82,11 @@ export function fatoresNoPonto(coord: LatLng, cenario: Cenario, agregado: Agrega
 
 export function nivelDoTrecho(trecho: Trecho, agregado: Agregados, periodo: Periodo): Nivel {
   const f = aplicarAvaliacoes(soFatores(trecho), agregado.get(trecho.id))
+  return nivelDaNota(notaFatores(f, periodo))
+}
+
+export function nivelDaArea(area: Area, agregado: Agregados, periodo: Periodo): Nivel {
+  const f = aplicarAvaliacoes(soFatores(area), agregado.get(area.id))
   return nivelDaNota(notaFatores(f, periodo))
 }
 

@@ -3,13 +3,14 @@ import { agregarAvaliacoes, alvoIdParaCoord } from './avaliacoes'
 import { amostrarPolilinha, comprimentoM, distanciaM, distanciaPontoSegmentoM } from './geo'
 import {
   fatoresNoPonto,
+  nivelDaArea,
   nivelDaNota,
   nivelDoTrecho,
   notaFatores,
   ordenarRotas,
   pontuarRota,
 } from './pontuacao'
-import type { Avaliacao, Cenario, LatLng, PontoApoio, Trecho } from './tipos'
+import type { Area, Avaliacao, Cenario, LatLng, PontoApoio, Trecho } from './tipos'
 
 const vazio = new Map()
 const L = -60.02
@@ -198,5 +199,19 @@ describe('ordenarRotas / nivelDoTrecho', () => {
     expect(nivelDoTrecho(t, vazio, 'noite')).toBe('amarelo')
     const ag = agregarAvaliacoes(Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, alvoId: 't', tipo: 'atencao' as const, coord: { lat: 0, lng: 0 }, criadoEm: '' })))
     expect(nivelDoTrecho(t, ag, 'noite')).toBe('vermelho')
+  })
+})
+
+describe('nivelDaArea', () => {
+  const area: Area = {
+    id: 'a1', bairro: 'Centro', zona: 'Centro-Sul', centro: { lat: 0, lng: L }, raioM: 300,
+    luz: 0.5, fluxo: 0.5, risco: 0.5, fonte: 'estimativa',
+  }
+  it('usa votos da comunidade no id da area', () => {
+    expect(nivelDaArea(area, vazio, 'noite')).toBe('amarelo')
+    const votos = Array.from({ length: 30 }, (_, i): Avaliacao => ({
+      id: String(i), alvoId: 'a1', tipo: 'atencao', coord: area.centro, criadoEm: '',
+    }))
+    expect(nivelDaArea(area, agregarAvaliacoes(votos), 'noite')).toBe('vermelho')
   })
 })
