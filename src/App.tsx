@@ -11,6 +11,8 @@ import BotaoLocalizar from './features/mapa/BotaoLocalizar'
 import CamadaRotas from './features/rotas/CamadaRotas'
 import ListaSalvos from './features/rotas/ListaSalvos'
 import PainelRotas from './features/rotas/PainelRotas'
+import AbaPerfil, { iniciais } from './features/perfil/AbaPerfil'
+import { PerfilProvider, usePerfil } from './features/perfil/PerfilEstado'
 import { RotasProvider, useRotas } from './features/rotas/RotasEstado'
 
 const MANAUS: [number, number] = [-3.1019, -60.025]
@@ -53,36 +55,30 @@ function PainelAba() {
   if (abaAtiva === 'perfil')
     return (
       <Painel titulo="Perfil" onFechar={fechar}>
-        <h3 className="mb-1 text-sm font-semibold text-lamp">Como funciona</h3>
-        <p className="mb-3 text-sm">
-          Você escolhe origem e destino, o app compara rotas a pé e pontua cada trecho por luz, fluxo de pessoas e
-          risco, combinando dados de base com avaliações da comunidade.
-        </p>
-        <h3 className="mb-1 text-sm font-semibold text-lamp">Fontes reais</h3>
-        <ul className="mb-3 list-disc space-y-1 pl-5 text-sm">
-          <li>SSP-AM / CIESP: bairros com maior incidência (2017-2023).</li>
-          <li>OpenStreetMap: tags lit e street_lamp (cobertura baixa).</li>
-          <li>Manaus+Luz / Ageman: iluminação pública, 0800-201-0001.</li>
-          <li>Rotas a pé: OSRM (routing.openstreetmap.de).</li>
-        </ul>
-        <p className="text-xs text-ink-dim">
-          Não garante segurança e não substitui o 190. Dados desta versão são simulados para demonstração.
-        </p>
+        <AbaPerfil />
       </Painel>
     )
   return null
 }
 
+const REDUZIR =
+  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+const ANIMACOES = REDUZIR ? { zoomAnimation: false, fadeAnimation: false, markerZoomAnimation: false } : {}
+
 function Casca() {
   const { abaAtiva, periodo } = useAppEstado()
   const { escolherPontoNoMapa, resultados } = useRotas()
+  const { perfil } = usePerfil()
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <MapContainer center={MANAUS} zoom={12} zoomControl={false} className="absolute inset-0 z-0">
+      <MapContainer center={MANAUS} zoom={12} zoomControl={false} {...ANIMACOES} className="absolute inset-0 z-0">
         <TileLayer
           key={periodo}
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
+          updateWhenZooming={false}
+          updateWhenIdle
+          keepBuffer={4}
           className={periodo === 'dia' ? 'tiles-dia' : 'tiles-noite'}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
@@ -98,7 +94,19 @@ function Casca() {
         <h1 className="pointer-events-auto rounded-card border border-line bg-surface px-4 py-2 text-base font-semibold backdrop-blur">
           Rotas <span className="text-route">Seguras</span>
         </h1>
-        <SeletorPeriodo />
+        <div className="pointer-events-auto flex items-center gap-2">
+          {perfil && (
+            <span
+              title={`Olá, ${perfil.apelido}`}
+              aria-label={`Olá, ${perfil.apelido}`}
+              role="img"
+              className="grid size-9 place-items-center rounded-full border border-line bg-surface text-xs font-semibold text-route backdrop-blur"
+            >
+              {iniciais(perfil.apelido)}
+            </span>
+          )}
+          <SeletorPeriodo />
+        </div>
       </header>
 
       <Legenda compacta={resultados.length > 0} />
@@ -115,9 +123,11 @@ function Casca() {
 export default function App() {
   return (
     <AppEstadoProvider>
-      <RotasProvider>
-        <Casca />
-      </RotasProvider>
+      <PerfilProvider>
+        <RotasProvider>
+          <Casca />
+        </RotasProvider>
+      </PerfilProvider>
     </AppEstadoProvider>
   )
 }

@@ -39,3 +39,9 @@ body {
 @keyframes localizar-pulso { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 .localizar-pulso { animation: localizar-pulso 1.8s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .localizar-pulso { animation: none !important; } }
+
+/* painel de rotas: expandir/recolher suave */
+.painel-conteudo { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 220ms ease-out, opacity 180ms ease-out; }
+.painel-conteudo[data-aberto='true'] { grid-template-rows: 1fr; opacity: 1; }
+.painel-rolagem { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+@media (prefers-reduced-motion: reduce) { .painel-conteudo { transition: none; } }

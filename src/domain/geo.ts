@@ -1,4 +1,4 @@
-import type { LatLng } from './tipos'
+import type { Area, LatLng } from './tipos'
 
 const RAIO_TERRA_M = 6371000
 const rad = (g: number) => (g * Math.PI) / 180
@@ -78,4 +78,18 @@ export function validarTrajeto(o: LatLng, d: LatLng): string | null {
   if (dist > TRAJETO_MAX_M) return 'Trajeto longo demais para ir a pé (máx. 25 km).'
   if (dist < TRAJETO_MIN_M) return 'Origem e destino são o mesmo lugar.'
   return null
+}
+
+/** Área (bairro) que contém o ponto; se mais de uma, a de centro mais próximo. */
+export function areaDoPonto(coord: LatLng, areas: Area[]): Area | undefined {
+  let melhor: Area | undefined
+  let melhorD = Infinity
+  for (const a of areas) {
+    const d = distanciaM(coord, a.centro)
+    if (d <= a.raioM && d < melhorD) {
+      melhorD = d
+      melhor = a
+    }
+  }
+  return melhor
 }

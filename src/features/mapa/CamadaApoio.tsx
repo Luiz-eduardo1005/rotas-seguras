@@ -1,10 +1,11 @@
-import { memo, useMemo, type ReactElement } from 'react'
+import { memo, useState, type ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import L from 'leaflet'
-import { Marker, Popup } from 'react-leaflet'
+import { CircleMarker, Marker, Popup, useMap, useMapEvents } from 'react-leaflet'
 import { Bus, Cross, Shield, Store, Trees } from 'lucide-react'
 import { pontosApoio } from '../../data/apoio'
 import type { TipoApoio } from '../../domain/tipos'
+import { rendererCanvas } from './rendererCanvas'
 
 const CFG: Record<TipoApoio, { rotulo: string; cor: string; icone: ReactElement }> = {
   delegacia: { rotulo: 'Delegacia', cor: '#22d3ee', icone: <Shield size={16} /> },
@@ -26,16 +27,39 @@ function criarIcone(tipo: TipoApoio): L.DivIcon {
   })
 }
 
+const cacheIcones = new Map<TipoApoio, L.DivIcon>()
+function iconeDe(tipo: TipoApoio): L.DivIcon {
+  let i = cacheIcones.get(tipo)
+  if (!i) cacheIcones.set(tipo, (i = criarIcone(tipo)))
+  return i
+}
+
+const ZOOM_ICONES = 13
+
 function CamadaApoio() {
-  const icones = useMemo(() => {
-    const m = {} as Record<TipoApoio, L.DivIcon>
-    for (const t of Object.keys(CFG) as TipoApoio[]) m[t] = criarIcone(t)
-    return m
-  }, [])
+  const map = useMap()
+  const [detalhado, setDetalhado] = useState(() => map.getZoom() >= ZOOM_ICONES)
+  useMapEvents({ zoomend: () => setDetalhado(map.getZoom() >= ZOOM_ICONES) })
+  if (!detalhado) {
+    return (
+      <>
+        {pontosApoio.map((p) => (
+          <CircleMarker
+            key={p.id}
+            center={[p.coord.lat, p.coord.lng]}
+            radius={3}
+            renderer={rendererCanvas}
+            interactive={false}
+            pathOptions={{ color: CFG[p.tipo].cor, fillColor: CFG[p.tipo].cor, fillOpacity: 0.9, weight: 1 }}
+          />
+        ))}
+      </>
+    )
+  }
   return (
     <>
       {pontosApoio.map((p) => (
-        <Marker key={p.id} position={[p.coord.lat, p.coord.lng]} icon={icones[p.tipo]} title={p.nome}>
+        <Marker key={p.id} position={[p.coord.lat, p.coord.lng]} icon={iconeDe(p.tipo)} title={p.nome}>
           <Popup>
             <strong>{p.nome}</strong>
             <br />

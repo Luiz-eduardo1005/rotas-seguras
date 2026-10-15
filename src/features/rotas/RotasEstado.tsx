@@ -3,7 +3,7 @@ import type { ResultadoRota } from '../../domain/tipos'
 import { validarTrajeto } from '../../domain/geo'
 import { gerarId } from '../../lib/gerarId'
 import { ordenarRotas, pontuarRota } from '../../domain/pontuacao'
-import { buscarRotaPregravada, cenario, lugares, rotasModelo } from '../../data'
+import { buscarRotaPregravada, cenario } from '../../data'
 import { buscarRotasAPe, ErroRotasApi, type RotaBruta } from '../../services/rotasApi'
 import {
   carregarRotasSalvas,
@@ -11,11 +11,18 @@ import {
   type PontoRota,
   type RotaSalva,
 } from '../../services/armazenamento'
+import {
+  carregarHistorico,
+  limparHistorico as limparHistoricoStore,
+  registrarBusca,
+  removerDoHistorico,
+  type EntradaHistorico,
+} from '../../services/historicoStorage'
 import { useAppEstado } from '../estado/AppEstado'
 import { lerLinkRota } from './compartilhar'
 import { mesclarRotas } from './mesclarRotas'
 
-export type { PontoRota, RotaSalva }
+export type { PontoRota, RotaSalva, EntradaHistorico }
 export type ModoEscolha = 'origem' | 'destino' | null
 export type OrigemDados = 'ao-vivo' | 'offline'
 export type RotaAvaliada = ResultadoRota & RotaBruta
@@ -38,7 +45,10 @@ interface RotasValor {
   versaoResultados: number
   selecionadaIdx: number
   selecionar: (i: number) => void
-  usarRotaModelo: (id: string) => void
+  historico: EntradaHistorico[]
+  repetirBusca: (e: EntradaHistorico) => void
+  removerHistorico: (id: string) => void
+  limparHistorico: () => void
   /** painel expandido (persiste entre abas); recolhe ao chegar resultado */
   painelAberto: boolean
   setPainelAberto: (a: boolean) => void
@@ -74,6 +84,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
   const [versaoResultados, setVersao] = useState(0)
   const [painelAberto, setPainelAberto] = useState(true)
   const [rotasSalvas, setRotasSalvas] = useState<RotaSalva[]>(carregarRotasSalvas)
+  const [historico, setHistorico] = useState<EntradaHistorico[]>(carregarHistorico)
   const ctrl = useRef<AbortController | null>(null)
 
   const resultados = useMemo<RotaAvaliada[]>(
@@ -101,6 +112,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
       setSelecionadaIdx(0)
       setVersao((v) => v + 1)
       setPainelAberto(false)
+      setHistorico(registrarBusca(o, d))
     }
     const off = buscarRotaPregravada(o.coord, d.coord)
     try {
@@ -178,16 +190,9 @@ export function RotasProvider({ children }: { children: ReactNode }) {
     [executar],
   )
 
-  const usarRotaModelo = useCallback(
-    (id: string) => {
-      const m = rotasModelo.find((r) => r.id === id)
-      const lo = lugares.find((l) => l.id === m?.origemId)
-      const ld = lugares.find((l) => l.id === m?.destinoId)
-      if (!m || !lo || !ld) return
-      buscarEntre({ nome: lo.nome, coord: lo.coord }, { nome: ld.nome, coord: ld.coord })
-    },
-    [buscarEntre],
-  )
+  const repetirBusca = useCallback((e: EntradaHistorico) => buscarEntre(e.origem, e.destino), [buscarEntre])
+  const removerHistorico = useCallback((id: string) => setHistorico(removerDoHistorico(id)), [])
+  const limparHistorico = useCallback(() => setHistorico(limparHistoricoStore()), [])
 
   const persistir = useCallback((rotas: RotaSalva[]) => {
     setRotasSalvas(rotas)
@@ -218,7 +223,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
   const valor: RotasValor = {
     origem, destino, setOrigem, setDestino, inverter, modoEscolha, setModoEscolha, escolherPontoNoMapa,
     buscar, painelAberto, setPainelAberto, carregando, erro, origemDados, resultados, versaoResultados, selecionadaIdx,
-    selecionar: setSelecionadaIdx, usarRotaModelo, limpar, rotasSalvas, salvarRotaAtual, removerSalva, abrirSalva,
+    selecionar: setSelecionadaIdx, historico, repetirBusca, removerHistorico, limparHistorico, limpar, rotasSalvas, salvarRotaAtual, removerSalva, abrirSalva,
   }
   return <Ctx.Provider value={valor}>{children}</Ctx.Provider>
 }

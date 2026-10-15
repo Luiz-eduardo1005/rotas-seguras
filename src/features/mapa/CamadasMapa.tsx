@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { useMapEvents } from 'react-leaflet'
 import { cenario } from '../../data'
 import { alvoIdParaCoord } from '../../domain/avaliacoes'
-import { distanciaM, distanciaPontoSegmentoM } from '../../domain/geo'
+import { areaDoPonto, distanciaPontoSegmentoM } from '../../domain/geo'
 import type { LatLng, Trecho } from '../../domain/tipos'
 import { useAppEstado } from '../estado/AppEstado'
 import CamadaAvaliacoes from './CamadaAvaliacoes'
@@ -35,15 +35,19 @@ function trechoMaisProximo(coord: LatLng): Trecho | undefined {
   return melhor
 }
 
+function tituloPonto(coord: LatLng): string {
+  const area = areaDoPonto(coord, cenario.areas)
+  return area ? `Ponto em ${area.bairro}` : 'Ponto no mapa'
+}
+
 function alvoDoPonto(coord: LatLng): AlvoAvaliacao {
   const trecho = trechoMaisProximo(coord)
   if (trecho) return { alvoId: trecho.id, titulo: `${trecho.nome} · ${trecho.bairro}`, coord, trecho }
-  const area = cenario.areas.find((a) => distanciaM(coord, a.centro) <= a.raioM)
-  return { alvoId: alvoIdParaCoord(coord), titulo: area ? `Ponto no mapa · ${area.bairro}` : 'Ponto no mapa', coord }
+  return { alvoId: alvoIdParaCoord(coord), titulo: tituloPonto(coord), coord }
 }
 
 export default function CamadasMapa({ onToqueMapa, atenuar }: Props) {
-  const { camadasVisiveis } = useAppEstado()
+  const { camadasVisiveis, agregado, periodo, avaliacoes, todasAvaliacoes } = useAppEstado()
   const [alvo, setAlvo] = useState<AlvoAvaliacao | null>(null)
 
   useMapEvents({
@@ -60,17 +64,20 @@ export default function CamadasMapa({ onToqueMapa, atenuar }: Props) {
   }, [])
 
   const aoSelecionarAvaliacao = useCallback((alvoId: string, coord: LatLng) => {
-    const area = cenario.areas.find((a) => distanciaM(coord, a.centro) <= a.raioM)
-    setAlvo({ alvoId, titulo: area ? `Ponto no mapa · ${area.bairro}` : 'Ponto no mapa', coord })
+    const trecho = cenario.trechos.find((t) => t.id === alvoId)
+    if (trecho) setAlvo({ alvoId, titulo: `${trecho.nome} · ${trecho.bairro}`, coord, trecho })
+    else setAlvo({ alvoId, titulo: tituloPonto(coord), coord })
   }, [])
+
+  const fecharAlvo = useCallback(() => setAlvo(null), [])
 
   return (
     <>
-      {camadasVisiveis.areas && <CamadaAreas atenuar={atenuar} />}
-      {camadasVisiveis.trechos && <CamadaTrechos onSelecionar={aoSelecionarTrecho} atenuar={atenuar} />}
-      {camadasVisiveis.trechos && <CamadaAvaliacoes onSelecionar={aoSelecionarAvaliacao} />}
+      {camadasVisiveis.areas && <CamadaAreas agregado={agregado} periodo={periodo} atenuar={atenuar} />}
+      {camadasVisiveis.trechos && <CamadaTrechos agregado={agregado} periodo={periodo} onSelecionar={aoSelecionarTrecho} atenuar={atenuar} />}
+      {camadasVisiveis.trechos && <CamadaAvaliacoes avaliacoes={avaliacoes} todasAvaliacoes={todasAvaliacoes} onSelecionar={aoSelecionarAvaliacao} />}
       {camadasVisiveis.apoio && <CamadaApoio />}
-      {alvo && <FolhaAvaliacao key={alvo.alvoId} alvo={alvo} onFechar={() => setAlvo(null)} />}
+      {alvo && <FolhaAvaliacao key={alvo.alvoId} alvo={alvo} onFechar={fecharAlvo} />}
     </>
   )
 }

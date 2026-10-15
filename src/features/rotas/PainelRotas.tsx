@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useRef, useState, type PointerEvent } from 'react'
 import {
   ArrowUpDown,
   Bookmark,
@@ -6,6 +6,7 @@ import {
   ChevronUp,
   Footprints,
   Search,
+  Send,
   Share2,
   ShieldCheck,
   Trash2,
@@ -14,9 +15,10 @@ import {
 } from 'lucide-react'
 import type { Nivel } from '../../domain/tipos'
 import { nivelDoFator, resumoRota } from '../../domain/pontuacao'
-import { rotasModelo } from '../../data'
 import { useAppEstado } from '../estado/AppEstado'
-import { compartilharRota } from './compartilhar'
+import { usePerfil } from '../perfil/PerfilEstado'
+import { compartilharRota, montarLinkRota, montarLinkWhatsApp } from './compartilhar'
+import BuscasRecentes from './BuscasRecentes'
 import CampoLugar from './CampoLugar'
 import { useRotas, type RotaAvaliada } from './RotasEstado'
 
@@ -42,13 +44,13 @@ function Barra({ rotulo, valor, nivel }: { rotulo: string; valor: number; nivel:
   )
 }
 
-function Cartao({ r, indice, ativo, onSelecionar }: { r: RotaAvaliada; indice: number; ativo: boolean; onSelecionar: () => void }) {
+const Cartao = memo(function Cartao({ r, indice, ativo, onSelecionar }: { r: RotaAvaliada; indice: number; ativo: boolean; onSelecionar: (i: number) => void }) {
   const min = Math.max(1, Math.round(r.duracaoS / 60))
   const km = (r.distanciaM / 1000).toFixed(1).replace('.', ',')
   return (
     <li>
       <button
-        onClick={onSelecionar}
+        onClick={() => onSelecionar(indice)}
         aria-pressed={ativo}
         className={`w-full rounded-xl border p-3 text-left focus-visible:ring-2 focus-visible:ring-route ${
           ativo ? 'border-route bg-route/10 shadow-glow' : 'border-line bg-surface-solid'
@@ -83,15 +85,40 @@ function Cartao({ r, indice, ativo, onSelecionar }: { r: RotaAvaliada; indice: n
       </button>
     </li>
   )
-}
+})
 
 const MSG_FEEDBACK = { compartilhado: 'Compartilhado', copiado: 'Link copiado', cancelado: '', erro: 'Não foi possível compartilhar' }
 
 export default function PainelRotas() {
   const r = useRotas()
   const { periodo } = useAppEstado()
+  const { perfil } = usePerfil()
+  const contato = perfil?.contatoConfianca
   const { painelAberto: aberto, setPainelAberto: setAberto } = r
   const [feedback, setFeedback] = useState('')
+
+  const arrasto = useRef<{ y: number } | null>(null)
+  const arrastou = useRef(false)
+  const aoPressionar = (e: PointerEvent) => {
+    arrasto.current = { y: e.clientY }
+  }
+  const aoSoltar = (e: PointerEvent) => {
+    const a = arrasto.current
+    arrasto.current = null
+    if (!a) return
+    const dy = e.clientY - a.y
+    if (Math.abs(dy) > 24) {
+      arrastou.current = true
+      setAberto(dy < 0)
+    }
+  }
+  const aoClicarAlca = () => {
+    if (arrastou.current) {
+      arrastou.current = false
+      return
+    }
+    setAberto(!aberto)
+  }
 
   const sel = r.resultados[r.selecionadaIdx]
   const caixa =
@@ -124,6 +151,13 @@ export default function PainelRotas() {
     if (res !== 'cancelado') avisar(MSG_FEEDBACK[res])
   }
 
+  const enviarContato = () => {
+    if (!r.origem || !r.destino || !contato) return
+    const link = montarLinkRota(r.origem, r.destino, periodo)
+    const url = montarLinkWhatsApp(contato.telefone, `Estou indo a pé por este trajeto (Rotas Seguras): ${link}`)
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
   const salvar = () => avisar(r.salvarRotaAtual() ? 'Rota salva' : 'Defina origem e destino')
 
   const botao =
@@ -132,9 +166,13 @@ export default function PainelRotas() {
   return (
     <section aria-label="Planejar rota" className={`${caixa} flex max-h-[62%] flex-col overflow-hidden`}>
       <button
-        onClick={() => setAberto(!aberto)}
+        onClick={aoClicarAlca}
+        onPointerDown={aoPressionar}
+        onPointerUp={aoSoltar}
+        onPointerCancel={() => (arrasto.current = null)}
         aria-expanded={aberto}
         aria-label={aberto ? 'Recolher painel de rotas' : 'Expandir painel de rotas'}
+        style={{ touchAction: "none" }}
         className="flex min-h-11 w-full shrink-0 items-center gap-3 px-4 text-left focus-visible:ring-2 focus-visible:ring-route"
       >
         <span className="mx-auto absolute left-1/2 top-1.5 h-1 w-10 -translate-x-1/2 rounded-full bg-ink-dim/50" aria-hidden />
@@ -152,8 +190,8 @@ export default function PainelRotas() {
         {aberto ? <ChevronDown size={20} className="mt-2" aria-hidden /> : <ChevronUp size={20} className="mt-2" aria-hidden />}
       </button>
 
-      {aberto && (
-        <div className="flex flex-col gap-3 overflow-y-auto px-4 pb-4">
+      <div className="painel-conteudo min-h-0" data-aberto={aberto} aria-hidden={!aberto} inert={!aberto}>
+        <div className="painel-rolagem flex min-h-0 flex-col gap-3 overflow-y-auto overflow-x-hidden px-4 pb-4">
           <div className="flex items-end gap-2">
             <div className="flex min-w-0 flex-1 flex-col gap-2">
               <CampoLugar qual="origem" rotulo="Origem" valor={r.origem} onEscolher={r.setOrigem} />
@@ -168,21 +206,6 @@ export default function PainelRotas() {
             </button>
           </div>
 
-          {!r.resultados.length && !r.carregando && (
-            <div className="flex flex-wrap gap-2" aria-label="Trajetos de exemplo">
-              {rotasModelo.map((m) => (
-                <button
-                  key={m.id}
-                  onClick={() => r.usarRotaModelo(m.id)}
-                  title={m.descricao}
-                  className="min-h-11 rounded-full border border-line bg-surface-solid px-3 text-xs text-ink hover:border-route focus-visible:ring-2 focus-visible:ring-route"
-                >
-                  {m.titulo}
-                </button>
-              ))}
-            </div>
-          )}
-
           <button
             onClick={() => void r.buscar()}
             disabled={r.carregando}
@@ -190,6 +213,15 @@ export default function PainelRotas() {
           >
             <Search size={18} aria-hidden /> Buscar rota segura
           </button>
+
+          {!r.resultados.length && !r.carregando && (
+            <BuscasRecentes
+              itens={r.historico}
+              onRepetir={r.repetirBusca}
+              onRemover={r.removerHistorico}
+              onLimpar={r.limparHistorico}
+            />
+          )}
 
           {r.carregando && (
             <div role="status" aria-label="Buscando rotas" className="flex flex-col gap-2">
@@ -214,7 +246,7 @@ export default function PainelRotas() {
               )}
               <ul className="flex flex-col gap-2">
                 {r.resultados.map((res, i) => (
-                  <Cartao key={i} r={res} indice={i} ativo={i === r.selecionadaIdx} onSelecionar={() => r.selecionar(i)} />
+                  <Cartao key={i} r={res} indice={i} ativo={i === r.selecionadaIdx} onSelecionar={r.selecionar} />
                 ))}
               </ul>
               <div className="flex gap-2">
@@ -228,13 +260,18 @@ export default function PainelRotas() {
                   <Trash2 size={16} aria-hidden /> Limpar
                 </button>
               </div>
+              {contato && (
+                <button onClick={enviarContato} className={botao}>
+                  <Send size={16} aria-hidden /> Enviar para {contato.nome}
+                </button>
+              )}
             </>
           )}
           <p role="status" aria-live="polite" className="min-h-4 text-center text-xs text-route">
             {feedback}
           </p>
         </div>
-      )}
+      </div>
     </section>
   )
 }

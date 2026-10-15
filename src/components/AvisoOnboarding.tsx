@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import { useAppEstado } from '../features/estado/AppEstado'
+import CriarPerfil from '../features/perfil/CriarPerfil'
+import { usePerfil } from '../features/perfil/PerfilEstado'
 
 const CARDS = [
   {
@@ -22,7 +25,11 @@ export function AvisoRodape() {
 
 export default function AvisoOnboarding() {
   const { onboardingVisto, marcarOnboarding } = useAppEstado()
-  if (onboardingVisto) return null
+  const { precisaCriar } = usePerfil()
+  // mantém o fluxo aberto até o usuário concluir/pular (precisaCriar vira false ao salvar)
+  const [criando, setCriando] = useState(false)
+  if (precisaCriar && !criando) setCriando(true)
+  if (onboardingVisto) return criando ? <CriarPerfil onFechar={() => setCriando(false)} /> : null
   return (
     <div
       role="dialog"

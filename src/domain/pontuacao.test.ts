@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { agregarAvaliacoes, alvoIdParaCoord } from './avaliacoes'
-import { amostrarPolilinha, comprimentoM, dentroDeManaus, distanciaM, distanciaPontoSegmentoM, validarTrajeto } from './geo'
+import { amostrarPolilinha, areaDoPonto, comprimentoM, dentroDeManaus, distanciaM, distanciaPontoSegmentoM, validarTrajeto } from './geo'
 import {
   fatoresNoPonto,
   nivelDaArea,
@@ -95,9 +95,9 @@ describe('fatoresNoPonto', () => {
   it('aplica avaliacoes do trecho e da celula', () => {
     const cen: Cenario = { ...cenarioVazio, trechos: [trecho('t1', -3.1, 0.5, 0.5, 0.5)] }
     const p = { lat: -3.1, lng: L + 0.002 }
-    const ag = agregarAvaliacoes([{ id: 'x', alvoId: 't1', tipo: 'atencao', coord: p, criadoEm: '' }])
+    const ag = agregarAvaliacoes([{ id: 'x', alvoId: 't1', tipo: 'atencao', coord: p, criadoEm: '', autorId: 'local', autorNome: 'Você' }])
     expect(fatoresNoPonto(p, cen, ag).risco).toBeGreaterThan(0.5)
-    const ag2 = agregarAvaliacoes([{ id: 'y', alvoId: alvoIdParaCoord(p), tipo: 'luz', coord: p, criadoEm: '' }])
+    const ag2 = agregarAvaliacoes([{ id: 'y', alvoId: alvoIdParaCoord(p), tipo: 'luz', coord: p, criadoEm: '', autorId: 'local', autorNome: 'Você' }])
     expect(fatoresNoPonto(p, cen, ag2).luz).toBeGreaterThan(0.5)
   })
 })
@@ -156,7 +156,7 @@ describe('pontuarRota', () => {
       alvoId: 't',
       tipo: 'atencao',
       coord: { lat: -3.1, lng: L },
-      criadoEm: '',
+      criadoEm: '', autorId: 'local', autorNome: 'Você',
     }))
     const antes = pontuarRota(linha(-3.1), c, vazio, 'noite').nota
     const depois = pontuarRota(linha(-3.1), c, agregarAvaliacoes(votos), 'noite').nota
@@ -199,7 +199,7 @@ describe('ordenarRotas / nivelDoTrecho', () => {
   it('nivelDoTrecho reage a avaliacoes e periodo', () => {
     const t = trecho('t', -3.1, 0.6, 0.6, 0.4)
     expect(nivelDoTrecho(t, vazio, 'noite')).toBe('amarelo')
-    const ag = agregarAvaliacoes(Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, alvoId: 't', tipo: 'atencao' as const, coord: { lat: 0, lng: 0 }, criadoEm: '' })))
+    const ag = agregarAvaliacoes(Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, alvoId: 't', tipo: 'atencao' as const, coord: { lat: 0, lng: 0 }, criadoEm: '', autorId: 'local', autorNome: 'Você' })))
     expect(nivelDoTrecho(t, ag, 'noite')).toBe('vermelho')
   })
 })
@@ -212,7 +212,7 @@ describe('nivelDaArea', () => {
   it('usa votos da comunidade no id da area', () => {
     expect(nivelDaArea(area, vazio, 'noite')).toBe('amarelo')
     const votos = Array.from({ length: 30 }, (_, i): Avaliacao => ({
-      id: String(i), alvoId: 'a1', tipo: 'atencao', coord: area.centro, criadoEm: '',
+      id: String(i), alvoId: 'a1', tipo: 'atencao', coord: area.centro, criadoEm: '', autorId: 'local', autorNome: 'Você',
     }))
     expect(nivelDaArea(area, agregarAvaliacoes(votos), 'noite')).toBe('vermelho')
   })
@@ -243,5 +243,18 @@ describe('nivelDoFator / resumoRota', () => {
   it('resumoRota usa o corte de nivelDaNota (<45)', () => {
     expect(resumoRota({ ...base, nota: 44 })).toMatch(/Redobre/)
     expect(resumoRota({ ...base, nota: 45 })).toMatch(/medianas/)
+  })
+})
+
+describe('areaDoPonto', () => {
+  const ar = (id: string, lat: number, raioM: number): Area => ({ id, bairro: id, zona: 'centro-sul', centro: { lat, lng: L }, raioM, luz: 0.5, fluxo: 0.5, risco: 0.5 } as Area)
+  it('retorna a área de centro mais próximo entre as que contêm o ponto', () => {
+    const a = ar('a', -3.1, 2000)
+    const b = ar('b', -3.105, 2000)
+    expect(areaDoPonto({ lat: -3.104, lng: L }, [a, b])?.id).toBe('b')
+  })
+  it('undefined fora de qualquer raio ou sem áreas', () => {
+    expect(areaDoPonto({ lat: -3.2, lng: L }, [ar('a', -3.1, 500)])).toBeUndefined()
+    expect(areaDoPonto({ lat: -3.1, lng: L }, [])).toBeUndefined()
   })
 })

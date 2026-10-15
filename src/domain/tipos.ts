@@ -49,6 +49,10 @@ export interface Avaliacao {
   coord: LatLng
   criadoEm: string
   comentario?: string
+  autorId: string
+  autorNome: string
+  /** Relato simulado (dados de demonstração), nunca excluível. */
+  semente?: boolean
 }
 
 export interface AmostraPontuada {

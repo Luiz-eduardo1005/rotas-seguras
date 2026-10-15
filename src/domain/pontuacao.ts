@@ -1,5 +1,5 @@
 import { aplicarAvaliacoes, alvoIdParaCoord, type AgregadoAlvo } from './avaliacoes'
-import { amostrarPolilinha, comprimentoM, distanciaM, distanciaPontoSegmentoM } from './geo'
+import { amostrarPolilinha, areaDoPonto, comprimentoM, distanciaM, distanciaPontoSegmentoM } from './geo'
 import type {
   AmostraPontuada,
   Area,
@@ -89,13 +89,10 @@ export function fatoresNoPonto(coord: LatLng, cenario: Cenario, agregado: Agrega
     }
   }
   if (!alvoId) {
-    for (const a of cenario.areas) {
-      const d = distanciaM(coord, a.centro)
-      if (d <= a.raioM && d < melhorD) {
-        melhorD = d
-        base = soFatores(a)
-        alvoId = a.id
-      }
+    const a = areaDoPonto(coord, cenario.areas)
+    if (a) {
+      base = soFatores(a)
+      alvoId = a.id
     }
   }
 

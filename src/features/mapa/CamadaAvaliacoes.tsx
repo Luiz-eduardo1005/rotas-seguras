@@ -1,10 +1,11 @@
-import { memo, useMemo } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import L from 'leaflet'
-import { Marker, Tooltip } from 'react-leaflet'
+import { CircleMarker, Marker, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import { AlertTriangle, Lightbulb, Users } from 'lucide-react'
 import type { LatLng, TipoAvaliacao } from '../../domain/tipos'
-import { useAppEstado } from '../estado/AppEstado'
+import type { Avaliacao } from '../../domain/tipos'
+import { rendererCanvas } from './rendererCanvas'
 
 const CFG = {
   luz: { cor: '#f5b544', icone: <Lightbulb size={14} /> },
@@ -18,6 +19,8 @@ interface Grupo {
   total: number
   tipo: TipoAvaliacao
 }
+
+const ZOOM_SEMENTE = 14
 
 const cacheIcones = new Map<string, L.DivIcon>()
 
@@ -37,13 +40,18 @@ function criarIcone(tipo: TipoAvaliacao, total: number): L.DivIcon {
   return icone_
 }
 
-/** Dentro do MapContainer: 1 pin por alvo de célula (`cel:`) com avaliações da comunidade. */
+/** Dentro do MapContainer: pins das avaliações locais (célula `cel:`) e pontos leves dos relatos simulados (zoom >= 14). */
 interface Props {
+  avaliacoes: Avaliacao[]
+  todasAvaliacoes: Avaliacao[]
   onSelecionar?: (alvoId: string, coord: LatLng) => void
 }
 
-function CamadaAvaliacoes({ onSelecionar }: Props) {
-  const { avaliacoes } = useAppEstado()
+function CamadaAvaliacoes({ avaliacoes, todasAvaliacoes, onSelecionar }: Props) {
+  const mapa = useMap()
+  const [zoom, setZoom] = useState(() => mapa.getZoom())
+  useMapEvents({ zoomend: () => setZoom(mapa.getZoom()) })
+  const sementes = useMemo(() => todasAvaliacoes.filter((a) => a.semente), [todasAvaliacoes])
   const grupos = useMemo(() => {
     const m = new Map<string, Grupo & { cont: Record<TipoAvaliacao, number> }>()
     for (const a of avaliacoes) {
@@ -67,6 +75,23 @@ function CamadaAvaliacoes({ onSelecionar }: Props) {
 
   return (
     <>
+      {zoom >= ZOOM_SEMENTE &&
+        sementes.map((a) => (
+          <CircleMarker
+            key={a.id}
+            center={[a.coord.lat, a.coord.lng]}
+            radius={6}
+            renderer={rendererCanvas}
+            bubblingMouseEvents={false}
+            pathOptions={{ color: '#060b16', weight: 1.5, fillColor: CFG[a.tipo].cor, fillOpacity: 0.9 }}
+            eventHandlers={{
+              click: (e) => {
+                L.DomEvent.stopPropagation(e)
+                onSelecionar?.(a.alvoId, a.coord)
+              },
+            }}
+          />
+        ))}
       {grupos.map((g) => (
         <Marker key={`${g.alvoId}-${g.tipo}-${g.total}`} position={[g.coord.lat, g.coord.lng]} icon={criarIcone(g.tipo, g.total)}
           bubblingMouseEvents={false}

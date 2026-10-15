@@ -1,3 +1,4 @@
+import { AUTOR_LOCAL } from '../domain/avaliacoes'
 import type { Avaliacao, LatLng, Periodo } from '../domain/tipos'
 
 const CHAVE_AVALIACOES = 'rotas-seguras:v1:avaliacoes'
@@ -60,7 +61,13 @@ function avaliacaoValida(a: unknown): a is Avaliacao {
 
 export function carregarAvaliacoes(): Avaliacao[] {
   const dados = ler(CHAVE_AVALIACOES)
-  return Array.isArray(dados) ? dados.filter(avaliacaoValida) : []
+  if (!Array.isArray(dados)) return []
+  // migração: avaliações antigas não tinham autor
+  return dados.filter(avaliacaoValida).map((a) => ({
+    ...a,
+    autorId: typeof a.autorId === 'string' ? a.autorId : AUTOR_LOCAL,
+    autorNome: typeof a.autorNome === 'string' ? a.autorNome : 'Você',
+  }))
 }
 
 export function salvarAvaliacoes(avaliacoes: Avaliacao[]): boolean {

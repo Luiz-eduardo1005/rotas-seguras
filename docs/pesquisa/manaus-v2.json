@@ -1,0 +1,2316 @@
+{
+ "meta": {
+  "geradoEm": "2026-10-15",
+  "aviso": "Dados simulados para fins acadêmicos. coordFonte=OSM significa centroide Nominatim; fonte=[estimativa] significa sem fonte pública verificada."
+ },
+ "bairros": [
+  {
+   "nome": "Adrianópolis",
+   "zona": "Centro-Sul",
+   "lat": -3.1017,
+   "lng": -60.009,
+   "raioM": 700,
+   "risco": "baixo",
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial/comercial de classe média, shopping e faculdades por perto",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Aleixo",
+   "zona": "Centro-Sul",
+   "lat": -3.0873,
+   "lng": -59.9901,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Av. Gov. José Lindoso (Av. das Torres) com tráfego; trechos internos mais vazios à noite",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Alvorada",
+   "zona": "Centro-Oeste",
+   "lat": -3.0759,
+   "lng": -60.0491,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro grande e populoso; SPA Alvorada 24h por perto",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Armando Mendes",
+   "zona": "Leste",
+   "lat": -3.094,
+   "lng": -59.9432,
+   "raioM": 1000,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Eixo da Av. Autaz Mirim; ponto de ônibus com assalto reportado na avenida",
+   "fonte": "https://www.acritica.com/policia/universitario-leva-quatro-facadas-durante-assalto-na-avenida-autaz-mirim-1.337172",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Betânia",
+   "zona": "Sul",
+   "lat": -3.1331,
+   "lng": -59.9956,
+   "raioM": 500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Citado em reportagem sobre medo e violência na Zona Sul",
+   "fonte": "https://www.acritica.com/policia/moradores-dos-bairros-da-zona-sul-de-manaus-relatam-rotina-de-violencia-e-medo-1.203372",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Cachoeirinha",
+   "zona": "Sul",
+   "lat": -3.1253,
+   "lng": -60.0054,
+   "raioM": 700,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Citado em reportagem sobre violência na Zona Sul; boa conexão por Av. Carvalho Leal/Silves",
+   "fonte": "https://www.acritica.com/policia/moradores-dos-bairros-da-zona-sul-de-manaus-relatam-rotina-de-violencia-e-medo-1.203372",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Centro",
+   "zona": "Centro-Sul",
+   "lat": -3.1321,
+   "lng": -60.0216,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "justificativa": "Lista de bairros mais violentos (ata SSP-AM); arrastões em paradas na Eduardo Ribeiro; esvazia após o comércio fechar",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf ; https://www.acritica.com/manaus/bandidos-fazem-arrast-o-e-causam-panico-em-pontos-do-centro-de-manaus-1.245949",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Chapada",
+   "zona": "Centro-Sul",
+   "lat": -3.0898,
+   "lng": -60.0271,
+   "raioM": 900,
+   "risco": "medio",
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "justificativa": "Av. Djalma Batista com shoppings/faculdades; arrastão em paradas relatado",
+   "fonte": "https://www.acritica.com/policia-procura-pistas-de-terceiro-envolvido-em-arrast-o-em-pontos-de-onibus-da-djalma-batista-1.11679",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Cidade de Deus",
+   "zona": "Norte",
+   "lat": -3.0187,
+   "lng": -59.9504,
+   "raioM": 1500,
+   "risco": "alto",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Entre os bairros mais violentos 2017-2023 (ata SSP-AM)",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Cidade Nova",
+   "zona": "Norte",
+   "lat": -3.0299,
+   "lng": -59.9926,
+   "raioM": 2500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Entre os mais violentos (ata SSP-AM); assalto a ônibus à noite perto do terminal do núcleo 5",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf ; https://portalamazonia.com/noticias/motorista-fica-ferido-apos-assalto-a-onibus-da-linha-450-em-manaus/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Colônia Antônio Aleixo",
+   "zona": "Leste",
+   "lat": -3.1055,
+   "lng": -59.9052,
+   "raioM": 2200,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Área periférica e extensa, borda do Rio Amazonas; pouco comércio noturno",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Colônia Oliveira Machado",
+   "zona": "Sul",
+   "lat": -3.1497,
+   "lng": -59.9998,
+   "raioM": 900,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "SPA Zona Sul 24h no bairro; resto sem fonte",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2025/12/Carta-de-Servico-SPA-ZONA-SUL.pdf",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Colônia Santo Antônio",
+   "zona": "Norte",
+   "lat": -3.008,
+   "lng": -60.042,
+   "raioM": 1800,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Bairro periférico de ocupação recente; coordenada estimada",
+   "fonte": "[estimativa]",
+   "coordFonte": "estimativa"
+  },
+  {
+   "nome": "Colônia Terra Nova",
+   "zona": "Norte",
+   "lat": -3.0131,
+   "lng": -60.0146,
+   "raioM": 1800,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Área em expansão na Zona Norte; ruas internas com pouca luz",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Compensa",
+   "zona": "Oeste",
+   "lat": -3.1052,
+   "lng": -60.0537,
+   "raioM": 1500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Ata SSP-AM (mais violentos); assalto a coletivo na Torquato Tapajós; série de assaltos no cruzamento Cirilo Neves/Av. Brasil",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf ; https://portalamazonia.com/noticias/homem-e-preso-suspeito-de-cometer-serie-de-assaltos-na-zona-oeste-de-manaus/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Coroado",
+   "zona": "Leste",
+   "lat": -3.0901,
+   "lng": -59.9734,
+   "raioM": 1500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "justificativa": "Alto fluxo (UFAM, feira, Av. Beira Mar); tentativa de assalto a ônibus (linha 541) em 2026",
+   "fonte": "https://emtempo.com.br/451467/policia/suspeito-agredido-passageiros/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Crespo",
+   "zona": "Sul",
+   "lat": -3.1339,
+   "lng": -59.9898,
+   "raioM": 500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Citado em reportagem sobre violência nos bairros da Zona Sul",
+   "fonte": "https://www.acritica.com/policia/moradores-dos-bairros-da-zona-sul-de-manaus-relatam-rotina-de-violencia-e-medo-1.203372",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Distrito Industrial I",
+   "zona": "Sul",
+   "lat": -3.1222,
+   "lng": -59.9601,
+   "raioM": 2200,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "justificativa": "Alto fluxo de operários em troca de turno; vias largas e vazias fora do horário",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Distrito Industrial II",
+   "zona": "Leste",
+   "lat": -3.043,
+   "lng": -59.9022,
+   "raioM": 2500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Assalto noturno a ônibus (linha 418) relatado (data a confirmar)",
+   "fonte": "https://emtempo.com.br/108924/policia/bandidos-tocam-o-terror-durante-assalto-no-onibus-da-linha-418-em-manaus/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Dom Pedro",
+   "zona": "Centro-Oeste",
+   "lat": -3.0877,
+   "lng": -60.0431,
+   "raioM": 900,
+   "risco": "baixo",
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial de classe média, perto da Djalma Batista",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Da Paz",
+   "zona": "Centro-Oeste",
+   "lat": -3.057,
+   "lng": -60.0307,
+   "raioM": 900,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial com feira e terminal; sem fonte de criminalidade",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Educandos",
+   "zona": "Sul",
+   "lat": -3.1421,
+   "lng": -60.011,
+   "raioM": 900,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Citado em reportagem sobre violência na Zona Sul",
+   "fonte": "https://www.acritica.com/policia/moradores-dos-bairros-da-zona-sul-de-manaus-relatam-rotina-de-violencia-e-medo-1.203372",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Flores",
+   "zona": "Centro-Sul",
+   "lat": -3.0728,
+   "lng": -60.0212,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "justificativa": "Rodoviária, Torquato Tapajós e comércio; movimento constante",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Gilberto Mestrinho",
+   "zona": "Leste",
+   "lat": -3.0711,
+   "lng": -59.9267,
+   "raioM": 1500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Grande conjunto Zona Leste; sem fonte específica",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Glória",
+   "zona": "Centro-Oeste",
+   "lat": -3.1185,
+   "lng": -60.0347,
+   "raioM": 500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro pequeno vizinho a Santo Antônio/Presidente Vargas",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Japiim",
+   "zona": "Sul",
+   "lat": -3.1132,
+   "lng": -59.9872,
+   "raioM": 1200,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "justificativa": "Bairro populoso com Av. Rodrigo Otávio e ULBRA; postes com risco de queda relatados",
+   "fonte": "https://www.acritica.com/manaus/moradores-do-japiim-temem-desabamento-de-postes-de-iluminac-o-publica-1.92968",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Jorge Teixeira",
+   "zona": "Leste",
+   "lat": -3.027,
+   "lng": -59.9182,
+   "raioM": 3000,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Maior peso nos indicadores de homicídio da Zona Leste (ata SSP-AM; estudo 30º CICOM)",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf ; https://interferencejournal.emnuvens.com.br/revista/article/download/658/636/1177",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Lago Azul",
+   "zona": "Norte",
+   "lat": -2.9704,
+   "lng": -59.9953,
+   "raioM": 2500,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Bairro novo/periférico da Zona Norte; ruas em consolidação",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Lírio do Vale",
+   "zona": "Oeste",
+   "lat": -3.0775,
+   "lng": -60.0716,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial na Zona Oeste; sem fonte de criminalidade",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Mauazinho",
+   "zona": "Leste",
+   "lat": -3.1209,
+   "lng": -59.9395,
+   "raioM": 1200,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro à margem do Rio Negro, perto do Distrito Industrial",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Monte das Oliveiras",
+   "zona": "Norte",
+   "lat": -3.0045,
+   "lng": -59.9966,
+   "raioM": 1500,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Periferia Norte; SPA Eliameme Mady na Av. Samaúma",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Morro da Liberdade",
+   "zona": "Sul",
+   "lat": -3.138,
+   "lng": -60.0004,
+   "raioM": 600,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "baixo",
+   "justificativa": "Reportagem: moradores perderam a paz; ordem de recolher após 20h; evitar à noite",
+   "fonte": "https://www.acritica.com/manaus/moradores-do-morro-da-liberdade-perderam-a-paz-com-uma-onda-de-assassinatos-1.186283",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Nossa Senhora Aparecida",
+   "zona": "Centro-Sul",
+   "lat": -3.115,
+   "lng": -60.034,
+   "raioM": 500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro pequeno entre Centro e Presidente Vargas; coordenada estimada",
+   "fonte": "[estimativa]",
+   "coordFonte": "estimativa"
+  },
+  {
+   "nome": "Nossa Senhora das Graças",
+   "zona": "Centro-Sul",
+   "lat": -3.1042,
+   "lng": -60.02,
+   "raioM": 900,
+   "risco": "baixo",
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "justificativa": "Bairro de classe média alta com comércio e hospitais",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Nova Cidade",
+   "zona": "Norte",
+   "lat": -3.0027,
+   "lng": -59.9764,
+   "raioM": 2500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Prefeitura reforçou iluminação do bairro; 15º DIP na Av. Margarita",
+   "fonte": "https://www.manaus.am.gov.br/noticia/servicos-publicos/reforco-na-iluminacao-publica/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Nova Esperança",
+   "zona": "Centro-Oeste",
+   "lat": -3.084,
+   "lng": -60.0593,
+   "raioM": 900,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial com ruas estreitas; sem fonte",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Novo Aleixo",
+   "zona": "Norte",
+   "lat": -3.0549,
+   "lng": -59.9647,
+   "raioM": 2500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Entre os mais violentos (ata SSP-AM); UPA José Rodrigues no bairro",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Novo Israel",
+   "zona": "Norte",
+   "lat": -3.0279,
+   "lng": -60.0075,
+   "raioM": 900,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Vizinho a Cidade Nova; praça central",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Parque 10 de Novembro",
+   "zona": "Centro-Sul",
+   "lat": -3.0819,
+   "lng": -60.0232,
+   "raioM": 1500,
+   "risco": "baixo",
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "justificativa": "Av. Djalma Batista/Mário Ypiranga, shopping, parque, restaurantes",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Petrópolis",
+   "zona": "Sul",
+   "lat": -3.1119,
+   "lng": -59.9948,
+   "raioM": 1200,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Reclamação de LED apagado em rua do bairro (matéria antiga)",
+   "fonte": "https://www.acritica.com/manaus/falta-de-iluminac-o-causa-transtornos-para-moradores-no-bairro-petropolis-zona-sul-1.211265",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Planalto",
+   "zona": "Centro-Oeste",
+   "lat": -3.0653,
+   "lng": -60.0572,
+   "raioM": 1000,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial entre Redenção e Ponta Negra",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Ponta Negra",
+   "zona": "Oeste",
+   "lat": -3.0509,
+   "lng": -60.0962,
+   "raioM": 3500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "baixo",
+   "justificativa": "Orla movimentada até ~22h; ocorrências violentas recentes na praia; movimento cai fora do circuito",
+   "fonte": "https://www.manaus.am.gov.br/noticia/nota/prefeitura-semseg-ocorrencias/ ; https://www.travelsafe-abroad.com/br/brasil/manaus/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Praça 14 de Janeiro",
+   "zona": "Centro-Sul",
+   "lat": -3.1225,
+   "lng": -60.0147,
+   "raioM": 600,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial vizinho ao Centro e ao HUGV",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Presidente Vargas",
+   "zona": "Centro-Sul",
+   "lat": -3.1185,
+   "lng": -60.0294,
+   "raioM": 500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro pequeno vizinho ao Centro",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Puraquequara",
+   "zona": "Leste",
+   "lat": -3.053,
+   "lng": -59.8278,
+   "raioM": 3500,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Área rural/periurbana, porto e estrada; isolamento à noite",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Raiz",
+   "zona": "Sul",
+   "lat": -3.1268,
+   "lng": -59.998,
+   "raioM": 500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Citado em reportagem sobre violência na Zona Sul",
+   "fonte": "https://www.acritica.com/policia/moradores-dos-bairros-da-zona-sul-de-manaus-relatam-rotina-de-violencia-e-medo-1.203372",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Redenção",
+   "zona": "Centro-Oeste",
+   "lat": -3.0551,
+   "lng": -60.0435,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro populoso; SPA e Policlínica José Lins 24h",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2026/03/SPA-E-POLICLINICA-DR.-JOSE-LINS.pdf",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Santa Etelvina",
+   "zona": "Norte",
+   "lat": -2.9931,
+   "lng": -60.0077,
+   "raioM": 2500,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Assalto a ônibus no fim da noite relatado",
+   "fonte": "https://portalamazonia.com/noticias/jovem-e-agredido-apos-assaltar-onibus-do-transporte-publico-em-manaus/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Santa Luzia",
+   "zona": "Sul",
+   "lat": -3.1396,
+   "lng": -60.0066,
+   "raioM": 500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "baixo",
+   "justificativa": "Moradores deixaram de caminhar à noite (reportagem)",
+   "fonte": "https://www.acritica.com/manaus/moradores-do-morro-da-liberdade-perderam-a-paz-com-uma-onda-de-assassinatos-1.186283",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Santo Agostinho",
+   "zona": "Centro-Oeste",
+   "lat": -3.089,
+   "lng": -60.0668,
+   "raioM": 1000,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "19º DIP 24h no bairro (Av. Coronel Teixeira)",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Santo Antônio",
+   "zona": "Oeste",
+   "lat": -3.1158,
+   "lng": -60.0441,
+   "raioM": 1000,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Vizinho à Compensa; sem fonte própria",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "São Francisco",
+   "zona": "Sul",
+   "lat": -3.1114,
+   "lng": -60.0035,
+   "raioM": 700,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial na Zona Sul",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "São Geraldo",
+   "zona": "Centro-Sul",
+   "lat": -3.1111,
+   "lng": -60.0255,
+   "raioM": 500,
+   "risco": "baixo",
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "justificativa": "Bairro pequeno e central, perto do HUGV",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "São Jorge",
+   "zona": "Oeste",
+   "lat": -3.0989,
+   "lng": -60.0417,
+   "raioM": 1100,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "medio",
+   "justificativa": "Fiscalização da Ageman achou pontos escuros em praças do bairro",
+   "fonte": "https://www.manaus.am.gov.br/noticia/servicos/fiscalizacao-iluminacao-pracas/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "São José Operário",
+   "zona": "Leste",
+   "lat": -3.0665,
+   "lng": -59.9458,
+   "raioM": 1500,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Grande conjunto na Zona Leste; 9º DIP no bairro (plantão)",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "São Lázaro",
+   "zona": "Sul",
+   "lat": -3.1404,
+   "lng": -59.994,
+   "raioM": 600,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial pequeno na Zona Sul",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Tancredo Neves",
+   "zona": "Leste",
+   "lat": -3.0532,
+   "lng": -59.9389,
+   "raioM": 1500,
+   "risco": "alto",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Grupo crítico do 30º CICOM (estudo); Shopping Cidade Leste na borda",
+   "fonte": "https://interferencejournal.emnuvens.com.br/revista/article/download/658/636/1177",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Tarumã",
+   "zona": "Oeste",
+   "lat": -3.0247,
+   "lng": -60.0513,
+   "raioM": 3000,
+   "risco": "alto",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Na lista de mais violentos (ata SSP-AM); latrocínio de pedestre na Av. do Turismo",
+   "fonte": "https://ssp.am.gov.br/wp-content/uploads/2024/09/ATA_3_Reuniao_CONESPDS_15.05.2024.pdf ; https://portalamazonia.com/noticias/autonomo-reage-a-assalto-e-e-morto-com-facada-no-pescoco-em-avenida-de-manaus/",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Tarumã Açu",
+   "zona": "Oeste",
+   "lat": -2.9763,
+   "lng": -60.0702,
+   "raioM": 6000,
+   "risco": "medio",
+   "iluminacao": "ruim",
+   "movimento": "baixo",
+   "justificativa": "Área em expansão/rural no extremo oeste; poucas vias iluminadas",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Vila Buriti",
+   "zona": "Sul",
+   "lat": -3.1438,
+   "lng": -59.9716,
+   "raioM": 1000,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Distrito Industrial por perto; fluxo de operários",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Vila da Prata",
+   "zona": "Oeste",
+   "lat": -3.1084,
+   "lng": -60.0467,
+   "raioM": 700,
+   "risco": "medio",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Bairro residencial pequeno entre Santo Antônio e São Jorge",
+   "fonte": "[estimativa]",
+   "coordFonte": "OSM"
+  },
+  {
+   "nome": "Zumbi dos Palmares",
+   "zona": "Leste",
+   "lat": -3.075,
+   "lng": -59.9463,
+   "raioM": 1500,
+   "risco": "alto",
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "justificativa": "Foco de homicídios do 30º CICOM (estudo)",
+   "fonte": "https://interferencejournal.emnuvens.com.br/revista/article/download/658/636/1177",
+   "coordFonte": "OSM"
+  }
+ ],
+ "pontosCriticos": [
+  {
+   "nome": "Av. Autaz Mirim - parada de ônibus",
+   "bairro": "Armando Mendes",
+   "zona": "Leste",
+   "lat": -3.0871,
+   "lng": -59.9499,
+   "tipo": "assalto_ponto_onibus",
+   "periodo": "noite (data da matéria a confirmar)",
+   "fonte": "https://www.acritica.com/policia/universitario-leva-quatro-facadas-durante-assalto-na-avenida-autaz-mirim-1.337172",
+   "obs": "Universitário esfaqueado ao ser roubado esperando ônibus; posição = eixo da avenida"
+  },
+  {
+   "nome": "Av. Djalma Batista - paradas (Chapada)",
+   "bairro": "Chapada",
+   "zona": "Centro-Sul",
+   "lat": -3.0946,
+   "lng": -60.0242,
+   "tipo": "arrastao_pontos_onibus",
+   "periodo": "noite (matéria antiga, a confirmar)",
+   "fonte": "https://www.acritica.com/policia-procura-pistas-de-terceiro-envolvido-em-arrast-o-em-pontos-de-onibus-da-djalma-batista-1.11679",
+   "obs": "Arrastão em paradas; \"justiceiro\" deteve dois suspeitos"
+  },
+  {
+   "nome": "Av. Eduardo Ribeiro / Praça da Matriz",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "lat": -3.1325,
+   "lng": -60.0241,
+   "tipo": "arrastao_comercio_pontos",
+   "periodo": "tarde/noite (matéria antiga)",
+   "fonte": "https://www.acritica.com/manaus/bandidos-fazem-arrast-o-e-causam-panico-em-pontos-do-centro-de-manaus-1.245949",
+   "obs": "Arrastões em lojas e paradas (Colégio Militar, Matriz)"
+  },
+  {
+   "nome": "Terminal/paradas da Praça da Matriz",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "lat": -3.1352,
+   "lng": -60.0255,
+   "tipo": "furto_celular_pedestre",
+   "periodo": "após 17h (relato de moradores)",
+   "fonte": "https://www.acritica.com/manaus/populac-o-conta-ter-medo-de-frequentar-o-tradicional-centro-da-cidade-de-manaus-1.111051",
+   "obs": "Medo de frequentar após 17h; comerciante cita falta de policiamento às 23h"
+  },
+  {
+   "nome": "Rua Marechal Deodoro",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "lat": -3.133,
+   "lng": -60.02,
+   "tipo": "roubo_pedestre",
+   "periodo": "s/d",
+   "fonte": "https://d24am.com/tag/rua-marechal-deodoro/",
+   "obs": "Roubo a idosa citado; coordenada estimada pela região"
+  },
+  {
+   "nome": "Av. Cirilo Neves x Av. Brasil",
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "lat": -3.0949,
+   "lng": -60.061,
+   "tipo": "serie_assaltos",
+   "periodo": "~20h",
+   "fonte": "https://portalamazonia.com/noticias/homem-e-preso-suspeito-de-cometer-serie-de-assaltos-na-zona-oeste-de-manaus/",
+   "obs": "Série de assaltos por homem em veículo"
+  },
+  {
+   "nome": "Av. do Turismo",
+   "bairro": "Tarumã",
+   "zona": "Oeste",
+   "lat": -2.9834,
+   "lng": -60.0442,
+   "tipo": "latrocinio_pedestre",
+   "periodo": "noite de sábado",
+   "fonte": "https://portalamazonia.com/noticias/autonomo-reage-a-assalto-e-e-morto-com-facada-no-pescoco-em-avenida-de-manaus/",
+   "obs": "Pedestre morto ao reagir; via longa, pouco movimento"
+  },
+  {
+   "nome": "Av. Torquato Tapajós - coletivos",
+   "bairro": "Flores/Compensa",
+   "zona": "Oeste",
+   "lat": -3.067,
+   "lng": -60.025,
+   "tipo": "assalto_coletivo",
+   "periodo": "noite",
+   "fonte": "https://portalamazonia.com/noticias/cobrador-e-baleado-durante-tentativa-de-assalto-a-coletivo-em-manaus/",
+   "obs": "Assaltos a ônibus na avenida; posição = eixo"
+  },
+  {
+   "nome": "Terminal da linha 350 (núcleo 5)",
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "lat": -3.0315,
+   "lng": -59.9857,
+   "tipo": "assalto_coletivo",
+   "periodo": "noite de sábado",
+   "fonte": "https://portalamazonia.com/noticias/motorista-fica-ferido-apos-assalto-a-onibus-da-linha-450-em-manaus/",
+   "obs": "Três homens com facas na linha 450; posição aprox. (Av. Noel Nutels)"
+  },
+  {
+   "nome": "Santa Etelvina - vias de acesso ao terminal",
+   "bairro": "Santa Etelvina",
+   "zona": "Norte",
+   "lat": -2.9931,
+   "lng": -60.0077,
+   "tipo": "assalto_coletivo",
+   "periodo": "fim da noite",
+   "fonte": "https://portalamazonia.com/noticias/jovem-e-agredido-apos-assaltar-onibus-do-transporte-publico-em-manaus/",
+   "obs": "Assalto a ônibus; posição = centro do bairro"
+  },
+  {
+   "nome": "Santa Etelvina - Operação Águia 1",
+   "bairro": "Santa Etelvina",
+   "zona": "Norte",
+   "lat": -2.9931,
+   "lng": -60.0077,
+   "tipo": "assalto_coletivo",
+   "periodo": "tarde",
+   "fonte": "https://portalamazonia.com/noticias/dupla-e-detida-apos-assalto-a-onibus-na-zona-norte-de-manaus/",
+   "obs": "Dupla detida após assalto a ônibus; 2 fugiram"
+  },
+  {
+   "nome": "Av. Brasil - canteiro central",
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "lat": -3.0908,
+   "lng": -60.0604,
+   "tipo": "iluminacao_furtada",
+   "periodo": "noite (matéria antiga)",
+   "fonte": "https://www.acritica.com/manaus/lampadas-de-led-usadas-em-postes-das-avenidas-brasil-e-torres-s-o-furtadas-1.102109",
+   "obs": "139 luminárias LED furtadas; moradores deixaram de caminhar"
+  },
+  {
+   "nome": "Av. das Torres (Gov. José Lindoso)",
+   "bairro": "Aleixo",
+   "zona": "Centro-Sul",
+   "lat": -3.0865,
+   "lng": -59.9894,
+   "tipo": "iluminacao_furtada",
+   "periodo": "noite (matéria antiga)",
+   "fonte": "https://www.acritica.com/manaus/lampadas-de-led-usadas-em-postes-das-avenidas-brasil-e-torres-s-o-furtadas-1.102109",
+   "obs": "Furto de luminárias LED nos postes"
+  },
+  {
+   "nome": "Ponte Jornalista Phelippe Daou (Rio Negro)",
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "lat": -3.1199,
+   "lng": -60.0793,
+   "tipo": "escuridao_infraestrutura",
+   "periodo": "noite (a confirmar)",
+   "fonte": "https://www.acritica.com/manaus/lampadas-de-led-usadas-em-postes-das-avenidas-brasil-e-torres-s-o-furtadas-1.102109",
+   "obs": "Relato de ponte às escuras após furto de fiação (menção na mesma matéria; confirmar)"
+  },
+  {
+   "nome": "Rua Bem-Te-Vi",
+   "bairro": "Petrópolis",
+   "zona": "Sul",
+   "lat": -3.1119,
+   "lng": -59.9948,
+   "tipo": "iluminacao_apagada",
+   "periodo": "noite (matéria antiga)",
+   "fonte": "https://www.acritica.com/manaus/falta-de-iluminac-o-causa-transtornos-para-moradores-no-bairro-petropolis-zona-sul-1.211265",
+   "obs": "LED instalado e sem funcionar; posição = centro do bairro"
+  },
+  {
+   "nome": "Praças do São Jorge",
+   "bairro": "São Jorge",
+   "zona": "Oeste",
+   "lat": -3.0989,
+   "lng": -60.0417,
+   "tipo": "iluminacao_pracas_escuras",
+   "periodo": "noite",
+   "fonte": "https://www.manaus.am.gov.br/noticia/servicos/fiscalizacao-iluminacao-pracas/",
+   "obs": "Fiscalização Ageman achou pontos escuros"
+  },
+  {
+   "nome": "Centro - 33 postes a revitalizar",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "lat": -3.1321,
+   "lng": -60.0216,
+   "tipo": "iluminacao_postes",
+   "periodo": "noite",
+   "fonte": "https://www.manaus.am.gov.br/noticia/iluminacao/modernizacao-iluminacao-publica-centro/",
+   "obs": "Ageman identificou 33 postes para troca (confirmar trecho)"
+  },
+  {
+   "nome": "Morro da Liberdade - ruas internas",
+   "bairro": "Morro da Liberdade",
+   "zona": "Sul",
+   "lat": -3.138,
+   "lng": -60.0004,
+   "tipo": "toque_de_recolher_informal",
+   "periodo": "após 20h",
+   "fonte": "https://www.acritica.com/manaus/moradores-do-morro-da-liberdade-perderam-a-paz-com-uma-onda-de-assassinatos-1.186283",
+   "obs": "Relato de ordem para moradores se recolherem após 20h"
+  },
+  {
+   "nome": "Santa Luzia - ruas internas",
+   "bairro": "Santa Luzia",
+   "zona": "Sul",
+   "lat": -3.1396,
+   "lng": -60.0066,
+   "tipo": "medo_caminhada_noturna",
+   "periodo": "noite",
+   "fonte": "https://www.acritica.com/manaus/moradores-do-morro-da-liberdade-perderam-a-paz-com-uma-onda-de-assassinatos-1.186283",
+   "obs": "Moradores suspenderam caminhadas noturnas"
+  },
+  {
+   "nome": "Raiz / Crespo / Educandos - área",
+   "bairro": "Crespo",
+   "zona": "Sul",
+   "lat": -3.1339,
+   "lng": -59.9898,
+   "tipo": "violencia_reportada",
+   "periodo": "noite",
+   "fonte": "https://www.acritica.com/policia/moradores-dos-bairros-da-zona-sul-de-manaus-relatam-rotina-de-violencia-e-medo-1.203372",
+   "obs": "Reportagem de rotina de violência e medo na Zona Sul"
+  },
+  {
+   "nome": "Coroado - linha 541",
+   "bairro": "Coroado",
+   "zona": "Leste",
+   "lat": -3.0901,
+   "lng": -59.9734,
+   "tipo": "assalto_coletivo",
+   "periodo": "2026-02",
+   "fonte": "https://emtempo.com.br/451467/policia/suspeito-agredido-passageiros/",
+   "obs": "Tentativa de assalto; passageiros imobilizaram suspeito"
+  },
+  {
+   "nome": "Distrito Industrial II - linha 418",
+   "bairro": "Distrito Industrial II",
+   "zona": "Leste",
+   "lat": -3.043,
+   "lng": -59.9022,
+   "tipo": "assalto_coletivo",
+   "periodo": "noite (data a confirmar)",
+   "fonte": "https://emtempo.com.br/108924/policia/bandidos-tocam-o-terror-durante-assalto-no-onibus-da-linha-418-em-manaus/",
+   "obs": "Assalto à mão armada em ônibus"
+  },
+  {
+   "nome": "Orla / praia da Ponta Negra",
+   "bairro": "Ponta Negra",
+   "zona": "Oeste",
+   "lat": -3.0631,
+   "lng": -60.103,
+   "tipo": "ocorrencias_orla_noite",
+   "periodo": "noite (out/2026 e jul/2026)",
+   "fonte": "https://www.manaus.am.gov.br/noticia/nota/prefeitura-semseg-ocorrencias/",
+   "obs": "Guarda Municipal atendeu 3 ocorrências em 11-12/10; posição = Praça do Chafariz"
+  },
+  {
+   "nome": "Praia da Ponta Negra - banho noturno",
+   "bairro": "Ponta Negra",
+   "zona": "Oeste",
+   "lat": -3.0631,
+   "lng": -60.103,
+   "tipo": "sem_vigilancia",
+   "periodo": "após 17h",
+   "fonte": "https://www.manaus.am.gov.br/noticia/seguranca/horarios-de-banho-na-praia-da-ponta-negra/",
+   "obs": "Sem guarda-vidas após 17h (risco, não assalto)"
+  },
+  {
+   "nome": "Nova Cidade - vias internas",
+   "bairro": "Nova Cidade",
+   "zona": "Norte",
+   "lat": -3.0027,
+   "lng": -59.9764,
+   "tipo": "iluminacao_reforcada",
+   "periodo": "noite",
+   "fonte": "https://www.manaus.am.gov.br/noticia/servicos-publicos/reforco-na-iluminacao-publica/",
+   "obs": "Prefeitura reforçou iluminação (indica deficiência anterior)"
+  },
+  {
+   "nome": "Av. Max Teixeira - paradas",
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "lat": -3.0398,
+   "lng": -60.0063,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Corredor de ônibus com paradas longas; padrão geral de assaltos a coletivos na Zona Norte"
+  },
+  {
+   "nome": "Av. Margarita",
+   "bairro": "Nova Cidade",
+   "zona": "Norte",
+   "lat": -3.0056,
+   "lng": -59.9753,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Via larga; fluxo cai após 22h; 15º DIP próximo"
+  },
+  {
+   "nome": "Av. Camapuã",
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "lat": -3.0295,
+   "lng": -59.9625,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Trecho de núcleos residenciais com pouca movimentação tarde da noite"
+  },
+  {
+   "nome": "Av. Itaúba",
+   "bairro": "Jorge Teixeira",
+   "zona": "Leste",
+   "lat": -3.0381,
+   "lng": -59.9381,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Bairro de maior peso em homicídios (ata SSP-AM); paradas pouco movimentadas"
+  },
+  {
+   "nome": "Av. Cosme Ferreira",
+   "bairro": "Gilberto Mestrinho",
+   "zona": "Leste",
+   "lat": -3.0875,
+   "lng": -59.928,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Avenida longa com trechos de baixa luminosidade (estimativa)"
+  },
+  {
+   "nome": "Av. Buriti (saída de fábricas)",
+   "bairro": "Distrito Industrial I",
+   "zona": "Sul",
+   "lat": -3.105,
+   "lng": -59.9506,
+   "tipo": "saida_turno_noite",
+   "periodo": "troca de turno noturno",
+   "fonte": "[estimativa]",
+   "obs": "Operários saindo de madrugada; vias largas"
+  },
+  {
+   "nome": "Av. Carvalho Leal",
+   "bairro": "Cachoeirinha",
+   "zona": "Sul",
+   "lat": -3.1354,
+   "lng": -60.0066,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Vizinha à área relatada de violência na Zona Sul"
+  },
+  {
+   "nome": "Av. Leopoldo Peres",
+   "bairro": "Educandos",
+   "zona": "Sul",
+   "lat": -3.1441,
+   "lng": -60.0123,
+   "tipo": "pouco_movimento_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Orla do Educandos esvazia à noite"
+  },
+  {
+   "nome": "Av. Samaúma",
+   "bairro": "Nova Cidade",
+   "zona": "Norte",
+   "lat": -2.9999,
+   "lng": -59.9913,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "SPA Eliameme Mady na avenida (apoio)"
+  },
+  {
+   "nome": "Av. Perimetral",
+   "bairro": "Colônia Terra Nova",
+   "zona": "Norte",
+   "lat": -2.9983,
+   "lng": -60.0194,
+   "tipo": "iluminacao_regular",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Bairro em expansão; trechos sem edificação"
+  },
+  {
+   "nome": "Av. Pedro Teixeira",
+   "bairro": "Dom Pedro",
+   "zona": "Centro-Oeste",
+   "lat": -3.0931,
+   "lng": -60.0506,
+   "tipo": "ponto_onibus_noite",
+   "periodo": "noite",
+   "fonte": "[estimativa]",
+   "obs": "Corredor entre Compensa e Dom Pedro"
+  }
+ ],
+ "corredores": [
+  {
+   "nome": "Av. Eduardo Ribeiro (Teatro Amazonas - Catedral)",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.1303,
+    -60.0234
+   ],
+   "fim": [
+    -3.1352,
+    -60.0255
+   ],
+   "comprimentoM": 593,
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "obs": "Eixo cultural e comercial; plantão noturno no Centro; arrastões antigos nas paradas",
+   "fonte": "https://www.manaus.am.gov.br/noticia/acao-conjunta/plantao-noturno-valorizacao-centro/"
+  },
+  {
+   "nome": "Av. Sete de Setembro (IFAM - Catedral)",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.1338,
+    -60.0128
+   ],
+   "fim": [
+    -3.1352,
+    -60.0255
+   ],
+   "comprimentoM": 1419,
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "obs": "Via larga com comércio até ~19h; cai à noite",
+   "fonte": "https://www.manaus.am.gov.br/noticia/servicos-publicos/iluminacao-led-manaus/"
+  },
+  {
+   "nome": "Av. Lourenço da Silva Braga (orla do Centro)",
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.1406,
+    -60.0182
+   ],
+   "fim": [
+    -3.1369,
+    -60.0266
+   ],
+   "comprimentoM": 1019,
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "obs": "LED revitalizado; acesso à orla",
+   "fonte": "https://www.manaus.am.gov.br/noticia/iluminacao/modernizacao-iluminacao-publica-centro/"
+  },
+  {
+   "nome": "Av. Djalma Batista (Manaus Plaza - Amazonas Shopping)",
+   "bairro": "Parque 10 de Novembro",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.0976,
+    -60.0231
+   ],
+   "fim": [
+    -3.0943,
+    -60.0225
+   ],
+   "comprimentoM": 373,
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "obs": "Dois shoppings, restaurantes e faculdades",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Djalma Batista (UEA - Fametro)",
+   "bairro": "Chapada",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.0919,
+    -60.0179
+   ],
+   "fim": [
+    -3.0953,
+    -60.0242
+   ],
+   "comprimentoM": 795,
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "obs": "Faculdades com aulas noturnas",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Mário Ypiranga (Manauara - Parque 10)",
+   "bairro": "Adrianópolis",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.104,
+    -60.0113
+   ],
+   "fim": [
+    -3.0908,
+    -60.0156
+   ],
+   "comprimentoM": 1543,
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "obs": "Shopping, restaurantes, hotéis; ponto crítico: Delegacia da Mulher 24h na avenida",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Umberto Calderaro (Adrianópolis)",
+   "bairro": "Adrianópolis",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.1043,
+    -60.0101
+   ],
+   "fim": [
+    -3.1094,
+    -60.0139
+   ],
+   "comprimentoM": 707,
+   "iluminacao": "boa",
+   "movimento": "medio",
+   "obs": "Faculdade e residencial de classe média",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Constantino Nery (Arena - T1)",
+   "bairro": "Flores/Chapada",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.0831,
+    -60.028
+   ],
+   "fim": [
+    -3.0951,
+    -60.0267
+   ],
+   "comprimentoM": 1342,
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "obs": "Corredor de ônibus T1, Arena e comércio",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Torquato Tapajós (Rodoviária)",
+   "bairro": "Flores",
+   "zona": "Oeste",
+   "inicio": [
+    -3.067,
+    -60.025
+   ],
+   "fim": [
+    -3.0747,
+    -60.0255
+   ],
+   "comprimentoM": 858,
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "obs": "Rodoviária (operação noturna) e terminais; assaltos a coletivos relatados na avenida",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Coronel Teixeira (Ponta Negra - orla)",
+   "bairro": "Ponta Negra",
+   "zona": "Oeste",
+   "inicio": [
+    -3.0631,
+    -60.103
+   ],
+   "fim": [
+    -3.0509,
+    -60.0962
+   ],
+   "comprimentoM": 1553,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "Orla movimentada até ~22h; Guarda Municipal no complexo",
+   "fonte": "https://www.manaus.am.gov.br/noticia/nota/prefeitura-semseg-ocorrencias/"
+  },
+  {
+   "nome": "Av. Coronel Teixeira (Shopping Ponta Negra)",
+   "bairro": "Ponta Negra",
+   "zona": "Oeste",
+   "inicio": [
+    -3.0846,
+    -60.0724
+   ],
+   "fim": [
+    -3.0881,
+    -60.062
+   ],
+   "comprimentoM": 1219,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "Shopping, 19º DIP 24h nas proximidades",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Brasil (Terminal Compensa - Maternidade Moura Tapajóz)",
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "inicio": [
+    -3.1015,
+    -60.069
+   ],
+   "fim": [
+    -3.0959,
+    -60.0584
+   ],
+   "comprimentoM": 1332,
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "obs": "Terminal, maternidade 24h, comércio; cuidado no cruzamento Cirilo Neves",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Terminal Compensa - SPA Joventina Dias",
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "inicio": [
+    -3.1015,
+    -60.069
+   ],
+   "fim": [
+    -3.1048,
+    -60.0651
+   ],
+   "comprimentoM": 568,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "SPA 24h a poucos metros do terminal",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Rodrigo Otávio (UFAM - trecho Coroado)",
+   "bairro": "Coroado",
+   "zona": "Leste",
+   "inicio": [
+    -3.101,
+    -59.9828
+   ],
+   "fim": [
+    -3.0942,
+    -59.9872
+   ],
+   "comprimentoM": 900,
+   "iluminacao": "boa",
+   "movimento": "alto",
+   "obs": "Campus universitário com aulas noturnas",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Feira do Coroado - UFAM",
+   "bairro": "Coroado",
+   "zona": "Leste",
+   "inicio": [
+    -3.0903,
+    -59.9818
+   ],
+   "fim": [
+    -3.101,
+    -59.9828
+   ],
+   "comprimentoM": 1195,
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "obs": "Comércio e circulação de estudantes",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Rodrigo Otávio (ULBRA - UFAM)",
+   "bairro": "Japiim",
+   "zona": "Sul",
+   "inicio": [
+    -3.1085,
+    -59.9759
+   ],
+   "fim": [
+    -3.101,
+    -59.9828
+   ],
+   "comprimentoM": 1132,
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "obs": "Duas universidades; ônibus frequentes",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Rodrigo Otávio (Studio 5 - Bola da Suframa)",
+   "bairro": "Crespo/Japiim",
+   "zona": "Sul",
+   "inicio": [
+    -3.1248,
+    -59.9831
+   ],
+   "fim": [
+    -3.1334,
+    -59.9875
+   ],
+   "comprimentoM": 1074,
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "obs": "Shopping e feira; boa conexão de ônibus",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Autaz Mirim (Shopping Cidade Leste - Platão Araújo)",
+   "bairro": "Tancredo Neves",
+   "zona": "Leste",
+   "inicio": [
+    -3.0479,
+    -59.9444
+   ],
+   "fim": [
+    -3.0383,
+    -59.9417
+   ],
+   "comprimentoM": 1109,
+   "iluminacao": "regular",
+   "movimento": "alto",
+   "obs": "Shopping e pronto-socorro 24h; assalto em parada citado na avenida",
+   "fonte": "https://www.acritica.com/policia/universitario-leva-quatro-facadas-durante-assalto-na-avenida-autaz-mirim-1.337172"
+  },
+  {
+   "nome": "Av. Max Teixeira (Nilton Lins - Cidade Nova)",
+   "bairro": "Flores/Cidade Nova",
+   "zona": "Norte",
+   "inicio": [
+    -3.0572,
+    -60.0066
+   ],
+   "fim": [
+    -3.0398,
+    -60.0063
+   ],
+   "comprimentoM": 1935,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "Universidade e núcleos residenciais; trecho extenso",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Max Teixeira - Praça do Novo Israel",
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "inicio": [
+    -3.0398,
+    -60.0063
+   ],
+   "fim": [
+    -3.0279,
+    -60.0075
+   ],
+   "comprimentoM": 1330,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "Praça central do Novo Israel",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Av. Margarita (15º DIP)",
+   "bairro": "Nova Cidade",
+   "zona": "Norte",
+   "inicio": [
+    -3.0023,
+    -59.9835
+   ],
+   "fim": [
+    -3.0056,
+    -59.9753
+   ],
+   "comprimentoM": 982,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "15º DIP na avenida; Prefeitura reforçou iluminação do bairro",
+   "fonte": "https://www.manaus.am.gov.br/noticia/servicos-publicos/reforco-na-iluminacao-publica/"
+  },
+  {
+   "nome": "Av. Noel Nutels (6º DIP - Hospital Francisca Mendes)",
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "inicio": [
+    -3.0315,
+    -59.9857
+   ],
+   "fim": [
+    -3.032,
+    -59.9636
+   ],
+   "comprimentoM": 2455,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "6º DIP (central de flagrantes Norte) e hospital",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/"
+  },
+  {
+   "nome": "Hospital Delphina Aziz - Av. Perimetral",
+   "bairro": "Colônia Terra Nova",
+   "zona": "Norte",
+   "inicio": [
+    -2.9979,
+    -60.0295
+   ],
+   "fim": [
+    -2.9983,
+    -60.0194
+   ],
+   "comprimentoM": 1122,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "Hospital 24h no início do trecho",
+   "fonte": "[estimativa]"
+  },
+  {
+   "nome": "Praça 14 - Hospital Getúlio Vargas",
+   "bairro": "Praça 14 de Janeiro",
+   "zona": "Centro-Sul",
+   "inicio": [
+    -3.1225,
+    -60.0147
+   ],
+   "fim": [
+    -3.1164,
+    -60.0189
+   ],
+   "comprimentoM": 823,
+   "iluminacao": "regular",
+   "movimento": "medio",
+   "obs": "Hospital universitário em operação 24h",
+   "fonte": "[estimativa]"
+  }
+ ],
+ "apoio": [
+  {
+   "nome": "SPA Joventina Dias",
+   "tipo": "saude",
+   "lat": -3.1048,
+   "lng": -60.0651,
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2025/09/PROGRAMA-DE-INTEGRIDADE-SPA-JOVENTINA-DIAS.pdf",
+   "obs": "24h"
+  },
+  {
+   "nome": "SPA São Raimundo",
+   "tipo": "saude",
+   "lat": -3.1277,
+   "lng": -60.0373,
+   "bairro": "São Raimundo",
+   "zona": "Oeste",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2025/08/Carta-de-Servico-SPA-SAO-RAIMUNDO.pdf",
+   "obs": "24h"
+  },
+  {
+   "nome": "SPA Zona Sul (Col. Oliveira Machado)",
+   "tipo": "saude",
+   "lat": -3.1497,
+   "lng": -59.9998,
+   "bairro": "Colônia Oliveira Machado",
+   "zona": "Sul",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2025/12/Carta-de-Servico-SPA-ZONA-SUL.pdf",
+   "obs": "24h; coord = centro do bairro [estimativa]"
+  },
+  {
+   "nome": "SPA Eliameme Mady",
+   "tipo": "saude",
+   "lat": -3.0045,
+   "lng": -59.9966,
+   "bairro": "Monte das Oliveiras",
+   "zona": "Norte",
+   "fonte": "[estimativa]",
+   "obs": "24h em lista antiga; coord = centro do bairro [estimativa]"
+  },
+  {
+   "nome": "SPA Coroado (Av. Beira Mar)",
+   "tipo": "saude",
+   "lat": -3.0901,
+   "lng": -59.9734,
+   "bairro": "Coroado",
+   "zona": "Leste",
+   "fonte": "[estimativa]",
+   "obs": "24h em lista antiga; coord = centro do bairro [estimativa]"
+  },
+  {
+   "nome": "SPA Alvorada (Av. Lóris Cordovil)",
+   "tipo": "saude",
+   "lat": -3.0759,
+   "lng": -60.0491,
+   "bairro": "Alvorada",
+   "zona": "Centro-Oeste",
+   "fonte": "[estimativa]",
+   "obs": "24h em lista antiga; coord = centro do bairro [estimativa]"
+  },
+  {
+   "nome": "SPA e Policlínica Dr. José Lins",
+   "tipo": "saude",
+   "lat": -3.0551,
+   "lng": -60.0435,
+   "bairro": "Redenção",
+   "zona": "Centro-Oeste",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2026/03/SPA-E-POLICLINICA-DR.-JOSE-LINS.pdf",
+   "obs": "24h; coord = centro do bairro [estimativa]"
+  },
+  {
+   "nome": "UPA José Rodrigues",
+   "tipo": "saude",
+   "lat": -3.0549,
+   "lng": -59.9647,
+   "bairro": "Novo Aleixo",
+   "zona": "Norte",
+   "fonte": "https://www.saude.am.gov.br/wp-content/uploads/2025/07/01.01.017148.000140_2025_25-UPA-JOSE-RODRIGUES.pdf",
+   "obs": "horário 24h não confirmado; coord = centro do bairro [estimativa]"
+  },
+  {
+   "nome": "Pronto-Socorro Dr. Aristóteles Platão Araújo",
+   "tipo": "saude",
+   "lat": -3.0383,
+   "lng": -59.9417,
+   "bairro": "Jorge Teixeira/Tancredo Neves",
+   "zona": "Leste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "pronto-socorro 24h [estimativa de horário]"
+  },
+  {
+   "nome": "Hospital e PS Delphina Rinaldi Abdel Aziz",
+   "tipo": "saude",
+   "lat": -2.9979,
+   "lng": -60.0295,
+   "bairro": "Colônia Terra Nova",
+   "zona": "Norte",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "hospital de urgência [estimativa de horário]"
+  },
+  {
+   "nome": "Maternidade Dr. Moura Tapajóz",
+   "tipo": "saude",
+   "lat": -3.0959,
+   "lng": -60.0584,
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "maternidade 24h [estimativa de horário]"
+  },
+  {
+   "nome": "Maternidade Ana Braga",
+   "tipo": "saude",
+   "lat": -3.0769,
+   "lng": -59.9567,
+   "bairro": "Zumbi dos Palmares",
+   "zona": "Leste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "maternidade 24h [estimativa de horário]"
+  },
+  {
+   "nome": "Hospital Universitário Francisca Mendes",
+   "tipo": "saude",
+   "lat": -3.032,
+   "lng": -59.9636,
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "hospital [estimativa de horário]"
+  },
+  {
+   "nome": "Hospital Universitário Getúlio Vargas",
+   "tipo": "saude",
+   "lat": -3.1164,
+   "lng": -60.0189,
+   "bairro": "Praça 14 de Janeiro",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "hospital universitário"
+  },
+  {
+   "nome": "6º DIP / central de flagrantes Norte (Av. Noel Nutels, 500)",
+   "tipo": "delegacia",
+   "lat": -3.0315,
+   "lng": -59.9857,
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/",
+   "obs": "lista de plantão antiga; confirmar"
+  },
+  {
+   "nome": "15º DIP (Av. Margarita, 520)",
+   "tipo": "delegacia",
+   "lat": -3.0023,
+   "lng": -59.9835,
+   "bairro": "Nova Cidade",
+   "zona": "Norte",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/",
+   "obs": "lista de plantão antiga; confirmar"
+  },
+  {
+   "nome": "9º DIP (Rua Urariá)",
+   "tipo": "delegacia",
+   "lat": -3.0728,
+   "lng": -59.9478,
+   "bairro": "São José Operário",
+   "zona": "Leste",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/",
+   "obs": "lista de plantão antiga; confirmar"
+  },
+  {
+   "nome": "19º DIP (Av. Coronel Teixeira)",
+   "tipo": "delegacia",
+   "lat": -3.0881,
+   "lng": -60.062,
+   "bairro": "Santo Agostinho",
+   "zona": "Centro-Oeste",
+   "fonte": "https://portalamazonia.com/noticias/quadrilha-jovem-e-detida-suspeita-de-assalto-na-compensa-em-manaus/",
+   "obs": "24h segundo página de bairro; confirmar"
+  },
+  {
+   "nome": "Delegacia da Mulher Centro-Sul (Av. Mário Ypiranga, 3395)",
+   "tipo": "delegacia",
+   "lat": -3.0908,
+   "lng": -60.0156,
+   "bairro": "Parque 10 de Novembro",
+   "zona": "Centro-Sul",
+   "fonte": "https://portalamazonia.com/noticias/ponta-negra-em-manaus-tera-delegacia-movel-durante-festa-de-reveillon/",
+   "obs": "24h na lista antiga; coord = eixo da avenida"
+  },
+  {
+   "nome": "Terminal Compensa",
+   "tipo": "terminal",
+   "lat": -3.1015,
+   "lng": -60.069,
+   "bairro": "Compensa",
+   "zona": "Oeste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "terminal de ônibus"
+  },
+  {
+   "nome": "Terminal T1 (Av. Constantino Nery)",
+   "tipo": "terminal",
+   "lat": -3.0951,
+   "lng": -60.0267,
+   "bairro": "Flores",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "coord = eixo da avenida (terminal não confirmado)"
+  },
+  {
+   "nome": "Terminal T3 (Tarumã)",
+   "tipo": "terminal",
+   "lat": -3.0311,
+   "lng": -60.0461,
+   "bairro": "Tarumã",
+   "zona": "Oeste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "\"Acesso Terminal de Ônibus\" no OSM; numeração não confirmada"
+  },
+  {
+   "nome": "Rodoviária de Manaus",
+   "tipo": "terminal",
+   "lat": -3.0747,
+   "lng": -60.0255,
+   "bairro": "Flores",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "operação noturna [estimativa]"
+  },
+  {
+   "nome": "Terminal Cidade Nova (núcleo 5, linha 350)",
+   "tipo": "terminal",
+   "lat": -3.0315,
+   "lng": -59.9857,
+   "bairro": "Cidade Nova",
+   "zona": "Norte",
+   "fonte": "https://portalamazonia.com/noticias/motorista-fica-ferido-apos-assalto-a-onibus-da-linha-450-em-manaus/",
+   "obs": "posição aprox.; T5/T6 não geocodificados"
+  },
+  {
+   "nome": "Shopping Ponta Negra",
+   "tipo": "comercio24h",
+   "lat": -3.0846,
+   "lng": -60.0724,
+   "bairro": "Ponta Negra",
+   "zona": "Oeste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "comércio noturno até ~22h [estimativa]"
+  },
+  {
+   "nome": "Shopping Cidade Leste",
+   "tipo": "comercio24h",
+   "lat": -3.0479,
+   "lng": -59.9444,
+   "bairro": "Tancredo Neves",
+   "zona": "Leste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "comércio noturno até ~22h [estimativa]"
+  },
+  {
+   "nome": "Manauara Shopping",
+   "tipo": "comercio24h",
+   "lat": -3.104,
+   "lng": -60.0113,
+   "bairro": "Adrianópolis",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "comércio noturno até ~22h [estimativa]"
+  },
+  {
+   "nome": "Amazonas Shopping",
+   "tipo": "comercio24h",
+   "lat": -3.0943,
+   "lng": -60.0225,
+   "bairro": "Parque 10 de Novembro",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "comércio noturno até ~22h [estimativa]"
+  },
+  {
+   "nome": "Manaus Plaza Shopping",
+   "tipo": "comercio24h",
+   "lat": -3.0976,
+   "lng": -60.0231,
+   "bairro": "Parque 10 de Novembro",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "comércio noturno até ~22h [estimativa]"
+  },
+  {
+   "nome": "Studio 5 Shopping",
+   "tipo": "comercio24h",
+   "lat": -3.1248,
+   "lng": -59.9831,
+   "bairro": "Crespo/Japiim",
+   "zona": "Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "comércio noturno até ~22h [estimativa]"
+  },
+  {
+   "nome": "Praça da Matriz (Catedral)",
+   "tipo": "praca",
+   "lat": -3.1352,
+   "lng": -60.0255,
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "iluminada; tiroteios antigos citados"
+  },
+  {
+   "nome": "Praça da Saudade",
+   "tipo": "praca",
+   "lat": -3.1275,
+   "lng": -60.0259,
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "praça central"
+  },
+  {
+   "nome": "Praça do Congresso",
+   "tipo": "praca",
+   "lat": -3.1285,
+   "lng": -60.0241,
+   "bairro": "Centro",
+   "zona": "Centro-Sul",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "praça central"
+  },
+  {
+   "nome": "Praça do Novo Israel",
+   "tipo": "praca",
+   "lat": -3.0279,
+   "lng": -60.0075,
+   "bairro": "Novo Israel",
+   "zona": "Norte",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "praça de bairro"
+  },
+  {
+   "nome": "Praça do Chafariz (Ponta Negra)",
+   "tipo": "praca",
+   "lat": -3.0631,
+   "lng": -60.103,
+   "bairro": "Ponta Negra",
+   "zona": "Oeste",
+   "fonte": "https://nominatim.openstreetmap.org (OSM)",
+   "obs": "orla; Guarda Municipal"
+  }
+ ],
+ "relatos": [
+  {
+   "tipo": "luz",
+   "texto": "Poste queimado em {local}, trecho inteiro no escuro."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Luz boa em {local}, dá pra caminhar tranquilo."
+  },
+  {
+   "tipo": "luz",
+   "texto": "{local} tem iluminação nova de LED, bem clara."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Duas luminárias apagadas perto da parada em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Calçada bem iluminada em frente ao comércio em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Passei em {local} e a rua estava toda apagada depois da curva."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Iluminação regular em {local}: clara no começo, escura no final."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Árvore tapando a luz do poste em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Praça de {local} com lâmpadas apagadas, evitei atravessar."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Lâmpada piscando a noite toda em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Ponto de ônibus em {local} sem nenhuma luz."
+  },
+  {
+   "tipo": "luz",
+   "texto": "A Prefeitura trocou as luminárias em {local}, melhorou muito."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Beco em {local} escuro, prefiro dar a volta pela avenida."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Fiação cortada e poste sem luz em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Ponte e passarela perto de {local} bem escuras à noite."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Rua principal de {local} iluminada, as travessas não."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Luz amarela fraca em {local}, dá pouca visibilidade."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Calçadão de {local} com boa iluminação até tarde."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Poste sem luz há semanas em {local}, já avisei no app."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Avenida iluminada, mas a calçada fica na sombra das árvores em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Estacionamento ao lado de {local} bem iluminado."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Só um poste funcionando no quarteirão em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Praça de {local} com refletor novo, ficou clara."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Trecho sem poste em {local}, só a luz das casas."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Lanterna do celular foi necessária na rua dos fundos em {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Escuridão total no terreno baldio ao lado de {local}."
+  },
+  {
+   "tipo": "luz",
+   "texto": "Iluminação pública boa até o terminal de {local}."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Bastante gente na rua em {local}, comércio aberto."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Movimento caiu depois das 22h em {local}."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Pontos de ônibus cheios em {local} até tarde, me senti seguro."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Lanchonetes abertas em {local}, sempre tem gente passando."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Rua deserta em {local} depois das 21h."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Movimento constante de estudantes saindo da faculdade em {local}."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Viatura passou duas vezes em {local} enquanto eu esperava."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Feira e comércio abertos ajudam em {local}, fluxo bom."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Poucos carros e quase nenhum pedestre em {local} à noite."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Mercadinho 24h aberto em {local}, dá apoio."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Terminal de {local} com bastante movimento até tarde."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Academia e padaria abertas em {local}, boa circulação."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Posto de combustível aberto a noite toda em {local}."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Ônibus demorando e parada vazia em {local}."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Muita gente voltando do trabalho em {local}, andei junto com o grupo."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Comércio fecha cedo em {local}, depois fica vazio."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Shopping perto de {local} mantém a calçada movimentada."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Bar com música e mesas na calçada em {local}, tem movimento."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Policiamento visível na praça de {local}."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Rua de {local} só tem muro e portão, ninguém na calçada."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Tem ponto de moto-táxi e gente conversando em {local}, passa segurança."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Segunda à noite {local} fica bem parado."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Feriado e {local} estava vazio, preferi chamar carro."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Fluxo bom na avenida de {local}, mas a travessa é vazia."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Hospital 24h por perto de {local} deixa a rua mais movimentada."
+  },
+  {
+   "tipo": "fluxo",
+   "texto": "Estudantes e vendedores ambulantes enchem {local} até as 22h."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Mato alto na calçada de {local}, atenção ao andar de noite."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Cuidado com o celular no ponto de ônibus em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Calçada quebrada em {local}, tropecei no escuro."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Buraco e lama na faixa de pedestres de {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Evitei andar sozinho em {local} depois das 22h."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Terreno baldio sem cerca em {local}, passo rápido."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Moto passando devagar e olhando em {local}, desconfiei e entrei em loja."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Grupo de ônibus lotado em {local}, atenção a pertences."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Parada isolada em {local}, melhor esperar dentro do comércio."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Muita poça e esgoto aberto em {local}, calçada intransitável."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Quando a luz cai em {local} o bairro fica bem inseguro, melhor evitar."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Entulho acumulado na calçada de {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Passei com pressa por {local}, rua cheia de mato."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Pedi para o motorista parar em local iluminado depois das 22h em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Atenção na travessia em {local}, carros passam rápido sem sinalização."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Sem faixa de pedestres em {local}, atravessei correndo."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Obras na calçada de {local} sem sinalização."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Ônibus não para no ponto escuro de {local}, esperei no posto."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Prefiro não usar fone nem celular na rua em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Cachorros soltos e rua vazia em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Guia rebaixada e calçada irregular em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Passagem estreita entre muros em {local}, caminho desconfortável."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Fiquei no comércio até a viatura passar em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Rodoviária e arredores de {local} pedem atenção após a meia-noite."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Evitei o atalho pela rua de trás em {local}."
+  },
+  {
+   "tipo": "atencao",
+   "texto": "Moradores relatam sensação de insegurança na saída do ônibus em {local}."
+  }
+ ]
+}
