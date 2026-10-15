@@ -349,3 +349,16 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
 - `2026-10-15 15:17` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · commit `c74e8c9` — chore: config de preview do build
 - `2026-10-15 15:17` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · QA final: correções aplicadas, validação completa ok
 - `2026-10-15 15:17` · HEAD `f395eea` · **1 arquivo(s) pendentes** · commit `f395eea` — docs: estado pós QA final
+- `2026-10-15 15:17` · HEAD `5d5cc2f` · árvore limpa · commit `5d5cc2f` — docs: registro do checkpoint QA final
+- `2026-10-15 15:20` · HEAD `00243f1` · **9 arquivo(s) pendentes** · commit `00243f1` — fix(rotas): mensagem de localização sem https
+  - arquivos em jogo:
+     M src/App.tsx
+     M src/features/mapa/BotaoLocalizar.tsx
+     M src/features/mapa/CamadaAreas.tsx
+     M src/features/mapa/CamadaAvaliacoes.tsx
+     M src/features/mapa/CamadaTrechos.tsx
+     M src/features/mapa/CamadasMapa.tsx
+- `2026-10-15 15:21` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · commit `e5769d8` — fix(mapa): mensagem de localização sem https
+- `2026-10-15 15:24` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · commit `e5769d8` — fix(mapa): mensagem de localização sem https
+- `2026-10-15 15:25` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · commit `e5769d8` — fix(mapa): mensagem de localização sem https
+- `2026-10-15 15:25` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · Itens baixos do QA resolvidos e verificados no navegador
