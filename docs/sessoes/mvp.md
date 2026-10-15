@@ -119,3 +119,181 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
     ?? src/data/lugares.ts
     ?? src/data/rotasPregravadas.ts
     ?? src/data/trechos.ts
+- `2026-10-15 14:49` · HEAD `9b4073b` · árvore limpa · commit `9b4073b` — docs: T2 concluída na spec
+- `2026-10-15 14:52` · HEAD `9b4073b` · **6 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M src/data/dados.test.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+    ?? src/features/mapa/
+- `2026-10-15 14:53` · HEAD `9b4073b` · **9 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+    ?? src/features/mapa/
+- `2026-10-15 14:53` · HEAD `9b4073b` · **9 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+    ?? src/features/mapa/
+- `2026-10-15 14:53` · HEAD `9b4073b` · **14 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+     M src/index.css
+     M src/services/armazenamento.ts
+    ?? src/data/tmp.test.ts
+    ?? src/features/mapa/
+    ?? src/features/rotas/
+- `2026-10-15 14:53` · HEAD `9b4073b` · **13 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+     M src/index.css
+     M src/services/armazenamento.ts
+    ?? src/features/mapa/
+    ?? src/features/rotas/
+- `2026-10-15 14:53` · HEAD `9b4073b` · **13 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+     M src/index.css
+     M src/services/armazenamento.ts
+    ?? src/features/mapa/
+    ?? src/features/rotas/
+- `2026-10-15 14:54` · HEAD `9b4073b` · **13 arquivo(s) pendentes** · commit `9b4073b` — docs: T2 concluída na spec
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+     M src/index.css
+     M src/services/armazenamento.ts
+    ?? src/features/mapa/
+    ?? src/features/rotas/
+- `2026-10-15 14:54` · HEAD `c5da09d` · **10 arquivo(s) pendentes** · commit `c5da09d` — feat(mapa): avaliação de trecho e botão localizar
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/services/armazenamento.ts
+    ?? src/data/tmp.test.ts
+    ?? src/features/rotas/
+- `2026-10-15 14:54` · HEAD `c5da09d` · **9 arquivo(s) pendentes** · commit `c5da09d` — feat(mapa): avaliação de trecho e botão localizar
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/services/armazenamento.ts
+    ?? src/features/rotas/
+- `2026-10-15 14:55` · HEAD `c5da09d` · **9 arquivo(s) pendentes** · commit `c5da09d` — feat(mapa): avaliação de trecho e botão localizar
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/services/armazenamento.ts
+    ?? src/features/rotas/
+- `2026-10-15 14:55` · HEAD `c5da09d` · **9 arquivo(s) pendentes** · commit `c5da09d` — feat(mapa): avaliação de trecho e botão localizar
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+     M src/services/armazenamento.ts
+    ?? src/features/rotas/
+- `2026-10-15 14:55` · HEAD `801e76d` · **7 arquivo(s) pendentes** · commit `801e76d` — feat(rotas): compartilhar e rotas salvas
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+- `2026-10-15 14:55` · HEAD `801e76d` · **7 arquivo(s) pendentes** · commit `801e76d` — feat(rotas): compartilhar e rotas salvas
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+- `2026-10-15 14:55` · HEAD `801e76d` · **7 arquivo(s) pendentes** · commit `801e76d` — feat(rotas): compartilhar e rotas salvas
+  - arquivos em jogo:
+     M scripts/gerar-dados.mjs
+     M src/data/dados.test.ts
+     M src/data/rotasPregravadas.ts
+     M src/data/trechos.ts
+- `2026-10-15 14:55` · HEAD `1316626` · **3 arquivo(s) pendentes** · commit `1316626` — fix(data): contraste entre alternativas nas rotas-modelo
+- `2026-10-15 14:57` · HEAD `8bd1183` · **3 arquivo(s) pendentes** · commit `8bd1183` — docs: CLAUDE.md com mapa das features
+- `2026-10-15 14:57` · HEAD `8bd1183` · **4 arquivo(s) pendentes** · commit `8bd1183` — docs: CLAUDE.md com mapa das features
+  - arquivos em jogo:
+    ?? .claude/launch.json
+- `2026-10-15 14:59` · HEAD `8bd1183` · **14 arquivo(s) pendentes** · commit `8bd1183` — docs: CLAUDE.md com mapa das features
+  - arquivos em jogo:
+     M index.html
+     M package-lock.json
+     M package.json
+     M vite.config.ts
+    ?? .claude/launch.json
+    ?? public/apple-touch-icon.png
+    ?? public/favicon.svg
+    ?? public/maskable-512.png
+    ?? public/pwa-192.png
+    ?? public/pwa-512.png
+    ?? scripts/gerar-icones.mjs
+- `2026-10-15 15:00` · HEAD `8bd1183` · **16 arquivo(s) pendentes** · commit `8bd1183` — docs: CLAUDE.md com mapa das features
+  - arquivos em jogo:
+     M index.html
+     M package-lock.json
+     M package.json
+     M vite.config.ts
+    ?? .claude/launch.json
+    ?? README.md
+    ?? public/apple-touch-icon.png
+    ?? public/favicon.svg
+    ?? public/maskable-512.png
+    ?? public/pwa-192.png
+    ?? public/pwa-512.png
+    ?? scripts/gerar-icones.mjs
+- `2026-10-15 15:00` · HEAD `95d2e3b` · **13 arquivo(s) pendentes** · commit `95d2e3b` — chore: config de deploy e README
+  - arquivos em jogo:
+     M src/App.tsx
+     M src/features/mapa/CamadasMapa.tsx
+     M src/features/rotas/CamadaRotas.tsx
+     M src/features/rotas/PainelRotas.tsx
+     M src/features/rotas/RotasEstado.tsx
+     M src/index.css
+    ?? .claude/launch.json
+    ?? src/features/mapa/CamadaAvaliacoes.tsx
+    ?? src/features/rotas/mesclarRotas.test.ts
+    ?? src/features/rotas/mesclarRotas.ts
+- `2026-10-15 15:00` · HEAD `9a0ef58` · **4 arquivo(s) pendentes** · commit `9a0ef58` — feat(mapa): camada de avaliações da comunidade
+  - arquivos em jogo:
+    ?? .claude/launch.json
+- `2026-10-15 15:06` · HEAD `9a0ef58` · **5 arquivo(s) pendentes** · commit `9a0ef58` — feat(mapa): camada de avaliações da comunidade
+  - arquivos em jogo:
+    ?? .claude/launch.json
+    ?? src/data/_repro.test.ts
+- `2026-10-15 15:08` · HEAD `adf1fd6` · **3 arquivo(s) pendentes** · commit `adf1fd6` — docs: atualiza CLAUDE.md (tiles) e config de preview
+- `2026-10-15 15:09` · HEAD `adf1fd6` · **4 arquivo(s) pendentes** · MVP funcional verificado no navegador; publicando no GitHub

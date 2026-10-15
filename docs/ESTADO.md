@@ -1,6 +1,6 @@
 # Estado do repositório
 
-Fotografia técnica gerada automaticamente em **2026-10-15 14:45**.
+Fotografia técnica gerada automaticamente em **2026-10-15 15:08**.
 **Não edite à mão** — é sobrescrito.
 
 Diz apenas *como o repositório está*. Não diz o que estava sendo construído
@@ -16,33 +16,27 @@ nem se o que você encontrar funciona. Para retomar, siga [PROMPT_RETOMADA.md](.
 Rastro reescrito a cada edição — **independe de alguém lembrar de registrar**.
 Se a sessão foi cortada, é o instante mais próximo do corte que existe.
 
-- Quando: `2026-10-15 14:45:12` · HEAD: `c3fee4b`
+- Quando: `2026-10-15 15:00:12` · HEAD: `8bd1183`
 - Tarefa **declarada pelo agente**: `T2` (desde `2026-10-15 14:43`)
 
 Declaração, não dedução. Se *desde* estiver longe de *quando*, pode ter ficado para trás.
 
 ```
-   M src/App.tsx
-  ?? docs/pesquisa/
-  ?? src/components/AvisoOnboarding.tsx
-  ?? src/components/BarraNavegacao.tsx
-  ?? src/components/Legenda.tsx
-  ?? src/components/Painel.tsx
-  ?? src/components/SeletorPeriodo.tsx
-```
-
-## Arquivos mexidos, por tarefa
-
-Cruzamento com a lista declarada na spec. A lista é **indicativa**.
-
-**Não previstos — investigar:**
-
-Não presuma vazamento de escopo. Pode ser dependência que só apareceu na
-implementação, refatoração necessária, ou trabalho de outra tarefa.
-
-```
-  docs/pesquisa/
-      (sem nota — a intenção precisa ser deduzida do código)
+   M index.html
+   M package-lock.json
+   M package.json
+   M vite.config.ts
+  ?? .claude/launch.json
+  ?? README.md
+  ?? public/apple-touch-icon.png
+  ?? public/favicon.svg
+  ?? public/maskable-512.png
+  ?? public/pwa-192.png
+  ?? public/pwa-512.png
+  ?? scripts/gerar-icones.mjs
+  ?? src/features/mapa/CamadaAvaliacoes.tsx
+  ?? src/features/rotas/mesclarRotas.test.ts
+  ?? src/features/rotas/mesclarRotas.ts
 ```
 
 ## Git
@@ -50,11 +44,11 @@ implementação, refatoração necessária, ou trabalho de outra tarefa.
 | | |
 | --- | --- |
 | Branch | `main` |
-| HEAD | `405342a` |
+| HEAD | `adf1fd6` |
 | Commits à frente de `main` | 0 |
 | Staged | 0 |
-| Modificados não staged | 4 |
-| Não rastreados | 1 |
+| Modificados não staged | 3 |
+| Não rastreados | 0 |
 
 ### Commits desde `main`
 
@@ -64,19 +58,10 @@ implementação, refatoração necessária, ou trabalho de outra tarefa.
 ### Modificado, não staged
 
 ```
- docs/ESTADO.md       | 92 ++++++++--------------------------------------------
- docs/sessoes/.ativa  |  6 ++--
- docs/sessoes/.rastro | 21 ++++++------
- docs/sessoes/mvp.md  | 25 ++++++++++++++
- 4 files changed, 54 insertions(+), 90 deletions(-)
-```
-
-### Não rastreado
-
-Arquivo novo que ninguém commitou. Pode ser trabalho válido pela metade.
-
-```
-docs/pesquisa/manaus.md
+ docs/ESTADO.md       |  68 ++++++--------------
+ docs/sessoes/.rastro |  23 +++++--
+ docs/sessoes/mvp.md  | 177 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 214 insertions(+), 54 deletions(-)
 ```
 
 ## Aviso sobre confiabilidade
