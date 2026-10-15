@@ -3,6 +3,10 @@ import {
   agregarAvaliacoes,
   alvoIdParaCoord,
   aplicarAvaliacoes,
+  AUTOR_LOCAL,
+  podeExcluir,
+  relatosProximos,
+  tempoRelativo,
   pesoComunidade,
   PESO_MAX_COMUNIDADE,
 } from './avaliacoes'
@@ -15,6 +19,8 @@ const av = (alvoId: string, tipo: TipoAvaliacao, i = 0): Avaliacao => ({
   tipo,
   coord,
   criadoEm: '2026-10-15T20:00:00Z',
+  autorId: AUTOR_LOCAL,
+  autorNome: 'Você',
 })
 const base: Fatores = { luz: 0.5, fluxo: 0.5, risco: 0.5 }
 
@@ -63,5 +69,45 @@ describe('alvoIdParaCoord', () => {
   it('gera id de celula estavel (~100 m)', () => {
     expect(alvoIdParaCoord({ lat: -3.10004, lng: -60.02001 })).toBe(alvoIdParaCoord({ lat: -3.09996, lng: -60.01996 }))
     expect(alvoIdParaCoord(coord)).toBe('cel:-3.100:-60.020')
+  })
+})
+
+describe('relatosProximos', () => {
+  const longe = { lat: -3.12, lng: -60.02 }
+  const mk = (id: string, alvoId: string, c: typeof coord, criadoEm: string): Avaliacao => ({
+    ...av(alvoId, 'luz'), id, coord: c, criadoEm,
+  })
+  it('inclui alvo ou raio, ordena do mais recente e informa distância', () => {
+    const lista = [
+      mk('a', 'x', coord, '2026-10-01T00:00:00Z'),
+      mk('b', 'y', { lat: coord.lat + 0.001, lng: coord.lng }, '2026-10-10T00:00:00Z'),
+      mk('c', 'alvo', longe, '2026-10-05T00:00:00Z'),
+      mk('d', 'z', longe, '2026-10-12T00:00:00Z'),
+    ]
+    const r = relatosProximos(coord, lista, 300, 'alvo')
+    expect(r.map((x) => x.avaliacao.id)).toEqual(['b', 'c', 'a'])
+    expect(r[0].distanciaM).toBeGreaterThan(90)
+    expect(r[0].distanciaM).toBeLessThan(130)
+  })
+})
+
+describe('tempoRelativo', () => {
+  const agora = Date.parse('2026-10-15T12:00:00Z')
+  const f = (ms: number) => tempoRelativo(new Date(agora - ms).toISOString(), agora)
+  it('formata faixas', () => {
+    expect(f(10_000)).toBe('agora')
+    expect(f(5 * 60_000)).toBe('há 5 min')
+    expect(f(3 * 3_600_000)).toBe('há 3 h')
+    expect(f(2 * 86_400_000)).toBe('há 2 dias')
+    expect(f(21 * 86_400_000)).toBe('há 3 semanas')
+    expect(f(65 * 86_400_000)).toBe('há 2 meses')
+  })
+})
+
+describe('podeExcluir', () => {
+  it('só avaliações locais não-semente', () => {
+    expect(podeExcluir(av('t', 'luz'))).toBe(true)
+    expect(podeExcluir({ ...av('t', 'luz'), semente: true })).toBe(false)
+    expect(podeExcluir({ ...av('t', 'luz'), autorId: 'outro' })).toBe(false)
   })
 })
