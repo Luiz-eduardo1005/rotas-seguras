@@ -1,7 +1,21 @@
-import type { Avaliacao, Periodo } from '../domain/tipos'
+import type { Avaliacao, LatLng, Periodo } from '../domain/tipos'
 
 const CHAVE_AVALIACOES = 'rotas-seguras:v1:avaliacoes'
 const CHAVE_PREFS = 'rotas-seguras:v1:preferencias'
+// chave própria: o AppEstado regrava as preferências inteiras ao trocar período e apagaria as rotas salvas
+const CHAVE_ROTAS_SALVAS = 'rotas-seguras:v1:rotas-salvas'
+
+export interface PontoRota {
+  nome: string
+  coord: LatLng
+}
+
+export interface RotaSalva {
+  id: string
+  nome: string
+  origem: PontoRota
+  destino: PontoRota
+}
 
 export interface Preferencias {
   periodo: Periodo
@@ -65,4 +79,24 @@ export function carregarPreferencias(): Preferencias {
 
 export function salvarPreferencias(prefs: Preferencias): void {
   gravar(CHAVE_PREFS, prefs)
+}
+
+function pontoValido(p: unknown): p is PontoRota {
+  if (!p || typeof p !== 'object') return false
+  const o = p as Record<string, unknown>
+  const c = o.coord as Record<string, unknown> | undefined
+  return typeof o.nome === 'string' && !!c && num(c.lat) && num(c.lng)
+}
+
+export function carregarRotasSalvas(): RotaSalva[] {
+  const d = ler(CHAVE_ROTAS_SALVAS)
+  if (!Array.isArray(d)) return []
+  return d.filter(
+    (r): r is RotaSalva =>
+      !!r && typeof r.id === 'string' && typeof r.nome === 'string' && pontoValido(r.origem) && pontoValido(r.destino),
+  )
+}
+
+export function gravarRotasSalvas(rotas: RotaSalva[]): void {
+  gravar(CHAVE_ROTAS_SALVAS, rotas)
 }
