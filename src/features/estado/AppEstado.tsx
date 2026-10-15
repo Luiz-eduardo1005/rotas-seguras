@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { Avaliacao, Periodo } from '../../domain/tipos'
 import { agregarAvaliacoes, type AgregadoAlvo } from '../../domain/avaliacoes'
 import {
@@ -6,6 +6,7 @@ import {
   carregarPreferencias,
   salvarAvaliacoes,
   salvarPreferencias,
+  type Preferencias,
 } from '../../services/armazenamento'
 
 export type Aba = 'mapa' | 'camadas' | 'salvos' | 'perfil'
@@ -40,18 +41,25 @@ export function AppEstadoProvider({ children }: { children: ReactNode }) {
   const [abaAtiva, setAbaAtiva] = useState<Aba>('mapa')
   const [camadasVisiveis, setCamadas] = useState<CamadasVisiveis>({ trechos: true, areas: true, apoio: true })
 
+  // ref com as preferências atuais: setters nunca regravam valor antigo
+  const prefsRef = useRef<Preferencias>(prefs)
+  const atualizarPrefs = useCallback((parcial: Partial<Preferencias>) => {
+    prefsRef.current = { ...prefsRef.current, ...parcial }
+    salvarPreferencias(prefsRef.current)
+  }, [])
+
   const setPeriodo = useCallback(
     (p: Periodo) => {
       setPeriodoState(p)
-      salvarPreferencias({ ...prefs, periodo: p, onboardingVisto })
+      atualizarPrefs({ periodo: p })
     },
-    [prefs, onboardingVisto],
+    [atualizarPrefs],
   )
 
   const marcarOnboarding = useCallback(() => {
     setOnboardingVisto(true)
-    salvarPreferencias({ ...prefs, periodo, onboardingVisto: true })
-  }, [prefs, periodo])
+    atualizarPrefs({ onboardingVisto: true })
+  }, [atualizarPrefs])
 
   const adicionarAvaliacao = useCallback((dados: NovaAvaliacao) => {
     const nova: Avaliacao = { ...dados, id: crypto.randomUUID(), criadoEm: new Date().toISOString() }

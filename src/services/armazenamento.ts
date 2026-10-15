@@ -20,7 +20,6 @@ export interface RotaSalva {
 export interface Preferencias {
   periodo: Periodo
   onboardingVisto: boolean
-  rotasSalvas?: unknown[]
 }
 
 const PADRAO: Preferencias = { periodo: 'noite', onboardingVisto: false }
@@ -73,7 +72,6 @@ export function carregarPreferencias(): Preferencias {
   return {
     periodo: o.periodo === 'dia' ? 'dia' : 'noite',
     onboardingVisto: o.onboardingVisto === true,
-    rotasSalvas: Array.isArray(o.rotasSalvas) ? o.rotasSalvas : undefined,
   }
 }
 
