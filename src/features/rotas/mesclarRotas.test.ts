@@ -27,4 +27,14 @@ describe('mesclarRotas', () => {
   it('limita a 3 rotas', () => {
     expect(mesclarRotas([linha(-3), linha(-3.01), linha(-3.02)], [linha(-3.03)])).toHaveLength(3)
   })
+  it('gravada que é subconjunto de outra gravada continua presente', () => {
+    const curta = { coords: [{ lat: -3, lng: -60 }, { lat: -3, lng: -59.995 }], distanciaM: 500, duracaoS: 300 }
+    const longa = {
+      coords: [{ lat: -3, lng: -60 }, { lat: -3, lng: -59.99 }, { lat: -3.01, lng: -59.99 }],
+      distanciaM: 2000,
+      duracaoS: 1400,
+    }
+    const r = mesclarRotas([curta, longa], [])
+    expect(r).toEqual([curta, longa])
+  })
 })

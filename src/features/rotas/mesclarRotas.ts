@@ -20,13 +20,17 @@ export function rotasSemelhantes(a: LatLng[], b: LatLng[]): boolean {
   return perto / amostra.length >= FRACAO_IGUAL
 }
 
-/** Gravadas primeiro (garantem contraste do cenário), depois ao vivo sem duplicatas; máx. 3. */
+/**
+ * Gravadas SEMPRE entram (são a demonstração; uma pode ser subconjunto da outra e
+ * mesmo assim é alternativa distinta). Ao vivo só entra se não duplicar nenhuma
+ * já presente. Máx. 3, gravadas têm prioridade.
+ */
 export function mesclarRotas(gravadas: RotaBruta[], vivas: RotaBruta[]): RotaBruta[] {
-  const saida: RotaBruta[] = []
-  for (const r of [...gravadas, ...vivas]) {
+  const saida: RotaBruta[] = gravadas.slice(0, MAX_ROTAS)
+  for (const r of vivas) {
+    if (saida.length >= MAX_ROTAS) break
     if (saida.some((s) => rotasSemelhantes(r.coords, s.coords) || rotasSemelhantes(s.coords, r.coords))) continue
     saida.push(r)
-    if (saida.length === MAX_ROTAS) break
   }
   return saida
 }

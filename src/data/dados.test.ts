@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { pontuarRota } from '../domain/pontuacao'
+import { mesclarRotas } from '../features/rotas/mesclarRotas'
 import { buscarRotaPregravada, cenario, lugares, rotasModelo, rotasPregravadas } from './index'
 
 const dentro = (c: { lat: number; lng: number }) =>
@@ -48,11 +49,31 @@ describe('dados mock de Manaus', () => {
     expect(buscarRotaPregravada({ lat: -3.2, lng: -59.9 }, d)).toBeUndefined()
   })
 
-  it('todas as rotas-modelo têm diferença >=15 pontos entre melhor e pior alternativa à noite', () => {
-    const diffs = rotasPregravadas.map((rp) => {
-      const notas = rp.rotas.map((r) => pontuarRota(r.coords, cenario, new Map(), 'noite').nota)
-      return { id: rp.rotaModeloId, notas, diff: Math.max(...notas) - Math.min(...notas) }
-    })
-    expect(diffs.filter((d) => d.diff < 15)).toEqual([])
+  it('rotas-modelo: o que o usuário vê (casa + mescla) tem diferença >=15 à noite e a gravada segura presente', () => {
+    const falhas: unknown[] = []
+    for (const m of rotasModelo) {
+      const o = lugares.find((l) => l.id === m.origemId)!.coord
+      const d = lugares.find((l) => l.id === m.destinoId)!.coord
+      const gravadas = buscarRotaPregravada(o, d)!
+      const nota = (c: { lat: number; lng: number }[]) => pontuarRota(c, cenario, new Map(), 'noite').nota
+      const melhorGravada = Math.max(...gravadas.map((r) => nota(r.coords)))
+      // vivas fake: duplicata da primeira gravada (deve ser descartada) e uma rota deslocada
+      const deslocada = gravadas[0].coords.map((c) => ({ lat: c.lat + 0.01, lng: c.lng }))
+      const vivas = [
+        { coords: gravadas[0].coords, distanciaM: 1, duracaoS: 1 },
+        { coords: deslocada, distanciaM: 1, duracaoS: 1 },
+      ]
+      for (const v of [[], vivas]) {
+        const vistas = mesclarRotas(gravadas, v)
+        const notas = vistas.map((r) => nota(r.coords))
+        const ok =
+          gravadas.every((g) => vistas.includes(g)) &&
+          vistas.length <= 3 &&
+          Math.max(...notas) === melhorGravada &&
+          Math.max(...notas) - Math.min(...notas) >= 15
+        if (!ok) falhas.push({ id: m.id, notas })
+      }
+    }
+    expect(falhas).toEqual([])
   })
 })
