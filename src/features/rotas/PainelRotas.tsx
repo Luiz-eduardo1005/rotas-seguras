@@ -6,6 +6,7 @@ import {
   ChevronUp,
   Footprints,
   Search,
+  Send,
   Share2,
   ShieldCheck,
   Trash2,
@@ -15,7 +16,8 @@ import {
 import type { Nivel } from '../../domain/tipos'
 import { nivelDoFator, resumoRota } from '../../domain/pontuacao'
 import { useAppEstado } from '../estado/AppEstado'
-import { compartilharRota } from './compartilhar'
+import { usePerfil } from '../perfil/PerfilEstado'
+import { compartilharRota, montarLinkRota, montarLinkWhatsApp } from './compartilhar'
 import BuscasRecentes from './BuscasRecentes'
 import CampoLugar from './CampoLugar'
 import { useRotas, type RotaAvaliada } from './RotasEstado'
@@ -90,6 +92,8 @@ const MSG_FEEDBACK = { compartilhado: 'Compartilhado', copiado: 'Link copiado', 
 export default function PainelRotas() {
   const r = useRotas()
   const { periodo } = useAppEstado()
+  const { perfil } = usePerfil()
+  const contato = perfil?.contatoConfianca
   const { painelAberto: aberto, setPainelAberto: setAberto } = r
   const [feedback, setFeedback] = useState('')
 
@@ -145,6 +149,13 @@ export default function PainelRotas() {
     if (!r.origem || !r.destino) return
     const res = await compartilharRota(r.origem, r.destino, periodo)
     if (res !== 'cancelado') avisar(MSG_FEEDBACK[res])
+  }
+
+  const enviarContato = () => {
+    if (!r.origem || !r.destino || !contato) return
+    const link = montarLinkRota(r.origem, r.destino, periodo)
+    const url = montarLinkWhatsApp(contato.telefone, `Estou indo a pé por este trajeto (Rotas Seguras): ${link}`)
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   const salvar = () => avisar(r.salvarRotaAtual() ? 'Rota salva' : 'Defina origem e destino')
@@ -249,6 +260,11 @@ export default function PainelRotas() {
                   <Trash2 size={16} aria-hidden /> Limpar
                 </button>
               </div>
+              {contato && (
+                <button onClick={enviarContato} className={botao}>
+                  <Send size={16} aria-hidden /> Enviar para {contato.nome}
+                </button>
+              )}
             </>
           )}
           <p role="status" aria-live="polite" className="min-h-4 text-center text-xs text-route">

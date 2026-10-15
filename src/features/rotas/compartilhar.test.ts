@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { lerLinkRota, montarLinkRota } from './compartilhar'
+import { lerLinkRota, montarLinkRota, montarLinkWhatsApp } from './compartilhar'
 
 const o = { nome: 'Escola Júlia', coord: { lat: -3.1086, lng: -60.0516 } }
 const d = { nome: 'Centro & Praça', coord: { lat: -3.1316, lng: -60.0233 } }
@@ -36,5 +36,14 @@ describe('limites do deep link', () => {
     const r = lerLinkRota('?o=-3.10,-60.05&on=A%00B%1F&d=-3.13,-60.02&dn=C%0AD')
     expect(r?.origem.nome).toBe('AB')
     expect(r?.destino.nome).toBe('CD')
+  })
+})
+
+describe('montarLinkWhatsApp', () => {
+  it('normaliza dígitos e prefixa 55', () => {
+    expect(montarLinkWhatsApp('(92) 91234-5678', 'oi')).toBe('https://wa.me/5592912345678?text=oi')
+  })
+  it('não duplica 55', () => {
+    expect(montarLinkWhatsApp('+55 92 91234-5678', 'a b')).toBe('https://wa.me/5592912345678?text=a%20b')
   })
 })
