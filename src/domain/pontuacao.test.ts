@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { agregarAvaliacoes, alvoIdParaCoord } from './avaliacoes'
-import { amostrarPolilinha, comprimentoM, dentroDeManaus, distanciaM, distanciaPontoSegmentoM, validarTrajeto } from './geo'
+import { amostrarPolilinha, areaDoPonto, comprimentoM, dentroDeManaus, distanciaM, distanciaPontoSegmentoM, validarTrajeto } from './geo'
 import {
   fatoresNoPonto,
   nivelDaArea,
@@ -243,5 +243,18 @@ describe('nivelDoFator / resumoRota', () => {
   it('resumoRota usa o corte de nivelDaNota (<45)', () => {
     expect(resumoRota({ ...base, nota: 44 })).toMatch(/Redobre/)
     expect(resumoRota({ ...base, nota: 45 })).toMatch(/medianas/)
+  })
+})
+
+describe('areaDoPonto', () => {
+  const ar = (id: string, lat: number, raioM: number): Area => ({ id, bairro: id, zona: 'centro-sul', centro: { lat, lng: L }, raioM, luz: 0.5, fluxo: 0.5, risco: 0.5 } as Area)
+  it('retorna a área de centro mais próximo entre as que contêm o ponto', () => {
+    const a = ar('a', -3.1, 2000)
+    const b = ar('b', -3.105, 2000)
+    expect(areaDoPonto({ lat: -3.104, lng: L }, [a, b])?.id).toBe('b')
+  })
+  it('undefined fora de qualquer raio ou sem áreas', () => {
+    expect(areaDoPonto({ lat: -3.2, lng: L }, [ar('a', -3.1, 500)])).toBeUndefined()
+    expect(areaDoPonto({ lat: -3.1, lng: L }, [])).toBeUndefined()
   })
 })

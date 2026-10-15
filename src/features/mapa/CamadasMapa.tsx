@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { useMapEvents } from 'react-leaflet'
 import { cenario } from '../../data'
 import { alvoIdParaCoord } from '../../domain/avaliacoes'
-import { distanciaM, distanciaPontoSegmentoM } from '../../domain/geo'
+import { areaDoPonto, distanciaPontoSegmentoM } from '../../domain/geo'
 import type { LatLng, Trecho } from '../../domain/tipos'
 import { useAppEstado } from '../estado/AppEstado'
 import CamadaAvaliacoes from './CamadaAvaliacoes'
@@ -36,7 +36,7 @@ function trechoMaisProximo(coord: LatLng): Trecho | undefined {
 }
 
 function tituloPonto(coord: LatLng): string {
-  const area = cenario.areas.find((a) => distanciaM(coord, a.centro) <= a.raioM)
+  const area = areaDoPonto(coord, cenario.areas)
   return area ? `Ponto em ${area.bairro}` : 'Ponto no mapa'
 }
 
