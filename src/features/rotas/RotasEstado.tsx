@@ -133,7 +133,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
     if (!link) return
     setOrigem(link.origem)
     setDestino(link.destino)
-    if (link.periodo) setPeriodo(link.periodo)
+    if (link.periodo) setPeriodo(link.periodo, { persistir: false })
     void executar(link.origem, link.destino)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

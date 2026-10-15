@@ -24,7 +24,7 @@ const INTERVALO_VOTO_MS = 60_000
 
 interface AppEstadoValor {
   periodo: Periodo
-  setPeriodo: (p: Periodo) => void
+  setPeriodo: (p: Periodo, opcoes?: { persistir?: boolean }) => void
   avaliacoes: Avaliacao[]
   adicionarAvaliacao: (dados: NovaAvaliacao) => ResultadoAvaliacao
   agregado: Map<string, AgregadoAlvo>
@@ -54,9 +54,9 @@ export function AppEstadoProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const setPeriodo = useCallback(
-    (p: Periodo) => {
+    (p: Periodo, opcoes?: { persistir?: boolean }) => {
       setPeriodoState(p)
-      atualizarPrefs({ periodo: p })
+      if (opcoes?.persistir !== false) atualizarPrefs({ periodo: p })
     },
     [atualizarPrefs],
   )
