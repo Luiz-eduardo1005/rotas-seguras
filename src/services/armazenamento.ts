@@ -33,11 +33,13 @@ function ler(chave: string): unknown {
   }
 }
 
-function gravar(chave: string, valor: unknown): void {
+/** false se o armazenamento estiver cheio ou bloqueado (segue em memória). */
+function gravar(chave: string, valor: unknown): boolean {
   try {
     localStorage.setItem(chave, JSON.stringify(valor))
+    return true
   } catch {
-    /* armazenamento indisponível ou cheio: segue em memória */
+    return false
   }
 }
 
@@ -61,8 +63,8 @@ export function carregarAvaliacoes(): Avaliacao[] {
   return Array.isArray(dados) ? dados.filter(avaliacaoValida) : []
 }
 
-export function salvarAvaliacoes(avaliacoes: Avaliacao[]): void {
-  gravar(CHAVE_AVALIACOES, avaliacoes)
+export function salvarAvaliacoes(avaliacoes: Avaliacao[]): boolean {
+  return gravar(CHAVE_AVALIACOES, avaliacoes)
 }
 
 export function carregarPreferencias(): Preferencias {

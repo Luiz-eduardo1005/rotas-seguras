@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react'
 import type { Avaliacao, Periodo } from '../../domain/tipos'
+import { gerarId } from '../../lib/gerarId'
 import { agregarAvaliacoes, type AgregadoAlvo } from '../../domain/avaliacoes'
 import {
   carregarAvaliacoes,
@@ -16,12 +17,16 @@ export interface CamadasVisiveis {
   apoio: boolean
 }
 export type NovaAvaliacao = Omit<Avaliacao, 'id' | 'criadoEm'>
+export type ResultadoAvaliacao = { ok: true } | { ok: false; motivo: 'limite' | 'repetida' | 'armazenamento' }
+
+const LIMITE_AVALIACOES = 500
+const INTERVALO_VOTO_MS = 60_000
 
 interface AppEstadoValor {
   periodo: Periodo
   setPeriodo: (p: Periodo) => void
   avaliacoes: Avaliacao[]
-  adicionarAvaliacao: (dados: NovaAvaliacao) => void
+  adicionarAvaliacao: (dados: NovaAvaliacao) => ResultadoAvaliacao
   agregado: Map<string, AgregadoAlvo>
   onboardingVisto: boolean
   marcarOnboarding: () => void
@@ -61,13 +66,18 @@ export function AppEstadoProvider({ children }: { children: ReactNode }) {
     atualizarPrefs({ onboardingVisto: true })
   }, [atualizarPrefs])
 
-  const adicionarAvaliacao = useCallback((dados: NovaAvaliacao) => {
-    const nova: Avaliacao = { ...dados, id: crypto.randomUUID(), criadoEm: new Date().toISOString() }
-    setAvaliacoes((atual) => {
-      const prox = [...atual, nova]
-      salvarAvaliacoes(prox)
-      return prox
-    })
+  const avaliacoesRef = useRef(avaliacoes)
+  const adicionarAvaliacao = useCallback((dados: NovaAvaliacao): ResultadoAvaliacao => {
+    const atual = avaliacoesRef.current
+    if (atual.length >= LIMITE_AVALIACOES) return { ok: false, motivo: 'limite' }
+    const agora = Date.now()
+    const repetida = atual.some((a) => a.alvoId === dados.alvoId && agora - Date.parse(a.criadoEm) < INTERVALO_VOTO_MS)
+    if (repetida) return { ok: false, motivo: 'repetida' }
+    const nova: Avaliacao = { ...dados, id: gerarId(), criadoEm: new Date(agora).toISOString() }
+    const prox = [...atual, nova]
+    avaliacoesRef.current = prox
+    setAvaliacoes(prox)
+    return salvarAvaliacoes(prox) ? { ok: true } : { ok: false, motivo: 'armazenamento' }
   }, [])
 
   const alternarCamada = useCallback(

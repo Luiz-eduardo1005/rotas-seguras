@@ -25,14 +25,23 @@ const OPCOES: { tipo: TipoAvaliacao; rotulo: string; Icone: LucideIcon; cor: str
   { tipo: 'atencao', rotulo: 'Atenção', Icone: AlertTriangle, cor: '#f0504d' },
 ]
 const MAX_COMENTARIO = 140
+const MENSAGEM = {
+  repetida: 'Você já avaliou este ponto há pouco.',
+  armazenamento:
+    'Não foi possível salvar neste aparelho (armazenamento cheio ou bloqueado). A avaliação vale só nesta sessão.',
+  limite: 'Limite de avaliações deste aparelho atingido.',
+} as const
 
 export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
   const { agregado, periodo, adicionarAvaliacao } = useAppEstado()
   const [tipo, setTipo] = useState<TipoAvaliacao | null>(null)
   const [comentario, setComentario] = useState('')
   const [salvo, setSalvo] = useState(false)
+  const [aviso, setAviso] = useState<string | null>(null)
   const fechar = useRef(onFechar)
-  fechar.current = onFechar
+  useEffect(() => {
+    fechar.current = onFechar
+  })
   const refFolha = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -55,7 +64,13 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
 
   function enviar() {
     if (!tipo) return
-    adicionarAvaliacao({ alvoId: alvo.alvoId, tipo, coord: alvo.coord, comentario: comentario.trim() || undefined })
+    const r = adicionarAvaliacao({ alvoId: alvo.alvoId, tipo, coord: alvo.coord, comentario: comentario.trim() || undefined })
+    if (r.ok) {
+      setAviso(null)
+    } else {
+      setAviso(MENSAGEM[r.motivo])
+      if (r.motivo !== 'armazenamento') return
+    }
     setSalvo(true)
   }
 
@@ -86,9 +101,14 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
         Comunidade: {votos?.luz ?? 0} luz · {votos?.fluxo ?? 0} fluxo · {votos?.atencao ?? 0} atenção
       </p>
 
+      {aviso && !salvo && (
+        <p role="alert" className="mb-2 text-center text-xs font-medium text-ink-dim">
+          {aviso}
+        </p>
+      )}
       {salvo ? (
         <p role="status" className="py-4 text-center text-sm font-medium text-route">
-          Avaliação salva neste aparelho
+          {aviso ?? 'Avaliação salva neste aparelho'}
         </p>
       ) : (
         <>
