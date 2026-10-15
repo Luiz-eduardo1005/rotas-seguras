@@ -297,3 +297,54 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
     ?? src/data/_repro.test.ts
 - `2026-10-15 15:08` · HEAD `adf1fd6` · **3 arquivo(s) pendentes** · commit `adf1fd6` — docs: atualiza CLAUDE.md (tiles) e config de preview
 - `2026-10-15 15:09` · HEAD `adf1fd6` · **4 arquivo(s) pendentes** · MVP funcional verificado no navegador; publicando no GitHub
+- `2026-10-15 15:09` · HEAD `9011cd8` · árvore limpa · commit `9011cd8` — docs: estado do MVP e sessão
+- `2026-10-15 15:10` · HEAD `9011cd8` · **2 arquivo(s) pendentes** · commit `9011cd8` — docs: estado do MVP e sessão
+- `2026-10-15 15:12` · HEAD `9011cd8` · **2 arquivo(s) pendentes** · commit `9011cd8` — docs: estado do MVP e sessão
+- `2026-10-15 15:13` · HEAD `9011cd8` · **4 arquivo(s) pendentes** · commit `9011cd8` — docs: estado do MVP e sessão
+  - arquivos em jogo:
+     M .claude/launch.json
+- `2026-10-15 15:15` · HEAD `9011cd8` · **14 arquivo(s) pendentes** · commit `9011cd8` — docs: estado do MVP e sessão
+  - arquivos em jogo:
+     M .claude/launch.json
+     M src/domain/geo.ts
+     M src/features/estado/AppEstado.tsx
+     M src/features/mapa/FolhaAvaliacao.tsx
+     M src/features/rotas/RotasEstado.tsx
+     M src/features/rotas/compartilhar.ts
+     M src/main.tsx
+     M src/services/armazenamento.ts
+     M vite.config.ts
+    ?? src/components/LimiteErro.tsx
+    ?? src/lib/
+- `2026-10-15 15:15` · HEAD `8488f56` · **13 arquivo(s) pendentes** · commit `8488f56` — perf(build): chunks vendor e cache do SW só para tiles
+  - arquivos em jogo:
+     M .claude/launch.json
+     M src/domain/geo.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+     M src/features/rotas/CamadaRotas.tsx
+     M src/features/rotas/PainelRotas.tsx
+     M src/features/rotas/RotasEstado.tsx
+     M src/features/rotas/compartilhar.test.ts
+     M src/features/rotas/compartilhar.ts
+    ?? src/lib/
+- `2026-10-15 15:15` · HEAD `8488f56` · **13 arquivo(s) pendentes** · commit `8488f56` — perf(build): chunks vendor e cache do SW só para tiles
+  - arquivos em jogo:
+     M .claude/launch.json
+     M src/domain/geo.ts
+     M src/domain/pontuacao.test.ts
+     M src/domain/pontuacao.ts
+     M src/features/rotas/CamadaRotas.tsx
+     M src/features/rotas/PainelRotas.tsx
+     M src/features/rotas/RotasEstado.tsx
+     M src/features/rotas/compartilhar.test.ts
+     M src/features/rotas/compartilhar.ts
+    ?? src/lib/
+- `2026-10-15 15:15` · HEAD `7075629` · **5 arquivo(s) pendentes** · commit `7075629` — refactor(domain): nível de fator e resumo de rota saem da UI
+  - arquivos em jogo:
+     M .claude/launch.json
+    ?? src/lib/
+- `2026-10-15 15:16` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · commit `c74e8c9` — chore: config de preview do build
+- `2026-10-15 15:16` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · commit `c74e8c9` — chore: config de preview do build
+- `2026-10-15 15:17` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · commit `c74e8c9` — chore: config de preview do build
+- `2026-10-15 15:17` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · QA final: correções aplicadas, validação completa ok

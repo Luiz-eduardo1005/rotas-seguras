@@ -1,7 +1,7 @@
 # Rastro automático — foto do instante, sobrescrita a cada arquivo salvo.
 # Não é histórico. O histórico são os checkpoints e os commits.
-QUANDO=2026-10-15 15:00:12
-HEAD=8bd1183
+QUANDO=2026-10-15 15:14:14
+HEAD=9011cd8
 SPEC=docs/specs/mvp.md
 SESSAO=S1
 TAREFA=T2
@@ -9,18 +9,5 @@ TAREFA_DESDE=2026-10-15 14:43
 # TAREFA é o que o AGENTE DECLAROU, não dedução do sistema.
 # Se TAREFA_DESDE estiver longe de QUANDO, a declaração pode estar velha.
 # Arquivos mexidos neste momento:
-   M index.html
-   M package-lock.json
-   M package.json
-   M vite.config.ts
-  ?? .claude/launch.json
-  ?? README.md
-  ?? public/apple-touch-icon.png
-  ?? public/favicon.svg
-  ?? public/maskable-512.png
-  ?? public/pwa-192.png
-  ?? public/pwa-512.png
-  ?? scripts/gerar-icones.mjs
-  ?? src/features/mapa/CamadaAvaliacoes.tsx
-  ?? src/features/rotas/mesclarRotas.test.ts
-  ?? src/features/rotas/mesclarRotas.ts
+   M .claude/launch.json
+  ?? src/lib/
