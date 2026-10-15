@@ -37,22 +37,23 @@ export default defineConfig({
             options: {
               cacheName: 'tiles-osm',
               expiration: { maxEntries: 500, maxAgeSeconds: 7 * DIA },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/routing\.openstreetmap\.de\//,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'rotas-osrm',
-              networkTimeoutSeconds: 8,
-              expiration: { maxEntries: 50, maxAgeSeconds: DIA },
-              cacheableResponse: { statuses: [0, 200] },
+              cacheableResponse: { statuses: [200] },
             },
           },
         ],
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/leaflet') || id.includes('node_modules/react-leaflet') || id.includes('node_modules/@react-leaflet'))
+            return 'vendor-leaflet'
+          if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'vendor-react'
+        },
+      },
+    },
+  },
   test: { environment: 'node', include: ['src/**/*.test.ts'] },
 })
