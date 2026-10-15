@@ -362,3 +362,4 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
 - `2026-10-15 15:24` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · commit `e5769d8` — fix(mapa): mensagem de localização sem https
 - `2026-10-15 15:25` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · commit `e5769d8` — fix(mapa): mensagem de localização sem https
 - `2026-10-15 15:25` · HEAD `e5769d8` · **3 arquivo(s) pendentes** · Itens baixos do QA resolvidos e verificados no navegador
+- `2026-10-15 15:25` · HEAD `8a62406` · **1 arquivo(s) pendentes** · commit `8a62406` — docs: estado após itens baixos do QA
