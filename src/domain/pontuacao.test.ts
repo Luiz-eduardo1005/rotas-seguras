@@ -1,14 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import { agregarAvaliacoes, alvoIdParaCoord } from './avaliacoes'
-import { amostrarPolilinha, comprimentoM, distanciaM, distanciaPontoSegmentoM } from './geo'
+import { amostrarPolilinha, comprimentoM, dentroDeManaus, distanciaM, distanciaPontoSegmentoM, validarTrajeto } from './geo'
 import {
   fatoresNoPonto,
   nivelDaArea,
   nivelDaNota,
+  nivelDoFator,
   nivelDoTrecho,
   notaFatores,
   ordenarRotas,
   pontuarRota,
+  resumoRota,
 } from './pontuacao'
 import type { Area, Avaliacao, Cenario, LatLng, PontoApoio, Trecho } from './tipos'
 
@@ -213,5 +215,33 @@ describe('nivelDaArea', () => {
       id: String(i), alvoId: 'a1', tipo: 'atencao', coord: area.centro, criadoEm: '',
     }))
     expect(nivelDaArea(area, agregarAvaliacoes(votos), 'noite')).toBe('vermelho')
+  })
+})
+
+describe('limites de Manaus e trajeto', () => {
+  const a = { lat: -3.1, lng: -60.02 }
+  it('dentroDeManaus', () => {
+    expect(dentroDeManaus(a)).toBe(true)
+    expect(dentroDeManaus({ lat: 0, lng: 0 })).toBe(false)
+  })
+  it('validarTrajeto', () => {
+    expect(validarTrajeto(a, { lat: -3.13, lng: -60.0 })).toBeNull()
+    expect(validarTrajeto(a, { lat: -23.5, lng: -46.6 })).toMatch(/apenas Manaus/)
+    expect(validarTrajeto(a, a)).toMatch(/mesmo lugar/)
+    expect(validarTrajeto({ lat: -3.24, lng: -60.19 }, { lat: -2.91, lng: -59.81 })).toMatch(/25 km/)
+  })
+})
+
+describe('nivelDoFator / resumoRota', () => {
+  const base = { fatoresMedios: { luz: 0.5, fluxo: 0.5, risco: 0.5 }, pontosApoioProximos: [] }
+  it('nivelDoFator', () => {
+    expect(nivelDoFator(0.6)).toBe('verde')
+    expect(nivelDoFator(0.4)).toBe('amarelo')
+    expect(nivelDoFator(0.39)).toBe('vermelho')
+    expect(nivelDoFator(0.1, true)).toBe('verde')
+  })
+  it('resumoRota usa o corte de nivelDaNota (<45)', () => {
+    expect(resumoRota({ ...base, nota: 44 })).toMatch(/Redobre/)
+    expect(resumoRota({ ...base, nota: 45 })).toMatch(/medianas/)
   })
 })

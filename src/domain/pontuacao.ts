@@ -38,6 +38,30 @@ export function nivelDaNota(nota: number): Nivel {
   return 'vermelho'
 }
 
+/** Nível de um fator médio (0..1); `inverso` para fatores em que menor é melhor (risco). */
+export function nivelDoFator(v: number, inverso = false): Nivel {
+  const x = inverso ? 1 - v : v
+  return x >= 0.6 ? 'verde' : x >= 0.4 ? 'amarelo' : 'vermelho'
+}
+
+/** Texto-resumo da rota (por que a nota é essa), coerente com `nivelDaNota`. */
+export function resumoRota(r: Pick<ResultadoRota, 'nota' | 'fatoresMedios' | 'pontosApoioProximos'>): string {
+  const { luz, fluxo, risco } = r.fatoresMedios
+  const partes: string[] = []
+  if (luz >= 0.6) partes.push('iluminada')
+  if (fluxo >= 0.6) partes.push('com movimento')
+  if (risco <= 0.4) partes.push('com poucos relatos de risco')
+  const n = r.pontosApoioProximos.length
+  const apoio = n ? `${n} ponto${n > 1 ? 's' : ''} de apoio no caminho` : 'nenhum ponto de apoio perto'
+  if (!partes.length) {
+    return nivelDaNota(r.nota) === 'vermelho'
+      ? `Trechos escuros ou isolados; ${apoio}. Redobre a atenção.`
+      : `Condições medianas; ${apoio}.`
+  }
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(', ')} e ${partes[partes.length - 1]}` : partes[0]
+  return `Mais ${lista}; ${apoio}.`.replace('Mais com', 'Com').replace('Mais iluminada e com', 'Iluminada, com')
+}
+
 function distanciaAoTrechoM(coord: LatLng, trecho: Trecho): number {
   const c = trecho.coords
   if (c.length === 0) return Infinity

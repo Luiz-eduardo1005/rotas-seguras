@@ -1,9 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { CircleMarker, Polyline, useMap } from 'react-leaflet'
-import type { Nivel } from '../../domain/tipos'
+import { COR_NIVEL } from '../mapa/cores'
 import { useRotas } from './RotasEstado'
 
-const COR_NIVEL: Record<Nivel, string> = { verde: '#22c55e', amarelo: '#eab308', vermelho: '#f0504d' }
 const CIANO = '#22d3ee'
 
 /** Dentro do MapContainer: alternativas, rota selecionada com glow e marcadores de origem/destino. */
@@ -16,6 +15,7 @@ export default function CamadaRotas() {
     if (versaoResultados === ultimaVersao.current || !resultados.length) return
     ultimaVersao.current = versaoResultados
     const pontos = resultados.flatMap((r) => r.coords.map((c) => [c.lat, c.lng] as [number, number]))
+    if (!pontos.length) return
     // painel compacto cobre só a base; cabeçalho cobre o topo
     map.fitBounds(pontos, { paddingTopLeft: [40, 90], paddingBottomRight: [40, 140], maxZoom: 17 })
   }, [versaoResultados, resultados, map])

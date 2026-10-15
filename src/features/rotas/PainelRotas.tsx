@@ -13,6 +13,7 @@ import {
   X,
 } from 'lucide-react'
 import type { Nivel } from '../../domain/tipos'
+import { nivelDoFator, resumoRota } from '../../domain/pontuacao'
 import { rotasModelo } from '../../data'
 import { useAppEstado } from '../estado/AppEstado'
 import { compartilharRota } from './compartilhar'
@@ -21,8 +22,6 @@ import { useRotas, type RotaAvaliada } from './RotasEstado'
 
 const COR_TEXTO: Record<Nivel, string> = { verde: 'text-safe', amarelo: 'text-warn', vermelho: 'text-danger' }
 const COR_BARRA: Record<Nivel, string> = { verde: 'bg-safe', amarelo: 'bg-warn', vermelho: 'bg-danger' }
-
-const nivelFator = (v: number): Nivel => (v >= 0.6 ? 'verde' : v >= 0.4 ? 'amarelo' : 'vermelho')
 
 function Barra({ rotulo, valor, nivel }: { rotulo: string; valor: number; nivel: Nivel }) {
   const pct = Math.round(Math.max(0, Math.min(1, valor)) * 100)
@@ -41,21 +40,6 @@ function Barra({ rotulo, valor, nivel }: { rotulo: string; valor: number; nivel:
       </div>
     </div>
   )
-}
-
-function porque(r: RotaAvaliada): string {
-  const { luz, fluxo, risco } = r.fatoresMedios
-  const partes: string[] = []
-  if (luz >= 0.6) partes.push('iluminada')
-  if (fluxo >= 0.6) partes.push('com movimento')
-  if (risco <= 0.4) partes.push('com poucos relatos de risco')
-  const n = r.pontosApoioProximos.length
-  const apoio = n ? `${n} ponto${n > 1 ? 's' : ''} de apoio no caminho` : 'nenhum ponto de apoio perto'
-  if (!partes.length) {
-    return r.nota < 40 ? `Trechos escuros ou isolados; ${apoio}. Redobre a atenção.` : `Condições medianas; ${apoio}.`
-  }
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(', ')} e ${partes[partes.length - 1]}` : partes[0]
-  return `Mais ${lista}; ${apoio}.`.replace('Mais com', 'Com').replace('Mais iluminada e com', 'Iluminada, com')
 }
 
 function Cartao({ r, indice, ativo, onSelecionar }: { r: RotaAvaliada; indice: number; ativo: boolean; onSelecionar: () => void }) {
@@ -88,20 +72,20 @@ function Cartao({ r, indice, ativo, onSelecionar }: { r: RotaAvaliada; indice: n
                 <Footprints size={14} aria-hidden /> {min} min · {km} km
               </span>
             </div>
-            <p className="mt-1 text-xs text-ink-dim">{porque(r)}</p>
+            <p className="mt-1 text-xs text-ink-dim">{resumoRota(r)}</p>
           </div>
         </div>
         <div className="mt-3 flex flex-col gap-1.5">
-          <Barra rotulo="Luz" valor={r.fatoresMedios.luz} nivel={nivelFator(r.fatoresMedios.luz)} />
-          <Barra rotulo="Fluxo" valor={r.fatoresMedios.fluxo} nivel={nivelFator(r.fatoresMedios.fluxo)} />
-          <Barra rotulo="Atenção" valor={r.fatoresMedios.risco} nivel={nivelFator(1 - r.fatoresMedios.risco)} />
+          <Barra rotulo="Luz" valor={r.fatoresMedios.luz} nivel={nivelDoFator(r.fatoresMedios.luz)} />
+          <Barra rotulo="Fluxo" valor={r.fatoresMedios.fluxo} nivel={nivelDoFator(r.fatoresMedios.fluxo)} />
+          <Barra rotulo="Atenção" valor={r.fatoresMedios.risco} nivel={nivelDoFator(r.fatoresMedios.risco, true)} />
         </div>
       </button>
     </li>
   )
 }
 
-const MSG_FEEDBACK = { compartilhado: 'Compartilhado', copiado: 'Link copiado', erro: 'Não foi possível compartilhar' }
+const MSG_FEEDBACK = { compartilhado: 'Compartilhado', copiado: 'Link copiado', cancelado: '', erro: 'Não foi possível compartilhar' }
 
 export default function PainelRotas() {
   const r = useRotas()
@@ -136,7 +120,8 @@ export default function PainelRotas() {
 
   const compartilhar = async () => {
     if (!r.origem || !r.destino) return
-    avisar(MSG_FEEDBACK[await compartilharRota(r.origem, r.destino, periodo)])
+    const res = await compartilharRota(r.origem, r.destino, periodo)
+    if (res !== 'cancelado') avisar(MSG_FEEDBACK[res])
   }
 
   const salvar = () => avisar(r.salvarRotaAtual() ? 'Rota salva' : 'Defina origem e destino')
