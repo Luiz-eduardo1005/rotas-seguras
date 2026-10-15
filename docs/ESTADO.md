@@ -31,10 +31,10 @@ Declaração, não dedução. Se *desde* estiver longe de *quando*, pode ter fic
 | | |
 | --- | --- |
 | Branch | `main` |
-| HEAD | `c74e8c9` |
+| HEAD | `f395eea` |
 | Commits à frente de `main` | 0 |
 | Staged | 0 |
-| Modificados não staged | 3 |
+| Modificados não staged | 2 |
 | Não rastreados | 0 |
 
 ### Commits desde `main`
@@ -45,3 +45,15 @@ Declaração, não dedução. Se *desde* estiver longe de *quando*, pode ter fic
 ### Modificado, não staged
 
 ```
+ docs/ESTADO.md      | 4 ++--
+ docs/sessoes/mvp.md | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+```
+
+## Aviso sobre confiabilidade
+
+Gerado por hook ou à mão. Numa interrupção abrupta — limite de uso, queda de
+energia, máquina suspensa — pode não ter rodado, e a data acima estará velha.
+
+**Compare a data com `git log -1 --format=%cd`.** Se o último commit for mais
+recente, o retrato está defasado e a verdade é o Git.

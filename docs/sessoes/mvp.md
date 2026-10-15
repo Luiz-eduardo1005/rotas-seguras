@@ -348,3 +348,4 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
 - `2026-10-15 15:16` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · commit `c74e8c9` — chore: config de preview do build
 - `2026-10-15 15:17` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · commit `c74e8c9` — chore: config de preview do build
 - `2026-10-15 15:17` · HEAD `c74e8c9` · **3 arquivo(s) pendentes** · QA final: correções aplicadas, validação completa ok
+- `2026-10-15 15:17` · HEAD `f395eea` · **1 arquivo(s) pendentes** · commit `f395eea` — docs: estado pós QA final
