@@ -47,7 +47,7 @@ function alvoDoPonto(coord: LatLng): AlvoAvaliacao {
 }
 
 export default function CamadasMapa({ onToqueMapa, atenuar }: Props) {
-  const { camadasVisiveis } = useAppEstado()
+  const { camadasVisiveis, agregado, periodo, avaliacoes, todasAvaliacoes } = useAppEstado()
   const [alvo, setAlvo] = useState<AlvoAvaliacao | null>(null)
 
   useMapEvents({
@@ -69,13 +69,15 @@ export default function CamadasMapa({ onToqueMapa, atenuar }: Props) {
     else setAlvo({ alvoId, titulo: tituloPonto(coord), coord })
   }, [])
 
+  const fecharAlvo = useCallback(() => setAlvo(null), [])
+
   return (
     <>
-      {camadasVisiveis.areas && <CamadaAreas atenuar={atenuar} />}
-      {camadasVisiveis.trechos && <CamadaTrechos onSelecionar={aoSelecionarTrecho} atenuar={atenuar} />}
-      {camadasVisiveis.trechos && <CamadaAvaliacoes onSelecionar={aoSelecionarAvaliacao} />}
+      {camadasVisiveis.areas && <CamadaAreas agregado={agregado} periodo={periodo} atenuar={atenuar} />}
+      {camadasVisiveis.trechos && <CamadaTrechos agregado={agregado} periodo={periodo} onSelecionar={aoSelecionarTrecho} atenuar={atenuar} />}
+      {camadasVisiveis.trechos && <CamadaAvaliacoes avaliacoes={avaliacoes} todasAvaliacoes={todasAvaliacoes} onSelecionar={aoSelecionarAvaliacao} />}
       {camadasVisiveis.apoio && <CamadaApoio />}
-      {alvo && <FolhaAvaliacao key={alvo.alvoId} alvo={alvo} onFechar={() => setAlvo(null)} />}
+      {alvo && <FolhaAvaliacao key={alvo.alvoId} alvo={alvo} onFechar={fecharAlvo} />}
     </>
   )
 }

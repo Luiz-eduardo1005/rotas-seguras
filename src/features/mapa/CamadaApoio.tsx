@@ -1,4 +1,4 @@
-import { memo, useMemo, type ReactElement } from 'react'
+import { memo, type ReactElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import L from 'leaflet'
 import { Marker, Popup } from 'react-leaflet'
@@ -26,16 +26,18 @@ function criarIcone(tipo: TipoApoio): L.DivIcon {
   })
 }
 
+const cacheIcones = new Map<TipoApoio, L.DivIcon>()
+function iconeDe(tipo: TipoApoio): L.DivIcon {
+  let i = cacheIcones.get(tipo)
+  if (!i) cacheIcones.set(tipo, (i = criarIcone(tipo)))
+  return i
+}
+
 function CamadaApoio() {
-  const icones = useMemo(() => {
-    const m = {} as Record<TipoApoio, L.DivIcon>
-    for (const t of Object.keys(CFG) as TipoApoio[]) m[t] = criarIcone(t)
-    return m
-  }, [])
   return (
     <>
       {pontosApoio.map((p) => (
-        <Marker key={p.id} position={[p.coord.lat, p.coord.lng]} icon={icones[p.tipo]} title={p.nome}>
+        <Marker key={p.id} position={[p.coord.lat, p.coord.lng]} icon={iconeDe(p.tipo)} title={p.nome}>
           <Popup>
             <strong>{p.nome}</strong>
             <br />

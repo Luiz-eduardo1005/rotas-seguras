@@ -1,30 +1,42 @@
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { Circle, Tooltip } from 'react-leaflet'
 import { areas } from '../../data/areas'
 import { nivelDaArea } from '../../domain/pontuacao'
-import { useAppEstado } from '../estado/AppEstado'
+import type { Periodo } from '../../domain/tipos'
+import type { AgregadoAlvo } from '../../domain/avaliacoes'
 import { COR_NIVEL, ROTULO_NIVEL } from './cores'
+import { rendererCanvas } from './rendererCanvas'
 
-function CamadaAreas({ atenuar = false }: { atenuar?: boolean }) {
-  const { agregado, periodo } = useAppEstado()
+interface Props {
+  agregado: Map<string, AgregadoAlvo>
+  periodo: Periodo
+  atenuar?: boolean
+}
+
+function CamadaAreas({ agregado, periodo, atenuar = false }: Props) {
+  const itens = useMemo(
+    () =>
+      areas.map((a) => {
+        const nivel = nivelDaArea(a, agregado, periodo)
+        const cor = COR_NIVEL[nivel]
+        return {
+          a,
+          rotulo: ROTULO_NIVEL[nivel],
+          centro: [a.centro.lat, a.centro.lng] as [number, number],
+          opts: { color: cor, weight: 1, opacity: atenuar ? 0.3 : 0.6, fillColor: cor, fillOpacity: atenuar ? 0.05 : 0.12 },
+        }
+      }),
+    [agregado, periodo, atenuar],
+  )
   return (
     <>
-      {areas.map((a) => {
-        const nivel = nivelDaArea(a, agregado, periodo)
-        return (
-          <Circle
-            key={a.id}
-            center={[a.centro.lat, a.centro.lng]}
-            radius={a.raioM}
-            interactive
-            pathOptions={{ color: COR_NIVEL[nivel], weight: 1, opacity: atenuar ? 0.3 : 0.6, fillColor: COR_NIVEL[nivel], fillOpacity: atenuar ? 0.05 : 0.12 }}
-          >
-            <Tooltip sticky>
-              {a.bairro} · {ROTULO_NIVEL[nivel]}
-            </Tooltip>
-          </Circle>
-        )
-      })}
+      {itens.map(({ a, rotulo, centro, opts }) => (
+        <Circle key={a.id} center={centro} radius={a.raioM} interactive renderer={rendererCanvas} pathOptions={opts}>
+          <Tooltip sticky>
+            {a.bairro} · {rotulo}
+          </Tooltip>
+        </Circle>
+      ))}
     </>
   )
 }
