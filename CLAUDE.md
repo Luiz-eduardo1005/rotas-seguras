@@ -3,7 +3,7 @@
 PWA mobile-first (trabalho de faculdade, Tecnologias Urbanas) que sugere a rota a pé mais segura à noite em Manaus-AM (luz + fluxo + risco). Comunidade avalia trechos. Dados MOCK verossímeis. Disclaimer obrigatório: não garante segurança nem substitui emergência.
 
 ## Stack
-React 19 + Vite 8 + TypeScript, Leaflet/react-leaflet (tiles CARTO dark_matter), Tailwind v4 (`@theme` em `src/index.css`), vite-plugin-pwa, vitest, lucide-react. Rotas: OSRM público + fallback pré-gravado. Persistência: localStorage.
+React 19 + Vite 8 + TypeScript, Leaflet/react-leaflet (tiles OSM padrão com filtro CSS escuro/claro por período; CARTO passou a exigir API key), Tailwind v4 (`@theme` em `src/index.css`), vite-plugin-pwa, vitest, lucide-react. Rotas: OSRM público + fallback pré-gravado. Persistência: localStorage.
 
 ## Estrutura
 - `src/domain/` — regra de negócio pura (pontuação de rota, agregação de avaliações). NUNCA em componente UI. Testada com vitest.
