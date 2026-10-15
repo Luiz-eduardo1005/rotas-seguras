@@ -1,0 +1,6 @@
+# Protocolo de continuidade — marcador do projeto.
+# Origem: ~/.continuidade  ·  atualize com: bash ~/.continuidade/bin/init.sh --atualizar
+VERSAO=1.0.0
+VALIDACAO=npx tsc -b && npx vitest run --reporter=dot && npm run build
+# ATIVO=nao desliga o protocolo neste projeto sem remover nada.
+ATIVO=sim
