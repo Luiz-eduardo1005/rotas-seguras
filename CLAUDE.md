@@ -10,7 +10,12 @@ React 19 + Vite 8 + TypeScript, Leaflet/react-leaflet (tiles CARTO dark_matter),
 - `src/data/` — dados mock tipados (trechos, áreas, pontos de apoio, lugares, rotas pré-gravadas).
 - `src/services/` — OSRM, storage (localStorage), share.
 - `src/components/` — UI reutilizável (design system do projeto).
-- `src/features/` — telas/fluxos (mapa, rotas, avaliação).
+- `src/features/` — telas/fluxos:
+  - `estado/` — AppEstadoProvider: período, avaliações, agregado, aba, camadas, onboarding; preferências via ref (sem sobrescrita).
+  - `mapa/` — camadas Leaflet (trechos/áreas/apoio), toque no mapa → avaliação (FolhaAvaliacao), BotaoLocalizar.
+  - `rotas/` — RotasProvider (busca OSRM + fallback, pontuação, salvos, deep link), PainelRotas, CamadaRotas, ListaSalvos.
+- Fluxo de dados: `data` (mock) → `domain` (pontuação/agregação puras) → `features` (estado + UI). `App.tsx` monta AppEstado > Rotas > mapa/painéis.
+- Regra domain≠UI: cálculo/regra só em `domain`; features apenas chamam e exibem.
 - `docs/specs/mvp.md` — spec, fórmula de nota, decisões, tarefas. `docs/pesquisa/` — pesquisa de dados reais de Manaus. `docs/PROTOCOLO.md` — continuidade.
 
 ## Regras
