@@ -59,6 +59,10 @@ export default function CampoLugar({ qual, rotulo, valor, onEscolher }: Props) {
   }
 
   const localizar = () => {
+    if (!window.isSecureContext) {
+      setErroGps('Localização precisa de conexão segura (https). Abra pelo link publicado.')
+      return
+    }
     if (!('geolocation' in navigator)) {
       setErroGps('Seu aparelho não oferece localização.')
       return
