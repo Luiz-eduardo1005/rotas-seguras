@@ -16,8 +16,8 @@ export default function CamadaRotas() {
     if (versaoResultados === ultimaVersao.current || !resultados.length) return
     ultimaVersao.current = versaoResultados
     const pontos = resultados.flatMap((r) => r.coords.map((c) => [c.lat, c.lng] as [number, number]))
-    // padding inferior maior: o painel de rotas cobre a parte de baixo do mapa
-    map.fitBounds(pontos, { paddingTopLeft: [40, 70], paddingBottomRight: [40, 360], maxZoom: 17 })
+    // painel compacto cobre só a base; cabeçalho cobre o topo
+    map.fitBounds(pontos, { paddingTopLeft: [40, 90], paddingBottomRight: [40, 140], maxZoom: 17 })
   }, [versaoResultados, resultados, map])
 
   const sel = resultados[selecionadaIdx]

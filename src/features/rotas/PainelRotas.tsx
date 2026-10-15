@@ -106,7 +106,7 @@ const MSG_FEEDBACK = { compartilhado: 'Compartilhado', copiado: 'Link copiado', 
 export default function PainelRotas() {
   const r = useRotas()
   const { periodo } = useAppEstado()
-  const [aberto, setAberto] = useState(true)
+  const { painelAberto: aberto, setPainelAberto: setAberto } = r
   const [feedback, setFeedback] = useState('')
 
   const sel = r.resultados[r.selecionadaIdx]
@@ -147,7 +147,7 @@ export default function PainelRotas() {
   return (
     <section aria-label="Planejar rota" className={`${caixa} flex max-h-[62%] flex-col overflow-hidden`}>
       <button
-        onClick={() => setAberto((a) => !a)}
+        onClick={() => setAberto(!aberto)}
         aria-expanded={aberto}
         aria-label={aberto ? 'Recolher painel de rotas' : 'Expandir painel de rotas'}
         className="flex min-h-11 w-full shrink-0 items-center gap-3 px-4 text-left focus-visible:ring-2 focus-visible:ring-route"
