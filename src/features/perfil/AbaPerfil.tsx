@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { areas } from '../../data/areas'
 import { ROTULO_DESLOCAMENTO, ROTULO_RETORNO, type Deslocamento } from '../../services/perfilStorage'
+import MinhasAvaliacoes from '../comunidade/MinhasAvaliacoes'
 import CriarPerfil from './CriarPerfil'
 import { usePerfil } from './PerfilEstado'
 
@@ -66,6 +67,11 @@ export default function AbaPerfil() {
           </button>
         </div>
       )}
+
+      <h3 className="mb-1 font-semibold text-lamp">Minhas avaliações</h3>
+      <div className="mb-4">
+        <MinhasAvaliacoes />
+      </div>
 
       <h3 className="mb-1 font-semibold text-lamp">Como funciona</h3>
       <p className="mb-3">

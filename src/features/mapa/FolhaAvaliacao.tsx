@@ -7,6 +7,7 @@ import { fatoresNoPonto, nivelDaNota, nivelDoTrecho, notaFatores } from '../../d
 import type { LatLng, TipoAvaliacao, Trecho } from '../../domain/tipos'
 import ListaRelatos, { ICONE_TIPO } from '../comunidade/ListaRelatos'
 import { useAppEstado } from '../estado/AppEstado'
+import { usePerfil } from '../perfil/PerfilEstado'
 import { COR_NIVEL, ROTULO_NIVEL } from './cores'
 
 export interface AlvoAvaliacao {
@@ -33,6 +34,7 @@ const MENSAGEM = {
 
 export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
   const { agregado, periodo, adicionarAvaliacao, todasAvaliacoes } = useAppEstado()
+  const { perfil } = usePerfil()
   const [tipo, setTipo] = useState<TipoAvaliacao | null>(null)
   const [comentario, setComentario] = useState('')
   const [aviso, setAviso] = useState<string | null>(null)
@@ -62,7 +64,7 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
 
   function enviar() {
     if (!tipo) return
-    const r = adicionarAvaliacao({ alvoId: alvo.alvoId, tipo, coord: alvo.coord, comentario: comentario.trim() || undefined })
+    const r = adicionarAvaliacao({ alvoId: alvo.alvoId, tipo, coord: alvo.coord, comentario: comentario.trim() || undefined, autorNome: perfil?.apelido })
     if (!r.ok && r.motivo !== 'armazenamento') {
       setAviso(MENSAGEM[r.motivo])
       setEnviado(false)
