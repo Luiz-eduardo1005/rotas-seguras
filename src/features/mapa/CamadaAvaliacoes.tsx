@@ -19,15 +19,22 @@ interface Grupo {
   tipo: TipoAvaliacao
 }
 
+const cacheIcones = new Map<string, L.DivIcon>()
+
 function criarIcone(tipo: TipoAvaliacao, total: number): L.DivIcon {
+  const chave = `${tipo}:${total}`
+  const existente = cacheIcones.get(chave)
+  if (existente) return existente
   const { cor, icone } = CFG[tipo]
   const svg = renderToStaticMarkup(icone)
-  return L.divIcon({
+  const icone_ = L.divIcon({
     className: '',
     iconSize: [26, 26],
     iconAnchor: [13, 13],
     html: `<div style="position:relative;width:26px;height:26px;border-radius:50%;background:#0d1526;border:2px solid ${cor};color:${cor};display:grid;place-items:center;box-shadow:0 0 8px ${cor}80">${svg}<span style="position:absolute;top:-7px;right:-7px;min-width:16px;height:16px;padding:0 3px;border-radius:8px;background:${cor};color:#060b16;font:700 10px/16px system-ui;text-align:center">${total}</span></div>`,
   })
+  cacheIcones.set(chave, icone_)
+  return icone_
 }
 
 /** Dentro do MapContainer: 1 pin por alvo de célula (`cel:`) com avaliações da comunidade. */
