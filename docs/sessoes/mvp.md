@@ -13,7 +13,7 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
 | | |
 | --- | --- |
 | Branch | `HEAD` |
-| Commit-base (antes desta sessão) | `?` |
+| Commit-base (antes desta sessão) | `1418fc2` |
 | Árvore ao abrir | **suja — 5 pendente(s)** |
 | Objetivo | MVP funcional Rotas Seguras |
 
@@ -70,3 +70,16 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
     ?? tsconfig.json
     ?? tsconfig.node.json
     ?? vite.config.ts
+- `2026-10-15 14:38` · HEAD `ca173f3` · árvore limpa · commit `ca173f3` — feat: scaffold Vite + React + Leaflet + Tailwind v4 + PWA
+- `2026-10-15 14:38` · HEAD `ca173f3` · **2 arquivo(s) pendentes** · commit `ca173f3` — feat: scaffold Vite + React + Leaflet + Tailwind v4 + PWA
+- `2026-10-15 14:39` · HEAD `ca173f3` · **4 arquivo(s) pendentes** · commit `ca173f3` — feat: scaffold Vite + React + Leaflet + Tailwind v4 + PWA
+- `2026-10-15 14:40` · HEAD `ca173f3` · **4 arquivo(s) pendentes** · commit `ca173f3` — feat: scaffold Vite + React + Leaflet + Tailwind v4 + PWA
+- `2026-10-15 14:41` · HEAD `ca173f3` · **10 arquivo(s) pendentes** · commit `ca173f3` — feat: scaffold Vite + React + Leaflet + Tailwind v4 + PWA
+  - arquivos em jogo:
+    ?? src/domain/avaliacoes.test.ts
+    ?? src/domain/avaliacoes.ts
+    ?? src/domain/geo.ts
+    ?? src/domain/pontuacao.test.ts
+    ?? src/domain/pontuacao.ts
+    ?? src/domain/tipos.ts
+- `2026-10-15 14:41` · HEAD `ed38bdb` · **5 arquivo(s) pendentes** · T3 domínio + testes ok

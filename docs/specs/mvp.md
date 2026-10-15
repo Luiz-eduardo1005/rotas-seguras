@@ -66,7 +66,7 @@ npx tsc -b && npx vitest run --reporter=dot && npm run build
 
 - [x] **T1** — Fundação: repo, scaffold, tema, mapa mínimo, PWA, CLAUDE.md
 - [ ] **T2** — Dados mock tipados (trechos, áreas, pontos de apoio, lugares, rotas pré-gravadas)
-- [ ] **T3** — Domínio: scoring + avaliações, com testes vitest (depende de T2)
+- [x] **T3** — Domínio: scoring + avaliações, com testes vitest (depende de T2)
 - [ ] **T4** — Mapa + camadas + legenda (depende de T2, T3)
 - [ ] **T5** — Busca/rotas/card/avaliação/compartilhar (depende de T3, T4)
 - [ ] **T6** — PWA final + deploy + docs (Como funciona, fontes)
