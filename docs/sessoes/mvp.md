@@ -83,3 +83,39 @@ e rode os testes. O marcador diz o que o agente acreditava, não o que é verdad
     ?? src/domain/pontuacao.ts
     ?? src/domain/tipos.ts
 - `2026-10-15 14:41` · HEAD `ed38bdb` · **5 arquivo(s) pendentes** · T3 domínio + testes ok
+- `2026-10-15 14:41` · HEAD `fc99b4f` · **1 arquivo(s) pendentes** · commit `fc99b4f` — docs: T3 concluída e commit-base da sessão
+- `2026-10-15 14:44` · HEAD `7e8ebd3` · **5 arquivo(s) pendentes** · commit `7e8ebd3` — feat(estado): contexto do app
+  - arquivos em jogo:
+    ?? docs/pesquisa/
+- `2026-10-15 14:44` · HEAD `c3fee4b` · **5 arquivo(s) pendentes** · commit `c3fee4b` — feat(estado): contexto do app
+  - arquivos em jogo:
+    ?? docs/pesquisa/
+- `2026-10-15 14:44` · HEAD `c3fee4b` · **5 arquivo(s) pendentes** · commit `c3fee4b` — feat(estado): contexto do app
+  - arquivos em jogo:
+    ?? docs/pesquisa/
+- `2026-10-15 14:45` · HEAD `c3fee4b` · **11 arquivo(s) pendentes** · commit `c3fee4b` — feat(estado): contexto do app
+  - arquivos em jogo:
+     M src/App.tsx
+    ?? docs/pesquisa/
+    ?? src/components/AvisoOnboarding.tsx
+    ?? src/components/BarraNavegacao.tsx
+    ?? src/components/Legenda.tsx
+    ?? src/components/Painel.tsx
+    ?? src/components/SeletorPeriodo.tsx
+- `2026-10-15 14:45` · HEAD `405342a` · **5 arquivo(s) pendentes** · T5 parte 1: serviços/estado/casca ok
+  - arquivos em jogo:
+    ?? docs/pesquisa/
+- `2026-10-15 14:45` · HEAD `405342a` · **5 arquivo(s) pendentes** · commit `405342a` — feat(ui): navegação, legenda, período e aviso
+  - arquivos em jogo:
+    ?? docs/pesquisa/
+- `2026-10-15 14:49` · HEAD `405342a` · **14 arquivo(s) pendentes** · T2 dados mock ok
+  - arquivos em jogo:
+    ?? docs/pesquisa/
+    ?? scripts/gerar-dados.mjs
+    ?? src/data/apoio.ts
+    ?? src/data/areas.ts
+    ?? src/data/dados.test.ts
+    ?? src/data/index.ts
+    ?? src/data/lugares.ts
+    ?? src/data/rotasPregravadas.ts
+    ?? src/data/trechos.ts
