@@ -1,5 +1,4 @@
 import { MapContainer, TileLayer } from 'react-leaflet'
-import { LocateFixed } from 'lucide-react'
 import 'leaflet/dist/leaflet.css'
 import { AppEstadoProvider, useAppEstado, type CamadasVisiveis } from './features/estado/AppEstado'
 import BarraNavegacao from './components/BarraNavegacao'
@@ -7,6 +6,12 @@ import AvisoOnboarding, { AvisoRodape } from './components/AvisoOnboarding'
 import Legenda from './components/Legenda'
 import SeletorPeriodo from './components/SeletorPeriodo'
 import Painel from './components/Painel'
+import CamadasMapa from './features/mapa/CamadasMapa'
+import BotaoLocalizar from './features/mapa/BotaoLocalizar'
+import CamadaRotas from './features/rotas/CamadaRotas'
+import ListaSalvos from './features/rotas/ListaSalvos'
+import PainelRotas from './features/rotas/PainelRotas'
+import { RotasProvider, useRotas } from './features/rotas/RotasEstado'
 
 const MANAUS: [number, number] = [-3.1019, -60.025]
 
@@ -42,7 +47,7 @@ function PainelAba() {
   if (abaAtiva === 'salvos')
     return (
       <Painel titulo="Salvos" onFechar={fechar}>
-        <p className="text-sm text-ink-dim">Rotas salvas aparecem aqui.</p>
+        <ListaSalvos />
       </Painel>
     )
   if (abaAtiva === 'perfil')
@@ -69,6 +74,8 @@ function PainelAba() {
 }
 
 function Casca() {
+  const { abaAtiva } = useAppEstado()
+  const { escolherPontoNoMapa, resultados } = useRotas()
   return (
     <div className="relative h-full w-full overflow-hidden">
       <MapContainer center={MANAUS} zoom={12} zoomControl={false} className="absolute inset-0 z-0">
@@ -78,7 +85,12 @@ function Casca() {
           maxZoom={19}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
-        {/* camadas do mapa e painel de rotas: T4/T5 */}
+        <CamadasMapa onToqueMapa={escolherPontoNoMapa} />
+        <CamadaRotas />
+        {/* botão fixo no canto superior direito (abaixo do header): nunca colide com o painel de rotas */}
+        <div className="pointer-events-none absolute inset-0 [&>div]:pointer-events-auto [&>div]:top-[4.25rem]! [&>div]:bottom-auto! [&>div]:flex-col-reverse!">
+          <BotaoLocalizar />
+        </div>
       </MapContainer>
 
       <header className="pointer-events-none absolute inset-x-0 top-0 z-[1000] flex items-center justify-between p-3">
@@ -88,16 +100,9 @@ function Casca() {
         <SeletorPeriodo />
       </header>
 
-      <Legenda />
+      <Legenda compacta={resultados.length > 0} />
 
-      <button
-        aria-label="Minha localização"
-        className="absolute bottom-[calc(7.5rem+env(safe-area-inset-bottom))] right-4 z-[1000] grid size-12 place-items-center rounded-full border border-line bg-surface-solid text-route shadow-glow"
-      >
-        <LocateFixed size={22} />
-      </button>
-
-      {/* camadas do mapa e painel de rotas: T4/T5 (painel de rotas entra aqui, acima da barra) */}
+      {abaAtiva === 'mapa' && <PainelRotas />}
       <PainelAba />
       <AvisoRodape />
       <BarraNavegacao />
@@ -109,7 +114,9 @@ function Casca() {
 export default function App() {
   return (
     <AppEstadoProvider>
-      <Casca />
+      <RotasProvider>
+        <Casca />
+      </RotasProvider>
     </AppEstadoProvider>
   )
 }

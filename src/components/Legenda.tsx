@@ -4,7 +4,8 @@ const ITENS = [
   { cor: 'bg-danger', texto: 'Evitar à noite' },
 ]
 
-export default function Legenda() {
+/** `compacta`: só as barras de cor (texto vira leitura de tela), libera espaço quando há rotas no mapa. */
+export default function Legenda({ compacta = false }: { compacta?: boolean }) {
   return (
     <ul
       aria-label="Legenda do mapa"
@@ -13,7 +14,7 @@ export default function Legenda() {
       {ITENS.map(({ cor, texto }) => (
         <li key={texto} className="flex items-center gap-2">
           <span className={`h-1.5 w-4 rounded-full ${cor}`} aria-hidden />
-          {texto}
+          <span className={compacta ? 'sr-only' : undefined}>{texto}</span>
         </li>
       ))}
     </ul>
