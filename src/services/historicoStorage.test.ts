@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   adicionarAoHistorico,
   carregarHistorico,
@@ -31,7 +31,19 @@ describe('adicionarAoHistorico', () => {
 })
 
 describe('persistência', () => {
-  beforeEach(() => localStorage.clear())
+  beforeEach(() => {
+    const m = new Map<string, string>()
+    vi.stubGlobal('localStorage', {
+      get length() {
+        return m.size
+      },
+      key: (i: number) => [...m.keys()][i] ?? null,
+      getItem: (k: string) => m.get(k) ?? null,
+      setItem: (k: string, v: string) => void m.set(k, v),
+      removeItem: (k: string) => void m.delete(k),
+      clear: () => m.clear(),
+    })
+  })
   it('registra, remove e limpa', () => {
     registrarBusca(p('A', -3), p('B', -3.01))
     const l = registrarBusca(p('C', -3.1), p('D', -3.2))
