@@ -95,9 +95,9 @@ describe('fatoresNoPonto', () => {
   it('aplica avaliacoes do trecho e da celula', () => {
     const cen: Cenario = { ...cenarioVazio, trechos: [trecho('t1', -3.1, 0.5, 0.5, 0.5)] }
     const p = { lat: -3.1, lng: L + 0.002 }
-    const ag = agregarAvaliacoes([{ id: 'x', alvoId: 't1', tipo: 'atencao', coord: p, criadoEm: '' }])
+    const ag = agregarAvaliacoes([{ id: 'x', alvoId: 't1', tipo: 'atencao', coord: p, criadoEm: '', autorId: 'local', autorNome: 'Você' }])
     expect(fatoresNoPonto(p, cen, ag).risco).toBeGreaterThan(0.5)
-    const ag2 = agregarAvaliacoes([{ id: 'y', alvoId: alvoIdParaCoord(p), tipo: 'luz', coord: p, criadoEm: '' }])
+    const ag2 = agregarAvaliacoes([{ id: 'y', alvoId: alvoIdParaCoord(p), tipo: 'luz', coord: p, criadoEm: '', autorId: 'local', autorNome: 'Você' }])
     expect(fatoresNoPonto(p, cen, ag2).luz).toBeGreaterThan(0.5)
   })
 })
@@ -156,7 +156,7 @@ describe('pontuarRota', () => {
       alvoId: 't',
       tipo: 'atencao',
       coord: { lat: -3.1, lng: L },
-      criadoEm: '',
+      criadoEm: '', autorId: 'local', autorNome: 'Você',
     }))
     const antes = pontuarRota(linha(-3.1), c, vazio, 'noite').nota
     const depois = pontuarRota(linha(-3.1), c, agregarAvaliacoes(votos), 'noite').nota
@@ -199,7 +199,7 @@ describe('ordenarRotas / nivelDoTrecho', () => {
   it('nivelDoTrecho reage a avaliacoes e periodo', () => {
     const t = trecho('t', -3.1, 0.6, 0.6, 0.4)
     expect(nivelDoTrecho(t, vazio, 'noite')).toBe('amarelo')
-    const ag = agregarAvaliacoes(Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, alvoId: 't', tipo: 'atencao' as const, coord: { lat: 0, lng: 0 }, criadoEm: '' })))
+    const ag = agregarAvaliacoes(Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, alvoId: 't', tipo: 'atencao' as const, coord: { lat: 0, lng: 0 }, criadoEm: '', autorId: 'local', autorNome: 'Você' })))
     expect(nivelDoTrecho(t, ag, 'noite')).toBe('vermelho')
   })
 })
@@ -212,7 +212,7 @@ describe('nivelDaArea', () => {
   it('usa votos da comunidade no id da area', () => {
     expect(nivelDaArea(area, vazio, 'noite')).toBe('amarelo')
     const votos = Array.from({ length: 30 }, (_, i): Avaliacao => ({
-      id: String(i), alvoId: 'a1', tipo: 'atencao', coord: area.centro, criadoEm: '',
+      id: String(i), alvoId: 'a1', tipo: 'atencao', coord: area.centro, criadoEm: '', autorId: 'local', autorNome: 'Você',
     }))
     expect(nivelDaArea(area, agregarAvaliacoes(votos), 'noite')).toBe('vermelho')
   })
