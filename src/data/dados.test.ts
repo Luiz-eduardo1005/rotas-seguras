@@ -56,10 +56,13 @@ describe('dados mock de Manaus', () => {
     for (const a of avaliacoesSemente) expect(dentro(a.coord)).toBe(true)
   })
 
-  it('relatos semente: 280..380, todos semente, alvos válidos e datas até a referência', () => {
-    expect(avaliacoesSemente.length).toBeGreaterThanOrEqual(280)
-    expect(avaliacoesSemente.length).toBeLessThanOrEqual(380)
+  it('relatos semente: cobertura em todo trecho (>=3) e área (>=5), 650..1100, todos semente, alvos válidos e datas até a referência', () => {
+    expect(avaliacoesSemente.length).toBeGreaterThanOrEqual(650)
+    expect(avaliacoesSemente.length).toBeLessThanOrEqual(1100)
     const alvos = new Set([...cenario.trechos.map((t) => t.id), ...cenario.areas.map((a) => a.id)])
+    const cont = (id: string) => avaliacoesSemente.filter((a) => a.alvoId === id).length
+    for (const t of cenario.trechos) expect(cont(t.id)).toBeGreaterThanOrEqual(3)
+    for (const a of cenario.areas) expect(cont(a.id)).toBeGreaterThanOrEqual(5)
     const ref = Date.parse(REFERENCIA)
     for (const a of avaliacoesSemente) {
       expect(a.semente).toBe(true)

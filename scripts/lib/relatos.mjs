@@ -6,7 +6,7 @@ const NOMES = ['Ana', 'Marcos', 'Juliana', 'Carlos', 'Rafaela', 'Diego', 'Tatian
 const INICIAIS = 'ABCDEFGHJLMNOPRSTV'
 const NEG = /queimad|apagad|nenhuma luz|sem luz|escur|escuridão|piscando|tapando|fiação|sem poste|só um poste|fraca|lanterna|regular em|as travessas|na sombra|caiu|deserta|vazi|poucos carros|cedo|só tem muro|demorando|parado|feriado|a travessa/i
 
-export function gerarRelatos({ json, areas, trechos, total = 340, seed = 20261015 }) {
+export function gerarRelatos({ json, areas, trechos, extras = 60, seed = 20261015 }) {
   const rnd = mulberry32(seed)
   const int = (n) => Math.floor(rnd() * n)
   const escolhe = (arr) => arr[int(arr.length)]
@@ -34,7 +34,7 @@ export function gerarRelatos({ json, areas, trechos, total = 340, seed = 2026101
   for (const a of areas) alvos.push({ kind: 'area', id: a.id, nome: a.bairro, luz: a.luz, risco: a.risco, peso: 0.25 + a.fluxo, ref: a })
   const ponto = (al) => {
     if (al.kind === 'trecho') return pontoAoLongo(al.ref.coords, rnd() * comprimento(al.ref.coords))
-    const ang = rnd() * 2 * Math.PI, d = Math.sqrt(rnd()) * al.ref.raioM * 0.6
+    const ang = rnd() * 2 * Math.PI, d = Math.sqrt(rnd()) * al.ref.raioM * 0.7
     return desloca(al.ref.centro, Math.cos(ang) * d, Math.sin(ang) * d)
   }
   const tipoPara = (al) => {
@@ -59,7 +59,9 @@ export function gerarRelatos({ json, areas, trechos, total = 340, seed = 2026101
   const celula = (c) => `cel:${c.lat.toFixed(3)}:${c.lng.toFixed(3)}`
   const linhas = []
   const vistos = new Set()
-  const garantidos = alvos.filter((a) => a.id.startsWith('local-')).flatMap((a) => [a, a, a, a, a, a, a, a])
+  // garantia: local-* 8, demais trechos 3, áreas 6 (cobertura em todo toque na UI)
+  const garantidos = alvos.flatMap((a) => Array(a.id.startsWith('local-') ? 8 : a.kind === 'trecho' ? 3 : 6).fill(a))
+  const total = garantidos.length + extras
   for (let i = 0; i < total; i++) {
     let al = i < garantidos.length ? garantidos[i] : pond(alvos, (x) => x.peso)
     let alvoId = al.id, coord = ponto(al)
@@ -69,7 +71,7 @@ export function gerarRelatos({ json, areas, trechos, total = 340, seed = 2026101
     }
     const tipo = tipoPara(al)
     let comentario = ''
-    if (rnd() < 0.7) {
+    if (rnd() < 0.6) {
       for (let k = 0; k < 6 && !comentario; k++) {
         const txt = escolhe(pool[tipo]).replaceAll('{local}', al.nome)
         if (!vistos.has(alvoId + txt)) { vistos.add(alvoId + txt); comentario = txt }
