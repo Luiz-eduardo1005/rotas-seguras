@@ -5,6 +5,7 @@ import { alvoIdParaCoord } from '../../domain/avaliacoes'
 import { distanciaM, distanciaPontoSegmentoM } from '../../domain/geo'
 import type { LatLng, Trecho } from '../../domain/tipos'
 import { useAppEstado } from '../estado/AppEstado'
+import CamadaAvaliacoes from './CamadaAvaliacoes'
 import CamadaApoio from './CamadaApoio'
 import CamadaAreas from './CamadaAreas'
 import CamadaTrechos from './CamadaTrechos'
@@ -60,6 +61,7 @@ export default function CamadasMapa({ onToqueMapa }: Props) {
     <>
       {camadasVisiveis.areas && <CamadaAreas />}
       {camadasVisiveis.trechos && <CamadaTrechos onSelecionar={aoSelecionarTrecho} />}
+      {camadasVisiveis.trechos && <CamadaAvaliacoes />}
       {camadasVisiveis.apoio && <CamadaApoio />}
       {alvo && <FolhaAvaliacao key={alvo.alvoId} alvo={alvo} onFechar={() => setAlvo(null)} />}
     </>
