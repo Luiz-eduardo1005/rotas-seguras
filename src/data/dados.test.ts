@@ -48,11 +48,11 @@ describe('dados mock de Manaus', () => {
     expect(buscarRotaPregravada({ lat: -3.2, lng: -59.9 }, d)).toBeUndefined()
   })
 
-  it('>=3 rotas-modelo têm diferença >=10 pontos entre melhor e pior alternativa à noite', () => {
+  it('todas as rotas-modelo têm diferença >=15 pontos entre melhor e pior alternativa à noite', () => {
     const diffs = rotasPregravadas.map((rp) => {
       const notas = rp.rotas.map((r) => pontuarRota(r.coords, cenario, new Map(), 'noite').nota)
       return { id: rp.rotaModeloId, notas, diff: Math.max(...notas) - Math.min(...notas) }
     })
-    expect(diffs.filter((d) => d.diff >= 10).length).toBeGreaterThanOrEqual(3)
+    expect(diffs.filter((d) => d.diff < 15)).toEqual([])
   })
 })

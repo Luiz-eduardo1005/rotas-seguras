@@ -171,7 +171,7 @@ const MODELOS = [
   ['demostenes-t3', 'Escola no Jorge Teixeira até o T3', 'Da E.E. Demóstenes Belduque ao Terminal Cidade Nova', 'E.E. Demóstenes Belduque Traves', 'Terminal Cidade Nova (T3)', 0],
   ['unip-compensa', 'UNIP até a Compensa', 'Da UNIP Parque Dez para casa, na Compensa', 'UNIP Parque Dez', 'Compensa', 0],
   ['lins-zumbi', 'Nilton Lins até Zumbi dos Palmares', 'Da Universidade Nilton Lins para casa, em Zumbi dos Palmares', 'Universidade Nilton Lins', 'Zumbi dos Palmares', 1],
-  ['trabalho-centro-compensa', 'Trabalho no Centro até a Compensa', 'Do Teatro Amazonas (Centro) para casa, na Compensa', 'Teatro Amazonas', 'Compensa', 0],
+  ['trabalho-centro-compensa', 'Trabalho no Centro até a Compensa', 'Do Teatro Amazonas (Centro) para casa, na Compensa', 'Teatro Amazonas', 'Compensa', 1],
 ]
 const rotasModelo = MODELOS.map(([id, titulo, descricao, o, d]) => ({
   id, titulo, descricao,
@@ -180,11 +180,22 @@ const rotasModelo = MODELOS.map(([id, titulo, descricao, o, d]) => ({
 }))
 
 // ---------- rotas pré-gravadas ----------
+// Onde o OSRM devolve alternativas quase sobrepostas, a alternativa 'segura' é forçada por um waypoint
+// numa avenida principal iluminada (a direta continua sendo a mais curta, por ruas internas).
+const VIA = {
+  'julia-centro': [-3.1355, -60.0230],
+  'trabalho-centro-compensa': [-3.1355, -60.0230],
+}
 const rotasPregravadas = []
 const altsBrutas = {}
 for (const m of rotasModelo) {
   const j = await osrm([lug(m.origemId), lug(m.destinoId)], true)
-  altsBrutas[m.id] = j.routes.slice(0, 3).map((rt) => ({ coords: geom(rt), distanciaM: Math.round(rt.distance), duracaoS: Math.round(rt.duration) }))
+  const rts = j.routes.slice(0, 3)
+  if (VIA[m.id]) {
+    const jv = await osrm([lug(m.origemId), ll(VIA[m.id]), lug(m.destinoId)])
+    rts.splice(0, rts.length, j.routes[0], jv.routes[0])
+  }
+  altsBrutas[m.id] = rts.map((rt) => ({ coords: geom(rt), distanciaM: Math.round(rt.distance), duracaoS: Math.round(rt.duration) }))
   rotasPregravadas.push({
     rotaModeloId: m.id,
     rotas: altsBrutas[m.id].map((a) => ({ coords: simplificar(a.coords, 120), distanciaM: a.distanciaM, duracaoS: a.duracaoS })),
@@ -205,7 +216,7 @@ const VIAS = [
   ['Av. Djalma Batista', [-3.0916, -60.0237], [-3.0910, -60.0242], [0.8, 0.8, 0.25]],
   ['Av. Constantino Nery', [-3.0985, -60.0266], [-3.0978, -60.0261], [0.5, 0.5, 0.45]],
   ['Av. Autaz Mirim', [-3.0980, -59.9471], [-3.0778, -59.9559], [0.55, 0.55, 0.55]],
-  ['Av. Brasil', [-3.0899, -60.0607], [-3.0896, -60.0610], [0.7, 0.7, 0.35]],
+  ['Av. Brasil', [-3.1019, -60.0330], [-3.0896, -60.0610], [0.7, 0.7, 0.35]],
   ['Av. Torquato Tapajós', [-2.9912, -60.0309], [-2.9898, -60.0302], [0.5, 0.45, 0.6]],
   ['Av. Eduardo Ribeiro', [-3.1299, -60.0241], [-3.1290, -60.0241], [0.85, 0.85, 0.3]],
   ['Av. Cosme Ferreira', [-3.0876, -59.9278], [-3.0873, -59.9282], [0.25, 0.8, 0.65]],
@@ -234,14 +245,17 @@ function divergente(a, b, pad) {
   }
   return a.slice(Math.max(0, melhor[0] - pad), Math.min(a.length, melhor[1] + 1 + pad))
 }
+const PAD = {}
+// nos dois pares com alternativas parecidas, o contraste é reforçado (ruas internas bem piores, avenida bem melhor)
+const FORTE = { 'julia-centro': 1, 'trabalho-centro-compensa': 1 }
 for (const [id, , , , , seguraIdx] of MODELOS) {
   const alts = altsBrutas[id]
   if (alts.length < 2) continue
   const [iS, iP] = seguraIdx === 1 ? [1, 0] : [0, 1]
-  const nS = divergente(alts[iS].coords, alts[iP].coords, 6)
-  const nP = divergente(alts[iP].coords, alts[iS].coords, 6)
-  addTrecho(`local-${id}-seguro`, `Via principal — ${bairroDe(nS[Math.floor(nS.length / 2)])}`, nS, [0.8, 0.75, 0.2])
-  addTrecho(`local-${id}-escuro`, `Ruas internas — ${bairroDe(nP[Math.floor(nP.length / 2)])}`, nP, [0.22, 0.25, 0.82])
+  const nS = divergente(alts[iS].coords, alts[iP].coords, PAD[id] ?? 6)
+  const nP = divergente(alts[iP].coords, alts[iS].coords, PAD[id] ?? 6)
+  addTrecho(`local-${id}-seguro`, `Via principal — ${bairroDe(nS[Math.floor(nS.length / 2)])}`, nS, FORTE[id] ? [0.92, 0.9, 0.1] : [0.8, 0.75, 0.2])
+  addTrecho(`local-${id}-escuro`, `Ruas internas — ${bairroDe(nP[Math.floor(nP.length / 2)])}`, nP, FORTE[id] ? [0.1, 0.12, 0.95] : [0.22, 0.25, 0.82])
 }
 // 3) reforço por bairro de alto risco: sempre existe uma via principal verde e ruas internas ruins
 const EXTRA = [
