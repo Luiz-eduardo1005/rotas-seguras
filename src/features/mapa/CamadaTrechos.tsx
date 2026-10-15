@@ -10,12 +10,13 @@ import { COR_NIVEL } from './cores'
 
 interface Props {
   onSelecionar: (trecho: Trecho) => void
+  atenuar?: boolean
 }
 
 const LUZ_POSTES = 0.7
 const PASSO_POSTE_M = 150
 
-function CamadaTrechos({ onSelecionar }: Props) {
+function CamadaTrechos({ onSelecionar, atenuar = false }: Props) {
   const { agregado, periodo } = useAppEstado()
   const postes = useMemo(
     () =>
@@ -35,14 +36,14 @@ function CamadaTrechos({ onSelecionar }: Props) {
   )
   return (
     <>
-      {linhas.map(({ t, pos, cor }) => (
+      {!atenuar && linhas.map(({ t, pos, cor }) => (
         <Polyline key={`g-${t.id}`} positions={pos} interactive={false} pathOptions={{ color: cor, weight: 11, opacity: 0.18, lineCap: 'round' }} />
       ))}
       {linhas.map(({ t, pos, cor }) => (
         <Polyline
           key={t.id}
           positions={pos}
-          pathOptions={{ color: cor, weight: 4, opacity: 0.95, lineCap: 'round', bubblingMouseEvents: false }}
+          pathOptions={{ color: cor, weight: 4, opacity: atenuar ? 0.35 : 0.95, lineCap: 'round', bubblingMouseEvents: false }}
           eventHandlers={{
             click: (e) => {
               L.DomEvent.stopPropagation(e)
@@ -57,7 +58,7 @@ function CamadaTrechos({ onSelecionar }: Props) {
           center={[p.c.lat, p.c.lng]}
           radius={2.5}
           interactive={false}
-          pathOptions={{ color: '#f5b544', weight: 3, opacity: 0.35, fillColor: '#f5b544', fillOpacity: 1 }}
+          pathOptions={{ color: '#f5b544', weight: 3, opacity: atenuar ? 0.15 : 0.35, fillColor: '#f5b544', fillOpacity: atenuar ? 0.45 : 1 }}
         />
       ))}
     </>

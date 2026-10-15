@@ -5,7 +5,7 @@ import { nivelDaArea } from '../../domain/pontuacao'
 import { useAppEstado } from '../estado/AppEstado'
 import { COR_NIVEL, ROTULO_NIVEL } from './cores'
 
-function CamadaAreas() {
+function CamadaAreas({ atenuar = false }: { atenuar?: boolean }) {
   const { agregado, periodo } = useAppEstado()
   return (
     <>
@@ -17,7 +17,7 @@ function CamadaAreas() {
             center={[a.centro.lat, a.centro.lng]}
             radius={a.raioM}
             interactive
-            pathOptions={{ color: COR_NIVEL[nivel], weight: 1, opacity: 0.6, fillColor: COR_NIVEL[nivel], fillOpacity: 0.12 }}
+            pathOptions={{ color: COR_NIVEL[nivel], weight: 1, opacity: atenuar ? 0.3 : 0.6, fillColor: COR_NIVEL[nivel], fillOpacity: atenuar ? 0.05 : 0.12 }}
           >
             <Tooltip sticky>
               {a.bairro} · {ROTULO_NIVEL[nivel]}

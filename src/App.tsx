@@ -86,7 +86,7 @@ function Casca() {
           className={periodo === 'dia' ? 'tiles-dia' : 'tiles-noite'}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
-        <CamadasMapa onToqueMapa={escolherPontoNoMapa} />
+        <CamadasMapa onToqueMapa={escolherPontoNoMapa} atenuar={resultados.length > 0} />
         <CamadaRotas />
         {/* botão fixo no canto superior direito (abaixo do header): nunca colide com o painel de rotas */}
         <div className="pointer-events-none absolute inset-0 [&>div]:pointer-events-auto [&>div]:top-[4.25rem]! [&>div]:bottom-auto! [&>div]:flex-col-reverse!">
