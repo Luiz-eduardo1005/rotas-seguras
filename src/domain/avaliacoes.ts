@@ -84,6 +84,39 @@ export function relatosProximos(
   return saida.sort((a, b) => Date.parse(b.avaliacao.criadoEm) - Date.parse(a.avaliacao.criadoEm))
 }
 
+export interface OpcoesRelatos {
+  alvoId?: string
+  areaId?: string
+  raioM?: number
+}
+
+/**
+ * Relatos para um ponto: `proximos` (do alvo ou a até `raioM`) e `doBairro`
+ * (do bairro `areaId` que não estão em `proximos`); ambos mais recentes primeiro.
+ */
+export function relatosParaPonto(
+  coord: LatLng,
+  avaliacoes: Avaliacao[],
+  { alvoId, areaId, raioM = 300 }: OpcoesRelatos = {},
+): { proximos: RelatoProximo[]; doBairro: RelatoProximo[] } {
+  const proximos = relatosProximos(coord, avaliacoes, raioM, alvoId)
+  if (areaId === undefined) return { proximos, doBairro: [] }
+  const ids = new Set(proximos.map((r) => r.avaliacao.id))
+  const doBairro = avaliacoes
+    .filter((a) => a.alvoId === areaId && !ids.has(a.id))
+    .map((avaliacao) => ({ avaliacao, distanciaM: Math.round(distanciaM(coord, avaliacao.coord)) }))
+    .sort((a, b) => Date.parse(b.avaliacao.criadoEm) - Date.parse(a.avaliacao.criadoEm))
+  return { proximos, doBairro }
+}
+
+const semAcento = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+
+/** "Nome · Bairro", sem repetir o bairro quando o nome já o contém. */
+export function tituloTrecho(nome: string, bairro: string): string {
+  if (!bairro || semAcento(nome).includes(semAcento(bairro))) return nome
+  return `${nome} · ${bairro}`
+}
+
 /** Contagem por tipo dos relatos informados. */
 export function contarRelatos(relatos: RelatoProximo[]): AgregadoAlvo {
   const ag: AgregadoAlvo = { luz: 0, fluxo: 0, atencao: 0, total: 0 }

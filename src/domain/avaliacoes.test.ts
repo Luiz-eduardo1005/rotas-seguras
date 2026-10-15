@@ -6,6 +6,8 @@ import {
   AUTOR_LOCAL,
   podeExcluir,
   relatosProximos,
+  relatosParaPonto,
+  tituloTrecho,
   tempoRelativo,
   pesoComunidade,
   PESO_MAX_COMUNIDADE,
@@ -109,5 +111,39 @@ describe('podeExcluir', () => {
     expect(podeExcluir(av('t', 'luz'))).toBe(true)
     expect(podeExcluir({ ...av('t', 'luz'), semente: true })).toBe(false)
     expect(podeExcluir({ ...av('t', 'luz'), autorId: 'outro' })).toBe(false)
+  })
+})
+
+describe('relatosParaPonto', () => {
+  const longe = { lat: -3.2, lng: -60.0 }
+  const mk = (id: string, alvoId: string, c = coord, criadoEm = '2026-10-15T20:00:00Z'): Avaliacao => ({
+    ...av(alvoId, 'luz'),
+    id,
+    coord: c,
+    criadoEm,
+  })
+  it('separa proximos e doBairro sem repetir', () => {
+    const lista = [mk('p', 'x'), mk('b1', 'area1', longe, '2026-10-14T00:00:00Z'), mk('b2', 'area1', longe, '2026-10-15T00:00:00Z'), mk('o', 'outra', longe)]
+    const r = relatosParaPonto(coord, lista, { areaId: 'area1' })
+    expect(r.proximos.map((x) => x.avaliacao.id)).toEqual(['p'])
+    expect(r.doBairro.map((x) => x.avaliacao.id)).toEqual(['b2', 'b1'])
+  })
+  it('relato do bairro próximo fica só em proximos', () => {
+    const r = relatosParaPonto(coord, [mk('b', 'area1')], { areaId: 'area1' })
+    expect(r.proximos).toHaveLength(1)
+    expect(r.doBairro).toHaveLength(0)
+  })
+  it('sem areaId, doBairro vazio', () => {
+    expect(relatosParaPonto(coord, [mk('b', 'area1', longe)]).doBairro).toEqual([])
+  })
+})
+
+describe('tituloTrecho', () => {
+  it('não duplica bairro (sem acento/case)', () => {
+    expect(tituloTrecho('Ruas internas — Da Paz', 'Da Paz')).toBe('Ruas internas — Da Paz')
+    expect(tituloTrecho('Av. Japurá', 'JAPURA')).toBe('Av. Japurá')
+  })
+  it('anexa bairro quando ausente', () => {
+    expect(tituloTrecho('Av. Djalma Batista', 'Chapada')).toBe('Av. Djalma Batista · Chapada')
   })
 })

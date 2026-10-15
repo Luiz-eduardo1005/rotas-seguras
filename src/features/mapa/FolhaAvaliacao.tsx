@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { cenario } from '../../data'
-import { contarRelatos, relatosProximos } from '../../domain/avaliacoes'
+import { contarRelatos, relatosParaPonto, tituloTrecho } from '../../domain/avaliacoes'
+import { areaDoPonto } from '../../domain/geo'
 import { fatoresNoPonto, nivelDaNota, nivelDoTrecho, notaFatores } from '../../domain/pontuacao'
 import type { LatLng, TipoAvaliacao, Trecho } from '../../domain/tipos'
 import ListaRelatos, { ICONE_TIPO } from '../comunidade/ListaRelatos'
@@ -56,11 +57,14 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
     ? nivelDoTrecho(alvo.trecho, agregado, periodo)
     : nivelDaNota(notaFatores(fatoresNoPonto(alvo.coord, cenario, agregado), periodo))
 
-  const relatos = useMemo(
-    () => relatosProximos(alvo.coord, todasAvaliacoes, RAIO_RELATOS_M, alvo.alvoId),
-    [alvo.coord, alvo.alvoId, todasAvaliacoes],
+  const titulo = alvo.trecho ? tituloTrecho(alvo.trecho.nome, alvo.trecho.bairro) : alvo.titulo
+  const area = useMemo(() => areaDoPonto(alvo.coord, cenario.areas), [alvo.coord])
+  const { proximos, doBairro } = useMemo(
+    () => relatosParaPonto(alvo.coord, todasAvaliacoes, { alvoId: alvo.alvoId, areaId: area?.id, raioM: RAIO_RELATOS_M }),
+    [alvo.coord, alvo.alvoId, area, todasAvaliacoes],
   )
-  const resumo = useMemo(() => contarRelatos(relatos), [relatos])
+  const usaBairro = proximos.length === 0 && doBairro.length > 0 && !!area
+  const resumo = useMemo(() => contarRelatos(usaBairro ? doBairro : proximos), [usaBairro, doBairro, proximos])
 
   function enviar() {
     if (!tipo) return
@@ -81,12 +85,12 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
       ref={refFolha}
       tabIndex={-1}
       role="dialog"
-      aria-label={`Relatos de ${alvo.titulo}`}
+      aria-label={`Relatos de ${titulo}`}
       className="fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-[1100] mx-auto flex max-h-[min(80vh,calc(100dvh-7rem))] max-w-lg flex-col overflow-hidden rounded-card border border-line bg-surface shadow-lg outline-none backdrop-blur"
     >
       <div className="flex items-start justify-between gap-2 p-4 pb-2">
         <div className="min-w-0">
-          <h2 className="truncate text-base font-semibold">{alvo.titulo}</h2>
+          <h2 className="truncate text-base font-semibold">{titulo}</h2>
           <span
             className="mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold text-night"
             style={{ background: COR_NIVEL[nivel] }}
@@ -120,11 +124,18 @@ export default function FolhaAvaliacao({ alvo, onFechar }: Props) {
           })}
         </div>
         <p className="mt-1.5 text-xs text-ink-dim">
-          {resumo.total} {resumo.total === 1 ? 'relato' : 'relatos'} em até {RAIO_RELATOS_M} m
+          {resumo.total} {resumo.total === 1 ? 'relato' : 'relatos'}{' '}
+          {usaBairro ? `no bairro ${area?.bairro}` : `em até ${RAIO_RELATOS_M} m`}
         </p>
 
         <h3 className="mb-1.5 mt-4 text-sm font-semibold">Relatos da comunidade</h3>
-        <ListaRelatos relatos={relatos} />
+        {proximos.length > 0 || doBairro.length === 0 ? <ListaRelatos relatos={proximos} /> : null}
+        {doBairro.length > 0 && (
+          <>
+            <h3 className="mb-1.5 mt-4 text-sm font-semibold">Relatos no bairro {area?.bairro}</h3>
+            <ListaRelatos relatos={doBairro} />
+          </>
+        )}
 
         <h3 className="mb-1.5 mt-4 text-sm font-semibold">Seu relato</h3>
         <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Tipo de relato">
