@@ -1,6 +1,6 @@
 # Estado do repositório
 
-Fotografia técnica gerada automaticamente em **2026-10-15 18:53**.
+Fotografia técnica gerada automaticamente em **2026-10-15 18:55**.
 **Não edite à mão** — é sobrescrito.
 
 Diz apenas *como o repositório está*. Não diz o que estava sendo construído
@@ -38,15 +38,17 @@ Declaração, não dedução. Se *desde* estiver longe de *quando*, pode ter fic
 | | |
 | --- | --- |
 | Branch | `feat/v2-comunidade-perfil` |
-| HEAD | `ff2786f` |
-| Commits à frente de `main` | 26 |
+| HEAD | `cc082d0` |
+| Commits à frente de `main` | 28 |
 | Staged | 0 |
-| Modificados não staged | 3 |
-| Não rastreados | 3 |
+| Modificados não staged | 2 |
+| Não rastreados | 0 |
 
 ### Commits desde `main`
 
 ```
+cc082d0 docs: spec v2 concluída e estado
+db20a16 docs: CLAUDE.md em cascata da fase 2
 ff2786f refactor(domain): busca de área centralizada em areaDoPonto
 2b07298 fix(comunidade): rótulo do resumo de relatos por contexto
 72cd78b feat(data): relatos semente em todos os trechos e bairros
@@ -65,27 +67,14 @@ d908673 feat(rotas): enviar trajeto ao contato de confiança e atalho Casa
 c3c99c6 test: stub de localStorage no histórico
 33b278d feat(comunidade): relatos visíveis, comentários e exclusão
 69bcc9d feat(comunidade): relatos semente iniciais
-8c22a76 test: ajusta fixtures ao autor da avaliação
-550ca25 feat(domain): autor, relatos próximos e exclusão de avaliações
 ```
 
 ### Modificado, não staged
 
 ```
- docs/ESTADO.md       | Bin 2800 -> 2583 bytes
- docs/sessoes/.rastro |  18 +++--
- docs/sessoes/v2.md   | 201 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 212 insertions(+), 7 deletions(-)
-```
-
-### Não rastreado
-
-Arquivo novo que ninguém commitou. Pode ser trabalho válido pela metade.
-
-```
-src/data/CLAUDE.md
-src/domain/CLAUDE.md
-src/features/CLAUDE.md
+ docs/ESTADO.md     | 31 ++++++++++---------------------
+ docs/sessoes/v2.md |  1 +
+ 2 files changed, 11 insertions(+), 21 deletions(-)
 ```
 
 ## Aviso sobre confiabilidade
@@ -95,3 +84,4 @@ energia, máquina suspensa — pode não ter rodado, e a data acima estará velh
 
 **Compare a data com `git log -1 --format=%cd`.** Se o último commit for mais
 recente, o retrato está defasado e a verdade é o Git.
+Git.
