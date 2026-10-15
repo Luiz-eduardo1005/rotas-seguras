@@ -11,6 +11,7 @@ import {
 } from '../../services/armazenamento'
 import { useAppEstado } from '../estado/AppEstado'
 import { lerLinkRota } from './compartilhar'
+import { mesclarRotas } from './mesclarRotas'
 
 export type { PontoRota, RotaSalva }
 export type ModoEscolha = 'origem' | 'destino' | null
@@ -36,6 +37,9 @@ interface RotasValor {
   selecionadaIdx: number
   selecionar: (i: number) => void
   usarRotaModelo: (id: string) => void
+  /** painel expandido (persiste entre abas); recolhe ao chegar resultado */
+  painelAberto: boolean
+  setPainelAberto: (a: boolean) => void
   limpar: () => void
   rotasSalvas: RotaSalva[]
   salvarRotaAtual: () => boolean
@@ -59,6 +63,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
   const [erro, setErro] = useState<string | null>(null)
   const [selecionadaIdx, setSelecionadaIdx] = useState(0)
   const [versaoResultados, setVersao] = useState(0)
+  const [painelAberto, setPainelAberto] = useState(true)
   const [rotasSalvas, setRotasSalvas] = useState<RotaSalva[]>(carregarRotasSalvas)
   const ctrl = useRef<AbortController | null>(null)
 
@@ -78,12 +83,14 @@ export function RotasProvider({ children }: { children: ReactNode }) {
       setOrigemDados(fonte)
       setSelecionadaIdx(0)
       setVersao((v) => v + 1)
+      setPainelAberto(false)
     }
+    const off = buscarRotaPregravada(o.coord, d.coord)
     try {
-      aplicar(await buscarRotasAPe(o.coord, d.coord, c.signal), 'ao-vivo')
+      const vivas = await buscarRotasAPe(o.coord, d.coord, c.signal)
+      aplicar(off?.length ? mesclarRotas(off, vivas) : vivas, 'ao-vivo')
     } catch (e) {
       if (c.signal.aborted || (e instanceof ErroRotasApi && e.motivo === 'cancelado')) return
-      const off = buscarRotaPregravada(o.coord, d.coord)
       if (off?.length) aplicar(off, 'offline')
       else {
         setBrutas([])
@@ -193,7 +200,7 @@ export function RotasProvider({ children }: { children: ReactNode }) {
 
   const valor: RotasValor = {
     origem, destino, setOrigem, setDestino, inverter, modoEscolha, setModoEscolha, escolherPontoNoMapa,
-    buscar, carregando, erro, origemDados, resultados, versaoResultados, selecionadaIdx,
+    buscar, painelAberto, setPainelAberto, carregando, erro, origemDados, resultados, versaoResultados, selecionadaIdx,
     selecionar: setSelecionadaIdx, usarRotaModelo, limpar, rotasSalvas, salvarRotaAtual, removerSalva, abrirSalva,
   }
   return <Ctx.Provider value={valor}>{children}</Ctx.Provider>
